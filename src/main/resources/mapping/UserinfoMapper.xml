@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pcms.dao.UserinfoMapper">
+    <!--
+    **************************************************************************
+    * 基础返回视图.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <resultMap id="BaseResultMap" type="com.pcms.domain.Userinfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="userName" jdbcType="VARCHAR" property="username" />
+        <result column="passWord" jdbcType="VARCHAR" property="password" />
+    </resultMap>
+
+    <!--
+    **************************************************************************
+    * 基础表字段集合.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <sql id="Base_Column_List">
+        id, userName, passWord
+    </sql>
+
+    <!--
+    **************************************************************************
+    * 根据key[主键ID]参数查询select操作.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 'true' as QUERYID,
+        <include refid="Base_Column_List" />
+        from userinfo
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!--
+    **************************************************************************
+    * 根据key[主键ID]参数删除delete操作.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from userinfo
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--
+    **************************************************************************
+    * 全量插入insert操作.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Userinfo">
+        insert into userinfo (id, userName, passWord
+            )
+        values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <!--
+    **************************************************************************
+    * 根据参数动态插入insert操作.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Userinfo">
+        insert into userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null">
+                userName,
+            </if>
+            <if test="password != null">
+                passWord,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--
+    **************************************************************************
+    * 根据key[主键ID]动态修改update操作.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.Userinfo">
+        update userinfo
+        <set>
+            <if test="username != null">
+                userName = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                passWord = #{password,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--
+    **************************************************************************
+    * 根据key[主键ID]全量修改update操作.
+    * @author He.Feng
+    * @date 2018-08-01 16:58:49.
+    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    **************************************************************************
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.pcms.domain.Userinfo">
+        update userinfo
+        set userName = #{username,jdbcType=VARCHAR},
+            passWord = #{password,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+<!--=================================================================================-->
+    <sql id="searchParamter">
+        <if test="username!=null and username!='' ">
+           ui.userName=username
+        </if>
+    </sql>
+
+    <select id="getUserinfoByParam" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        select
+        <include refid="Base_Column_List" />
+        from userinfo as ui
+        <where>
+            <include refid="searchParamter"></include>
+        </where>
+    </select>
+
+</mapper>
