@@ -4,6 +4,7 @@ package com.pcms.service.impl;
 import com.pcms.dao.UserinfoMapper;
 import com.pcms.domain.Userinfo;
 import com.pcms.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
         map.put("username",user.getUsername());
         Userinfo userinfo = userinfoMapper.getUserinfoByParam(map);
 
-        if(userinfo!=null && userinfo.getPassword()==user.getPassword()){
+        if(userinfo!=null && StringUtils.equals(user.getPassword(),userinfo.getPassword())){
             return true;
         }
         return false;

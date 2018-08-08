@@ -6,7 +6,7 @@
     * 基础返回视图.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <resultMap id="BaseResultMap" type="com.pcms.domain.Userinfo">
@@ -20,7 +20,7 @@
     * 基础表字段集合.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <sql id="Base_Column_List">
@@ -32,7 +32,7 @@
     * 根据key[主键ID]参数查询select操作.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -47,7 +47,7 @@
     * 根据key[主键ID]参数删除delete操作.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -60,7 +60,7 @@
     * 全量插入insert操作.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Userinfo">
@@ -75,7 +75,7 @@
     * 根据参数动态插入insert操作.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Userinfo">
@@ -109,7 +109,7 @@
     * 根据key[主键ID]动态修改update操作.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.Userinfo">
@@ -130,7 +130,7 @@
     * 根据key[主键ID]全量修改update操作.
     * @author He.Feng
     * @date 2018-08-01 16:58:49.
-    * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+    * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
     <update id="updateByPrimaryKey" parameterType="com.pcms.domain.Userinfo">
@@ -141,10 +141,10 @@
     </update>
 
 
-<!--=================================================================================-->
+    <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="username!=null and username!='' ">
-           ui.userName=username
+            ui.userName=username
         </if>
     </sql>
 

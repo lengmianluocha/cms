@@ -87,7 +87,7 @@
 语言: 汉语普通话<br />
 上映日期: 2018-07-27(中国大陆)<br />
 片长: 90</p>
-<p><img src="https://wx1.sinaimg.cn/mw690/0076q8qMly1ftufhlbebxj30n014wn8e.jpg" /></p>
+<p><img src="" /></p>
 <p><strong></strong><br/>
 <p>${content}</p>
 <hr />

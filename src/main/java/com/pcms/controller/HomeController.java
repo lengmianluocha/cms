@@ -6,8 +6,12 @@ import com.pcms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -22,9 +26,14 @@ public class HomeController {
     }
 
 
-    @RequestMapping("/dologin")
-    public String doLogin(@RequestParam("username") String username,@RequestParam("password") String password){
+    @RequestMapping(value = "/dologin",method = RequestMethod.POST)
+    public String doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session){
         //登陆成功，跳转到首页
+
+        String s = (String)session.getAttribute("user");
+        if(!StringUtils.isEmpty(s)&& s==username){
+            return "/moive/add";
+        }
 
         Userinfo user = new Userinfo();
         user.setUsername(username);
@@ -32,9 +41,11 @@ public class HomeController {
         boolean result = userService.dologin(user);
 
         if(result){
-            return "index";
+            session.setAttribute("user",username);
+            return "redirect:/moive/add";
         }
-        return  "";
+        //TODO 设置错误码
+        return  "redirect:login";
     }
 
     @RequestMapping("/loginout")
