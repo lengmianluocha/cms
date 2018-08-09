@@ -7,9 +7,10 @@
     <result column="abstracts" jdbcType="VARCHAR" property="abstracts" />
     <result column="panurl" jdbcType="VARCHAR" property="panurl" />
     <result column="panpwd" jdbcType="VARCHAR" property="panpwd" />
+    <result column="murl" jdbcType="VARCHAR" property="murl" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, mname, abstracts, panurl, panpwd
+    id, mname, abstracts, panurl, panpwd, murl
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -21,12 +22,15 @@
     delete from moive
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.pcms.domain.Moive">
-    insert into moive (id, mname, abstracts, panurl, panpwd)
+  <insert id="insert" parameterType="com.pcms.domain.Moive">
+    insert into moive (id, mname, abstracts, 
+      panurl, panpwd, murl
+      )
     values (#{id,jdbcType=BIGINT}, #{mname,jdbcType=VARCHAR}, #{abstracts,jdbcType=VARCHAR}, 
-      #{panurl,jdbcType=VARCHAR}, #{panpwd,jdbcType=VARCHAR})
+      #{panurl,jdbcType=VARCHAR}, #{panpwd,jdbcType=VARCHAR}, #{murl,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"   parameterType="com.pcms.domain.Moive">
+  <insert id="insertSelective" parameterType="com.pcms.domain.Moive">
     insert into moive
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -43,6 +47,9 @@
       </if>
       <if test="panpwd != null">
         panpwd,
+      </if>
+      <if test="murl != null">
+        murl,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -61,6 +68,9 @@
       <if test="panpwd != null">
         #{panpwd,jdbcType=VARCHAR},
       </if>
+      <if test="murl != null">
+        #{murl,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.Moive">
@@ -78,6 +88,9 @@
       <if test="panpwd != null">
         panpwd = #{panpwd,jdbcType=VARCHAR},
       </if>
+      <if test="murl != null">
+        murl = #{murl,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -86,9 +99,11 @@
     set mname = #{mname,jdbcType=VARCHAR},
       abstracts = #{abstracts,jdbcType=VARCHAR},
       panurl = #{panurl,jdbcType=VARCHAR},
-      panpwd = #{panpwd,jdbcType=VARCHAR}
+      panpwd = #{panpwd,jdbcType=VARCHAR},
+      murl = #{murl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
     <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="mname!=null and mname!='' ">

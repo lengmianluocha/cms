@@ -26,13 +26,14 @@ public class FileServiceImpl implements FileService {
         try {
             Template template = configuration.getTemplate("moivetmp.ftl");
             //获得保存静态资源路径
-            String htmlRealPath = "/Users/feng/html";
+            //String htmlRealPath = "/Users/feng/html";
+            String htmlRealPath = "/usr/local/website";
 
 
 
             //实际部署保存路径
             //String htmlRealPath=contentHtmlLocation;
-            System.out.println("保存的绝对路径是:" + htmlRealPath + "/" + id + ".html");
+            //System.out.println("保存的绝对路径是:" + htmlRealPath + "/" + id + ".html");
             // 创建文件对象
             File htmlFile = new File(htmlRealPath + "/" + id + ".html");
             htmlFile.getParentFile().mkdirs();

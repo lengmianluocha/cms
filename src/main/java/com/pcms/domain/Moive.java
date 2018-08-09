@@ -11,6 +11,8 @@ public class Moive {
 
     private String panpwd;
 
+    private String murl;
+
     public Long getId() {
         return id;
     }
@@ -49,5 +51,13 @@ public class Moive {
 
     public void setPanpwd(String panpwd) {
         this.panpwd = panpwd == null ? null : panpwd.trim();
+    }
+
+    public String getMurl() {
+        return murl;
+    }
+
+    public void setMurl(String murl) {
+        this.murl = murl == null ? null : murl.trim();
     }
 }

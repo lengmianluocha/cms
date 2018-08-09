@@ -61,7 +61,7 @@ public class WXController {
     }
 
     @RequestMapping(value = "/wx",method= RequestMethod.POST)
-    public String WXPOST(HttpServletRequest request, HttpServletResponse response){
+    public void WXPOST(HttpServletRequest request, HttpServletResponse response){
 
         response.setContentType("text/html;charset=UTF-8");
         RequestTextMessage textMsg =null ;
@@ -95,6 +95,7 @@ public class WXController {
                 article.setDescription(moive.getAbstracts());
                 article.setTitle(moive.getMname());
                 //article.setPicUrl();
+                article.setUrl(moive.getMurl());
                 articles.add(article);
             }
 
@@ -107,10 +108,8 @@ public class WXController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return "";
         }
 
-        return "success";
 
     }
 
