@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
 
         String id = String.format("%06d", moive.getId());
         try {
-            Template template = configuration.getTemplate("moivetmp.ftl");
+            Template template = configuration.getTemplate("/vm/moivetmp.ftl");
             //获得保存静态资源路径
             //String htmlRealPath = "/Users/feng/html";
             String htmlRealPath = "/usr/local/website";

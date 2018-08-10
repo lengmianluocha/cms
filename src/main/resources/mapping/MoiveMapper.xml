@@ -121,6 +121,6 @@
         <where>
             <include refid="searchParamter" />
         </where>
-        limit 0,10
+        limit 0,8
     </select>
 </mapper>

@@ -21,36 +21,35 @@ public class HomeController {
 
 
     @RequestMapping("/login")
-    public String LoginPage(Model model){
+    public String LoginPage(Model model) {
         return "login";
     }
 
 
-    @RequestMapping(value = "/dologin",method = RequestMethod.POST)
-    public String doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session){
+    @RequestMapping(value = "/dologin", method = RequestMethod.POST)
+    public String doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
         //登陆成功，跳转到首页
-
-        String s = (String)session.getAttribute("user");
-        if(!StringUtils.isEmpty(s)&& s==username){
+        String s = (String) session.getAttribute("user");
+        if (!StringUtils.isEmpty(s) && s == username) {
             return "/moive/add";
         }
-
         Userinfo user = new Userinfo();
         user.setUsername(username);
         user.setPassword(password);
         boolean result = userService.dologin(user);
+        if (result) {
+            session.setAttribute("user", username);
 
-        if(result){
-            session.setAttribute("user",username);
-            return "redirect:/moive/add";
+            return "/moive/add";
         }
         //TODO 设置错误码
-        return  "redirect:login";
+        return "redirect:/login";
     }
 
     @RequestMapping("/loginout")
-    public String loginout(){
-        return "login";
+    public String loginout(HttpSession session) {
+        session.removeAttribute("user");
+        return "redirect:/login";
     }
 
 

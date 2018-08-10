@@ -38,16 +38,15 @@ public class WXController {
     private String TOKEN = "hello123455";
 
 
-
     //第一次调用，用于微信服务器验证
-    @RequestMapping(value = "/wx",method= RequestMethod.GET)
-    public String WXGET(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/wx", method = RequestMethod.GET)
+    public String WXGET(HttpServletRequest request, HttpServletResponse response) {
 
-        String  signature= request.getParameter("signature");
-        String  timestamp= request.getParameter("timestamp");
-        String  nonce= request.getParameter("nonce");
-        String  echostr= request.getParameter("echostr");
-        String  token= request.getParameter("token");
+        String signature = request.getParameter("signature");
+        String timestamp = request.getParameter("timestamp");
+        String nonce = request.getParameter("nonce");
+        String echostr = request.getParameter("echostr");
+        String token = request.getParameter("token");
 
         List arr = new ArrayList();
 
@@ -60,50 +59,39 @@ public class WXController {
         return echostr;
     }
 
-    @RequestMapping(value = "/wx",method= RequestMethod.POST)
-    public void WXPOST(HttpServletRequest request, HttpServletResponse response){
-
+    @RequestMapping(value = "/wx", method = RequestMethod.POST)
+    public void WXPOST(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
-        RequestTextMessage textMsg =null ;
-        String returnXml ="";
-
+        RequestTextMessage textMsg = null;
+        String returnXml = "";
         try {
-
-
             PrintWriter pw = response.getWriter();
-            String wxMsgXml =IOUtils.toString(request.getInputStream(), "utf-8");
+            String wxMsgXml = IOUtils.toString(request.getInputStream(), "utf-8");
 
-            logger.info("获取的数据信息>>>>>"+wxMsgXml);
+            logger.info("获取的数据信息>>>>>" + wxMsgXml);
 
             textMsg = ReplyMessage.getRequestTextMessage(wxMsgXml);//解析用户输入的信息
             String content = textMsg.getContent().trim();//用户发送信息
-            String openId= textMsg.getFromUserName().trim();//发送方账号（OpenID）
-            String creattime=textMsg.getCreateTime();
-            String msgType=textMsg.getMessageType();// 发送类型
-            String tousername=textMsg.getToUserName();//用户微信号
-            boolean  flag= isContainsNumOrLetter(content);
-
-
-            logger.error(content);
+            String openId = textMsg.getFromUserName().trim();//发送方账号（OpenID）
+            String creattime = textMsg.getCreateTime();
+            String msgType = textMsg.getMessageType();// 发送类型
+            String tousername = textMsg.getToUserName();//用户微信号
+            boolean flag = isContainsNumOrLetter(content);
 
             Map map = new HashMap();
             map.put("mnamelike", content);
             List<Moive> list = moiveService.searchMoiveByParam(map);
-            List<Article> articles=new ArrayList<>(list.size());
-            for(Moive moive :list){
-                Article article= new Article();
+            List<Article> articles = new ArrayList<>(list.size());
+            for (Moive moive : list) {
+                Article article = new Article();
                 article.setDescription(moive.getAbstracts());
                 article.setTitle(moive.getMname());
-                //article.setPicUrl();
                 article.setUrl(moive.getMurl());
                 articles.add(article);
             }
-
-            returnXml = ReplyMessage.getReplyPicTextMessage(tousername, openId,articles);
-
-
-            logger.info("wxMsgXml>>>>>>>>>>>>>>"+wxMsgXml);
-            logger.info("returnXml>>>>>>>>>>>>>>"+returnXml);
+            returnXml = ReplyMessage.getReplyPicTextMessage(openId, tousername, articles);
+            logger.info("wxMsgXml>>>>>>>>>>>>>>" + wxMsgXml);
+            logger.info("returnXml>>>>>>>>>>>>>>" + returnXml);
             pw.println(returnXml);
 
         } catch (IOException e) {
@@ -113,7 +101,7 @@ public class WXController {
 
     }
 
-    @RequestMapping(value = "/moive/search",method= RequestMethod.GET)
+    @RequestMapping(value = "/moive/search", method = RequestMethod.GET)
     public String SearchMovie(@RequestParam("keyword") String keyword) {
 
         Map map = new HashMap();
@@ -124,7 +112,7 @@ public class WXController {
         return JSONObject.toJSONString(list);
     }
 
-    @RequestMapping(value = "/moive/search",method= RequestMethod.POST)
+    @RequestMapping(value = "/moive/search", method = RequestMethod.POST)
     public String SearchMovie2(@RequestParam("keyword") String keyword) {
 
         Map map = new HashMap();
@@ -160,44 +148,43 @@ public class WXController {
         // 随机数
         String nonce = request.getParameter("nonce");
 
-        String[] str = { TOKEN, timestamp, nonce };
+        String[] str = {TOKEN, timestamp, nonce};
         Arrays.sort(str); // 字典序排序
 
         String bigStr = str[0] + str[1] + str[2];
         // SHA1加密
         //String digest = new SHA1().getDigestOfString(bigStr.getBytes()).toLowerCase();
-        String digest=null;
+        String digest = null;
         // 确认请求来至微信
         if (digest.equals(signature)) {
             response.getWriter().print(echostr);
             flag = true;
-        }else {
-            System.out.println("TAG"+"接入失败");
+        } else {
+            System.out.println("TAG" + "接入失败");
         }
         return flag;
     }
 
 
     /**
-     *
-     * @Title: isContainsNumOrLetter
-     * @Description: TODO（判断字符是否符合要求即包含数字和字母且长度为12）
-     * @param @param str
-     * @param @return    参数
+     * @param @param  str
+     * @param @return 参数
      * @return boolean    返回类型
      * @throws
+     * @Title: isContainsNumOrLetter
+     * @Description: TODO（判断字符是否符合要求即包含数字和字母且长度为12）
      */
-    private  boolean isContainsNumOrLetter(String  str) {
+    private boolean isContainsNumOrLetter(String str) {
         boolean flag = false;
 
         boolean isDigit = false;//定义一个boolean值，用来表示是否包含数字
         boolean isLetter = false;//定义一个boolean值，用来表示是否包含字母
         //假设有一个字符串
-        for (int i=0 ; i<str.length() ; i++){ //循环遍历字符串
-            if (Character.isDigit(str.charAt(i))){     //用char包装类中的判断数字的方法判断每一个字符
+        for (int i = 0; i < str.length(); i++) { //循环遍历字符串
+            if (Character.isDigit(str.charAt(i))) {     //用char包装类中的判断数字的方法判断每一个字符
                 isDigit = true;
             }
-            if (Character.isLetter(str.charAt(i))){   //用char包装类中的判断字母的方法判断每一个字符
+            if (Character.isLetter(str.charAt(i))) {   //用char包装类中的判断字母的方法判断每一个字符
                 isLetter = true;
             }
         }
@@ -207,10 +194,10 @@ public class WXController {
          */
         //System.out.println(isDigit);          //System.out.println(isLetter);
 
-        if(isDigit && isLetter) {
+        if (isDigit && isLetter) {
             //根据字符长度、判断输入是Wifi 还是蓝牙
-            int len=str.length();
-            if( len == 12) {
+            int len = str.length();
+            if (len == 12) {
                 flag = true;
             }
         }

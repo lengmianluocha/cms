@@ -2,10 +2,10 @@ package com.pcms.weixin;
 
 public class Article {
 
-    private String Title;
-    private String Description;
-    private String Url;
-    private String PicUrl;
+    private String Title;//图文消息标题
+    private String Description;//图文消息描述
+    private String Url;//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+    private String PicUrl;//点击图文消息跳转链接
 
     public String getTitle() {
         return Title;

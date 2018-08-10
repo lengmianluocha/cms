@@ -10,4 +10,6 @@ public interface PcmsConst {
     String RESPCODE = "respCode";
 
     String RESPMSD = "respMsd";
+
+    String url = "http://www.nitethoughts.xyz/";
 }

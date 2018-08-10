@@ -3,10 +3,10 @@ server:
 
 spring:
     freemarker:
-      suffix: .ftl
+      suffix: .html
       charset: UTF-8
       content-type: text/html
-      template-loader-path: classpath:/vm/
+      template-loader-path: classpath:/templates/
     thymeleaf:
     datasource:
         name: mysql_test

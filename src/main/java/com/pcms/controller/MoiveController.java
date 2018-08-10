@@ -39,14 +39,15 @@ public class MoiveController {
 
         JSONObject result = new JSONObject();
         try {
+            String ran = RandomNumber.randomKey(6);
+            long id = Long.parseLong(ran);
             Moive moive = new Moive();
             moive.setMname(title);
             moive.setAbstracts(cont);
             moive.setPanurl(panurl);
             moive.setPanpwd(panpwd);
-
-            String ran = RandomNumber.randomKey(6);
-            moive.setId(Long.parseLong(ran));
+            moive.setMurl(PcmsConst.url+id+".html");
+            moive.setId(id);
 
             moiveService.insert(moive);
             Map param = new HashMap();

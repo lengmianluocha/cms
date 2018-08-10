@@ -14,28 +14,22 @@ import java.util.Map;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
-
     @Autowired
     private UserinfoMapper userinfoMapper;
 
-
-    public Userinfo getUserByParam(Map param){
+    public Userinfo getUserByParam(Map param) {
         return userinfoMapper.selectByPrimaryKey(1L);
     }
 
-
-    public boolean dologin(Userinfo user){
+    public boolean dologin(Userinfo user) {
         Map map = new HashMap();
-        map.put("username",user.getUsername());
+        map.put("username", user.getUsername());
         Userinfo userinfo = userinfoMapper.getUserinfoByParam(map);
-
-        if(userinfo!=null && StringUtils.equals(user.getPassword(),userinfo.getPassword())){
+        if (userinfo != null && StringUtils.equals(user.getPassword(), userinfo.getPassword())) {
             return true;
         }
         return false;
     }
-
 
 
 }
