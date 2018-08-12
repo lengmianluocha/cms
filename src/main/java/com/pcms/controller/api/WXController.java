@@ -24,7 +24,7 @@ import java.util.*;
 /**
  * 提供外部调用，搜索查询
  */
-@RestController()
+@RestController
 public class WXController {
 
     private Logger logger = LoggerFactory.getLogger(WXController.class);
@@ -80,7 +80,7 @@ public class WXController {
 
             Map map = new HashMap();
             map.put("mnamelike", content);
-            List<Moive> list = moiveService.searchMoiveByParam(map);
+            List<Moive> list = moiveService.searchMoiveForWXByParam(map);
             List<Article> articles = new ArrayList<>(list.size());
             for (Moive moive : list) {
                 Article article = new Article();

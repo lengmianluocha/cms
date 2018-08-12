@@ -10,4 +10,14 @@ public interface MoiveService {
     int insert(Moive record);
 
     List<Moive> searchMoiveByParam(Map param);
+
+    List<Moive> searchMoiveForWXByParam(Map param);
+
+    public int getMoiveCountByParam(Map map);
+
+    Moive getMoiveByParam(Map param);
+
+    int updateByPrimaryKeySelective(Moive record);
+
+
 }

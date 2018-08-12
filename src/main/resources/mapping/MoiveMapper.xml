@@ -114,7 +114,10 @@
         </if>
     </sql>
 
-    <select id="searchMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+
+
+
+    <select id="searchMoiveForWXByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from moive as mv
@@ -123,4 +126,33 @@
         </where>
         limit 0,8
     </select>
+
+
+  <select id="searchMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moive as mv
+    <where>
+      <include refid="searchParamter" />
+    </where>
+    limit #{currentPage},#{pageSize}
+  </select>
+
+
+  <select id="getMoiveCountByParam" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select count(*)
+    from moive as mv
+    <where>
+      <include refid="searchParamter" />
+    </where>
+  </select>
+
+  <select id="getMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moive as mv
+    <where>
+      <include refid="searchParamter" />
+    </where>
+  </select>
 </mapper>

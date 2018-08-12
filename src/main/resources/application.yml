@@ -1,13 +1,19 @@
 server:
   port: 8081
 
+
 spring:
-    freemarker:
+    thymeleaf:
       suffix: .html
       charset: UTF-8
-      content-type: text/html
       template-loader-path: classpath:/templates/
-    thymeleaf:
+      encoding: UTF-8
+      servlet:
+        content-type: text/html
+      mode: HTML5
+      prefix: classpath:/templates/
+      cache: true
+
     datasource:
         name: mysql_test
         type: com.alibaba.druid.pool.DruidDataSource

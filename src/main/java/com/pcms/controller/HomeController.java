@@ -10,6 +10,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,18 +22,20 @@ public class HomeController {
     private UserService userService;
 
 
-    @RequestMapping("/login")
+    @RequestMapping("/login/login")
     public String LoginPage(Model model) {
         return "login";
     }
 
 
-    @RequestMapping(value = "/dologin", method = RequestMethod.POST)
-    public String doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
+    @ResponseBody
+    @RequestMapping(value = "/login/dologin", method = RequestMethod.POST)
+    public ModelAndView doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session,ModelAndView mav ) {
         //登陆成功，跳转到首页
         String s = (String) session.getAttribute("user");
         if (!StringUtils.isEmpty(s) && s == username) {
-            return "/moive/add";
+            mav.addObject("username", username);
+            mav.setViewName("redirect:/moive/addview");
         }
         Userinfo user = new Userinfo();
         user.setUsername(username);
@@ -40,16 +44,20 @@ public class HomeController {
         if (result) {
             session.setAttribute("user", username);
 
-            return "/moive/add";
+             mav.addObject("username", username);
+             mav.setViewName("redirect:/moive/addview");
+        }else {
+            //TODO 设置错误码
+            mav.setViewName("redirect:/login/login");
         }
-        //TODO 设置错误码
-        return "redirect:/login";
+        return mav;
     }
 
-    @RequestMapping("/loginout")
-    public String loginout(HttpSession session) {
+    @RequestMapping("/login/loginout")
+    public ModelAndView loginout(HttpSession session,ModelAndView mav ) {
         session.removeAttribute("user");
-        return "redirect:/login";
+        mav.setViewName("redirect:/login/login");
+        return mav;
     }
 
 

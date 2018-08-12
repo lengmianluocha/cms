@@ -63,7 +63,7 @@
 
 											<div class="space-6"></div>
 
-											<form id="loginForm" action="/dologin" method="post">
+											<form id="loginForm" action="/login/dologin" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -277,15 +277,15 @@
 		<!-- basic scripts -->
 
 		<!--[if !IE]> -->
-		<script src="static/assets/js/jquery-2.1.4.min.js"></script>
+		<script src="../static/assets/js/jquery-2.1.4.min.js"></script>
 
 		<!-- <![endif]-->
 
 		<!--[if IE]>
-<script src="static/assets/js/jquery-1.11.3.min.js"></script>
+<script src="../static/assets/js/jquery-1.11.3.min.js"></script>
 <![endif]-->
 		<script type="text/javascript">
-			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+			if('ontouchstart' in document.documentElement) document.write("<script src='../assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>
 
 		<!-- inline scripts related to this page -->
@@ -326,15 +326,6 @@
 			 });
 
 			});
-
-            $("#loginbutton").click(function(){
-                $("#loginForm").submit(function(){
-                    alert("hello")
-                });
-
-            });
-
-
 
 		</script>
 	</body>

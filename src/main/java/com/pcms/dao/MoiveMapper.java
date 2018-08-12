@@ -19,4 +19,10 @@ public interface MoiveMapper {
     int updateByPrimaryKey(Moive record);
 
     List<Moive> searchMoiveByParam(Map param);
+
+    List<Moive> searchMoiveForWXByParam(Map param);
+
+    Moive getMoiveByParam(Map param);
+
+    public int getMoiveCountByParam(Map map);
 }

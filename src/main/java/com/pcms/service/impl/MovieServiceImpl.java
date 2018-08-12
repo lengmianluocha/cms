@@ -23,4 +23,22 @@ public class MovieServiceImpl implements MoiveService {
     public List<Moive> searchMoiveByParam(Map param){
         return moiveMapper.searchMoiveByParam(param);
     }
+
+    public List<Moive> searchMoiveForWXByParam(Map param){
+        return moiveMapper.searchMoiveForWXByParam(param);
+    }
+
+    public Moive getMoiveByParam(Map param){
+        return moiveMapper.getMoiveByParam(param);
+    }
+
+
+    public int getMoiveCountByParam(Map param){
+        return moiveMapper.getMoiveCountByParam(param);
+    }
+
+    public int updateByPrimaryKeySelective(Moive record){
+        return moiveMapper.updateByPrimaryKeySelective(record);
+    }
+
 }
