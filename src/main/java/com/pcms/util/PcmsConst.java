@@ -10,5 +10,6 @@ public interface PcmsConst {
 
     String RESPMSD = "respMsd";
 
-    String url = "weixin://www.nitethoughts.club/model/";
+    //String url = "weixin://www.nitethoughts.club/model/";
+    String url = "http://www.nitethoughts.club/model/";
 }
