@@ -35,7 +35,7 @@ public class HomeController {
         String s = (String) session.getAttribute("user");
         if (!StringUtils.isEmpty(s) && s == username) {
             mav.addObject("username", username);
-            mav.setViewName("redirect:/moive/addview");
+            mav.setViewName("redirect:/blank");
         }
         Userinfo user = new Userinfo();
         user.setUsername(username);
@@ -45,7 +45,7 @@ public class HomeController {
             session.setAttribute("user", username);
 
              mav.addObject("username", username);
-             mav.setViewName("redirect:/moive/addview");
+             mav.setViewName("redirect:/blank");
         }else {
             //TODO 设置错误码
             mav.setViewName("redirect:/login/login");

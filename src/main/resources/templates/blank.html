@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="common/head::head"></head>
+
+     <head th:replace="common/head::head"></head>
 
 	<body class="no-skin">
-	<div th:replace="common/navbar ::#navbar"></div>
+
+	    <div th:replace="common/navbar ::#navbar"></div>
 
 		<div class="main-container ace-save-state" id="main-container">
 			<script type="text/javascript">
 				try{ace.settings.loadState('main-container')}catch(e){}
 			</script>
 
-            <div th:replace="common/sidebar::sidebar"> </div>
+			<div th:replace="common/sidebar::sidebar"> </div>
 
 			<div class="main-content">
 				<div class="main-content-inner">
@@ -24,7 +26,7 @@
 							<li>
 								<a href="#">Other Pages</a>
 							</li>
-							<li class="active">Error 500</li>
+							<li class="active">Blank Page</li>
 						</ul><!-- /.breadcrumb -->
 
 						<div class="nav-search" id="nav-search">
@@ -109,58 +111,6 @@
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
 
-								<div class="error-container">
-									<div class="well">
-										<h1 class="grey lighter smaller">
-											<span class="blue bigger-125">
-												<i class="ace-icon fa fa-random"></i>
-												500
-											</span>
-											Something Went Wrong
-										</h1>
-
-										<hr />
-										<h3 class="lighter smaller">
-											But we are working
-											<i class="ace-icon fa fa-wrench icon-animated-wrench bigger-125"></i>
-											on it!
-										</h3>
-
-										<div class="space"></div>
-
-										<div>
-											<h4 class="lighter smaller">Meanwhile, try one of the following:</h4>
-
-											<ul class="list-unstyled spaced inline bigger-110 margin-15">
-												<li>
-													<i class="ace-icon fa fa-hand-o-right blue"></i>
-													Read the faq
-												</li>
-
-												<li>
-													<i class="ace-icon fa fa-hand-o-right blue"></i>
-													Give us more info on how this specific error occurred!
-												</li>
-											</ul>
-										</div>
-
-										<hr />
-										<div class="space"></div>
-
-										<div class="center">
-											<a href="javascript:history.back()" class="btn btn-grey">
-												<i class="ace-icon fa fa-arrow-left"></i>
-												Go Back
-											</a>
-
-											<a href="#" class="btn btn-primary">
-												<i class="ace-icon fa fa-tachometer"></i>
-												Dashboard
-											</a>
-										</div>
-									</div>
-								</div>
-
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
@@ -169,21 +119,20 @@
 			</div><!-- /.main-content -->
 
 			<div th:replace="common/footer::footer"></div>
-		</div>
 
-		<script src="../static/assets/js/jquery-2.1.4.min.js"></script>
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+		<script src="assets/js/jquery-2.1.4.min.js"></script>
 
 		<script type="text/javascript">
-			if('ontouchstart' in document.documentElement) document.write("<script src='../static/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>
-		<script src="../static/assets/js/bootstrap.min.js"></script>
-
-		<!-- page specific plugin scripts -->
+		<script src="assets/js/bootstrap.min.js"></script>
 
 		<!-- ace scripts -->
-		<script src="../static/assets/js/ace-elements.min.js"></script>
-		<script src="../static/assets/js/ace.min.js"></script>
-
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
 		<!-- inline scripts related to this page -->
 	</body>
 </html>
