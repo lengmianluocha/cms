@@ -10,11 +10,9 @@ public class Pageable<T> {
 
     private List<T> data;
 
-    private int currentPage;
+    private Long total;
 
-    private int pageSize;
-
-    private int totalAmt;
+    private Integer draw;
 
 
     public List<T> getData() {
@@ -25,27 +23,19 @@ public class Pageable<T> {
         this.data = data;
     }
 
-    public int getCurrentPage() {
-        return currentPage;
+    public Long getTotal() {
+        return total;
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
-    public int getPageSize() {
-        return pageSize;
+    public Integer getDraw() {
+        return draw;
     }
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getTotalAmt() {
-        return totalAmt;
-    }
-
-    public void setTotalAmt(int totalAmt) {
-        this.totalAmt = totalAmt;
+    public void setDraw(Integer draw) {
+        this.draw = draw;
     }
 }

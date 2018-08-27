@@ -27,7 +27,6 @@ public class FileServiceImpl implements FileService {
         try {
             Template template = configuration.getTemplate("/vm/moivetmp.ftl");
             //获得保存静态资源路径
-            //String htmlRealPath = "/Users/feng/html";
             // 创建文件对象
             File htmlFile = new File(PcmsConst.FILEPATH + "/" + moive.getId() + ".html");
             htmlFile.getParentFile().mkdirs();
@@ -41,7 +40,6 @@ public class FileServiceImpl implements FileService {
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlFile), "UTF-8"));
             // 合并输出 创建页面文件
             template.process(map, out);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

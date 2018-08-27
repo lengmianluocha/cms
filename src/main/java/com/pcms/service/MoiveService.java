@@ -19,5 +19,7 @@ public interface MoiveService {
 
     int updateByPrimaryKeySelective(Moive record);
 
+    int updateByMoiveName(Moive moive);
+
 
 }

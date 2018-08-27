@@ -41,4 +41,8 @@ public class MovieServiceImpl implements MoiveService {
         return moiveMapper.updateByPrimaryKeySelective(record);
     }
 
+    public int updateByMoiveName(Moive record){
+        return moiveMapper.updateByMoiveName(record);
+    }
+
 }

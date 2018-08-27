@@ -81,6 +81,15 @@ public class WXController {
             Map map = new HashMap();
             map.put("mnamelike", content);
             List<Moive> list = moiveService.searchMoiveForWXByParam(map);
+
+            if(list==null||list.size()==0){
+                String cont = "很遗憾，没有找到相关内容，请换其它关键词试试。";
+                returnXml= ReplyMessage.getReplyTextMessage(cont,openId, tousername);
+                //logger.info("wxMsgXml>>>>>>>>>>>>>>" + wxMsgXml);
+                logger.info("returnXml>>>>>>>>>>>>>>" + returnXml);
+                pw.println(returnXml);
+            }
+
             List<Article> articles = new ArrayList<>(list.size());
             for (Moive moive : list) {
                 Article article = new Article();
@@ -90,10 +99,9 @@ public class WXController {
                 articles.add(article);
             }
             returnXml = ReplyMessage.getReplyPicTextMessage(openId, tousername, articles);
-            logger.info("wxMsgXml>>>>>>>>>>>>>>" + wxMsgXml);
+            //logger.info("wxMsgXml>>>>>>>>>>>>>>" + wxMsgXml);
             logger.info("returnXml>>>>>>>>>>>>>>" + returnXml);
             pw.println(returnXml);
-
         } catch (IOException e) {
             e.printStackTrace();
         }

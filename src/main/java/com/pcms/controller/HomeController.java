@@ -27,6 +27,11 @@ public class HomeController {
         return "login";
     }
 
+    @RequestMapping("/blank")
+    public String blank(Model model) {
+        return "blank";
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/login/dologin", method = RequestMethod.POST)
@@ -45,10 +50,10 @@ public class HomeController {
             session.setAttribute("user", username);
 
              mav.addObject("username", username);
-             mav.setViewName("redirect:/blank");
+             mav.setViewName("redirect:blank");
         }else {
             //TODO 设置错误码
-            mav.setViewName("redirect:/login/login");
+            mav.setViewName("redirect:login/login");
         }
         return mav;
     }
@@ -56,7 +61,7 @@ public class HomeController {
     @RequestMapping("/login/loginout")
     public ModelAndView loginout(HttpSession session,ModelAndView mav ) {
         session.removeAttribute("user");
-        mav.setViewName("redirect:/login/login");
+        mav.setViewName("redirect:login/login");
         return mav;
     }
 

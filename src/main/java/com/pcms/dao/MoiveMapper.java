@@ -16,6 +16,8 @@ public interface MoiveMapper {
 
     int updateByPrimaryKeySelective(Moive record);
 
+    int updateByMoiveName(Moive record);
+
     int updateByPrimaryKey(Moive record);
 
     List<Moive> searchMoiveByParam(Map param);

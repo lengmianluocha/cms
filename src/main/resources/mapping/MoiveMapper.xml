@@ -104,6 +104,16 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+  <update id="updateByMoiveName" parameterType="com.pcms.domain.Moive">
+    update moive
+    set mname = #{mname,jdbcType=VARCHAR},
+      abstracts = #{abstracts,jdbcType=VARCHAR},
+      panurl = #{panurl,jdbcType=VARCHAR},
+      panpwd = #{panpwd,jdbcType=VARCHAR},
+      murl = #{murl,jdbcType=VARCHAR}
+    where mname = #{mname,jdbcType=VARCHAR}
+  </update>
+
     <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="mname!=null and mname!='' ">
@@ -139,7 +149,7 @@
   </select>
 
 
-  <select id="getMoiveCountByParam" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getMoiveCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
     select count(*)
     from moive as mv
     <where>

@@ -8,9 +8,7 @@ import com.pcms.service.MoiveService;
 import com.pcms.util.PcmsConst;
 import com.pcms.util.RandomNumber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,22 +33,21 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/addview")
-    public ModelAndView addView(Model model, ModelAndView mav , HttpSession session) {
+    public ModelAndView addView(Model model, ModelAndView mav, HttpSession session) {
 
         String s = (String) session.getAttribute("user");
-
         mav.addObject("username", s);
         mav.setViewName("moive/add");
         return mav;
     }
 
     @RequestMapping("/moive/list")
-    public ModelAndView listView(Model model, HttpSession session, ModelAndView mav ) {
+    public ModelAndView listView(Model model, HttpSession session, ModelAndView mav) {
 
         String s = (String) session.getAttribute("user");
 
         mav.addObject("username", s);
-        mav.setViewName("/moive/list");
+        mav.setViewName("moive/list");
         return mav;
     }
 
@@ -66,7 +63,7 @@ public class MoiveController {
             moive.setAbstracts(cont);
             moive.setPanurl(panurl);
             moive.setPanpwd(panpwd);
-            moive.setMurl(PcmsConst.url+id+".html");
+            moive.setMurl(PcmsConst.url + id + ".html");
             moive.setId(id);
 
             moiveService.insert(moive);
@@ -87,56 +84,93 @@ public class MoiveController {
 
 
     @ResponseBody
-    @RequestMapping("/moive/search")
-    public String searchMoiveListByParam(@RequestParam("currentPage") String currentPage,HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/moive/list2")
+    public JSONObject searchMoiveListByParam(HttpServletRequest request, HttpServletResponse response) {
 
-        String pageSize = "10";
+        Integer draw = Integer.parseInt(request.getParameter("draw"));
+        Integer length = Integer.parseInt(request.getParameter("length"));
+        Integer start = Integer.parseInt(request.getParameter("start"));
 
+        int pageSize = length;
         Map param = new HashMap();
-        param.put("currentPage",currentPage);
-        param.put("pageSize",pageSize);
+        param.put("currentPage", start);
+        param.put("pageSize", pageSize);
 
         int count = moiveService.getMoiveCountByParam(param);
 
-
         List<Moive> moives = moiveService.searchMoiveByParam(param);
 
-
         Pageable<Moive> pageable = new Pageable<>();
-
-
-        pageable.setCurrentPage(Integer.parseInt(currentPage));
-
-        pageable.setPageSize(10);
-
-        pageable.setTotalAmt(count);
-
         pageable.setData(moives);
+        pageable.setDraw(draw);
+        pageable.setTotal(Long.parseLong(count + ""));
 
-        return JSONObject.toJSONString(pageable);
+        return JSONObject.parseObject(JSONObject.toJSONString(pageable));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/moive/reset")
+    public JSONObject moiveReset(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject rep = new JSONObject();
+
+        int pageSize = 10;
+        Map param = new HashMap();
+
+        int count = moiveService.getMoiveCountByParam(param);
+        int pages = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+
+        for (int i = 1; i <= pages; i++) {
+            int start = (i - 1) * pageSize;
+            param.put("currentPage", start);
+            param.put("pageSize", pageSize);
+
+            List<Moive> moives = moiveService.searchMoiveByParam(param);
+
+            for (Moive moive : moives) {
+                try {
+                    String ran = RandomNumber.randomKey(6);
+                    long id = Long.parseLong(ran);
+
+                    moive.setMname(moive.getMname());
+                    moive.setAbstracts(moive.getAbstracts());
+                    moive.setPanurl(moive.getPanurl());
+                    moive.setPanpwd(moive.getPanpwd());
+                    moive.setMurl(PcmsConst.url + id + ".html");
+                    moive.setId(id);
+                    Map map = new HashMap();
+                    map.put("moive", moive);
+                    moiveService.updateByMoiveName(moive);
+                    fileService.genFile(map);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return rep;
     }
 
     @ResponseBody
     @RequestMapping("/moive/get")
-    public String getMoiveByParam(@RequestParam("id") String id){
+    public String getMoiveByParam(@RequestParam("id") String id) {
 
         Map param = new HashMap();
-        param.put("id",id);
+        param.put("id", id);
 
-        Moive moive= moiveService.getMoiveByParam(param);
+        Moive moive = moiveService.getMoiveByParam(param);
         return JSONObject.toJSONString(moive);
 
     }
 
     @ResponseBody
     @RequestMapping("/moive/update")
-    public String updateMoiveByParam(HttpServletRequest request, HttpServletResponse response){
+    public String updateMoiveByParam(HttpServletRequest request, HttpServletResponse response) {
 
         Moive moive = new Moive();
-        String name  = request.getParameter("mname");
-        String abstracts  = request.getParameter("abstracts");
-        String panurl  = request.getParameter("panurl");
-        String panpwd  = request.getParameter("panpwd");
+        String name = request.getParameter("mname");
+        String abstracts = request.getParameter("abstracts");
+        String panurl = request.getParameter("panurl");
+        String panpwd = request.getParameter("panpwd");
         String murl = request.getParameter("murl");
         moive.setMname(name);
         moive.setAbstracts(abstracts);
@@ -147,8 +181,6 @@ public class MoiveController {
         return "success";
 
     }
-
-
 
 
 }
