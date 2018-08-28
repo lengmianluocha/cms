@@ -28,8 +28,11 @@ public class HomeController {
     }
 
     @RequestMapping("/blank")
-    public String blank(Model model) {
-        return "blank";
+    public ModelAndView blank(Model model, HttpSession session,ModelAndView mav ) {
+        String s = (String) session.getAttribute("user");
+        mav.addObject("username", s);
+        mav.setViewName("blank");
+        return mav;
     }
 
 
@@ -48,9 +51,8 @@ public class HomeController {
         boolean result = userService.dologin(user);
         if (result) {
             session.setAttribute("user", username);
-
              mav.addObject("username", username);
-             mav.setViewName("redirect:blank");
+             mav.setViewName("redirect:/blank");
         }else {
             //TODO 设置错误码
             mav.setViewName("redirect:login/login");

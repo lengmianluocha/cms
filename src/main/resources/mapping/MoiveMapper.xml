@@ -117,14 +117,12 @@
     <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="mname!=null and mname!='' ">
-           mv.mname=mname
+           mv.mname=#{mname}
         </if>
         <if test="mnamelike!=null and mnamelike!='' ">
             AND mv.mname LIKE  CONCAT('%',#{mnamelike},'%')
         </if>
     </sql>
-
-
 
 
     <select id="searchMoiveForWXByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">

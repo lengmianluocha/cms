@@ -144,7 +144,7 @@
     <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="username!=null and username!='' ">
-            ui.userName=username
+           and ui.userName=#{username}
         </if>
     </sql>
 
