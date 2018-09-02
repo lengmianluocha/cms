@@ -7,6 +7,7 @@ import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
 import com.pcms.util.PcmsConst;
 import com.pcms.util.RandomNumber;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,24 +54,43 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/add")
-    public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("cont") String cont, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, @RequestParam("panpwd") String panpwd, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject addMovie(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("cont") String cont, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, @RequestParam("panpwd") String panpwd, HttpServletRequest request, HttpServletResponse response) {
         JSONObject result = new JSONObject();
         try {
-            String ran = RandomNumber.randomKey(6);
-            long id = Long.parseLong(ran);
-            Moive moive = new Moive();
-            moive.setMname(title);
-            moive.setAbstracts(cont);
-            moive.setPanurl(panurl);
-            moive.setPanpwd(panpwd);
-            moive.setMurl(PcmsConst.url + id + ".html");
-            moive.setId(id);
+            if (StringUtils.isBlank(id)) {
+                String ran = RandomNumber.randomKey(6);
+                long id2 = Long.parseLong(ran);
+                Moive moive = new Moive();
+                moive.setMname(title);
+                moive.setAbstracts(cont);
+                moive.setPanurl(panurl);
+                moive.setPanpwd(panpwd);
+                moive.setMurl(PcmsConst.url + id + ".html");
+                moive.setId(id2);
 
-            moiveService.insert(moive);
-            Map param = new HashMap();
-            param.put("moive", moive);
+                moiveService.insert(moive);
+                Map param = new HashMap();
+                param.put("moive", moive);
 
-            fileService.genFile(param);
+                fileService.genFile(param);
+            } else {
+                Long id3 = Long.parseLong(id);
+                Moive moiveOld = moiveService.selectByPrimaryKey(id3);
+
+                fileService.deleFile(moiveOld.getMurl());
+
+                Moive moive = new Moive();
+                moive.setMname(title);
+                moive.setAbstracts(cont);
+                moive.setPanurl(panurl);
+                moive.setPanpwd(panpwd);
+                moive.setMurl(PcmsConst.url + id + ".html");
+                moive.setId(id3);
+                moiveService.updateByPrimaryKeySelective(moive);
+                Map param = new HashMap();
+                param.put("moive", moive);
+                fileService.genFile(param);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
@@ -80,6 +100,34 @@ public class MoiveController {
         result.put(PcmsConst.RESPCODE, "000000");
         result.put(PcmsConst.RESPMSD, "成功");
         return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/moive/updateView")
+    public ModelAndView updateMovieView(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+
+        try {
+            String idStr = request.getParameter("id");
+
+            if (StringUtils.isBlank(idStr)) {
+                mav.setViewName("redirect:/blank");
+            }
+
+            Long id = Long.parseLong(idStr);
+
+            Moive moive = moiveService.selectByPrimaryKey(id);
+
+            if (moive == null) {
+
+            }
+            //fileService.deleFile(moive.getMurl());
+            mav.addObject(moive);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mav.setViewName("moive/update");
+        return mav;
     }
 
 
@@ -95,6 +143,14 @@ public class MoiveController {
         Map param = new HashMap();
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
+
+        String search = request.getParameter("search[value]");
+        if(StringUtils.isNotBlank(search)){
+            param.put("mnamelike",search);
+        }
+
+
+
 
         int count = moiveService.getMoiveCountByParam(param);
 
@@ -166,19 +222,40 @@ public class MoiveController {
     @RequestMapping("/moive/update")
     public String updateMoiveByParam(HttpServletRequest request, HttpServletResponse response) {
 
+        JSONObject rep = new JSONObject();
+
         Moive moive = new Moive();
-        String name = request.getParameter("mname");
-        String abstracts = request.getParameter("abstracts");
-        String panurl = request.getParameter("panurl");
-        String panpwd = request.getParameter("panpwd");
-        String murl = request.getParameter("murl");
+
+        String data = request.getParameter("data");
+        if(StringUtils.isBlank(data)){
+
+        }
+        JSONObject moiveReq=JSONObject.parseObject(data);
+        String id = moiveReq.getString("id");
+        String name = moiveReq.getString("title");
+        String abstracts = moiveReq.getString("abstracts");
+        String panurl = moiveReq.getString("panurl");
+        String panpwd =moiveReq.getString("panpwd");
+
+        Moive old = moiveService.selectByPrimaryKey(Long.parseLong(id));
+
+        moive.setId(old.getId());
         moive.setMname(name);
         moive.setAbstracts(abstracts);
         moive.setPanpwd(panpwd);
         moive.setPanurl(panurl);
-        moive.setMurl(murl);
         moiveService.updateByPrimaryKeySelective(moive);
-        return "success";
+
+        fileService.deleFile(old.getMurl());
+
+        Map map = new HashMap();
+        map.put("moive", moive);
+        fileService.genFile(map);
+
+        rep.put("desc","");
+        rep.put("result","success");
+
+        return rep.toJSONString();
 
     }
 

@@ -45,4 +45,12 @@ public class MovieServiceImpl implements MoiveService {
         return moiveMapper.updateByMoiveName(record);
     }
 
+   public int insertSelective(Moive record){
+       return moiveMapper.insertSelective(record);
+   }
+
+   public Moive selectByPrimaryKey(Long id){
+       return moiveMapper.selectByPrimaryKey(id);
+   }
+
 }

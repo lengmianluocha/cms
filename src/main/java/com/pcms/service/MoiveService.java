@@ -21,5 +21,9 @@ public interface MoiveService {
 
     int updateByMoiveName(Moive moive);
 
+    int insertSelective(Moive record);
+
+    Moive selectByPrimaryKey(Long id);
+
 
 }

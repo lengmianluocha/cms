@@ -5,6 +5,7 @@ import com.pcms.service.FileService;
 import com.pcms.util.PcmsConst;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,19 @@ public class FileServiceImpl implements FileService {
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlFile), "UTF-8"));
             // 合并输出 创建页面文件
             template.process(map, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleFile(String filePath) {
+
+        try {
+            if(StringUtils.isNotBlank(filePath)){
+                File file = new File(filePath);
+                file.delete();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

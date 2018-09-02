@@ -10,4 +10,6 @@ public interface FileService {
      * @param param
      */
     public void genFile(Map param);
+
+    public void deleFile(String filePath);
 }
