@@ -53,4 +53,10 @@ public class MovieServiceImpl implements MoiveService {
        return moiveMapper.selectByPrimaryKey(id);
    }
 
+    @Override
+    public int deleteByPrimaryKey(Long id) {
+        return moiveMapper.deleteByPrimaryKey(id);
+    }
+
+
 }

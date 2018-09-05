@@ -25,5 +25,7 @@ public interface MoiveService {
 
     Moive selectByPrimaryKey(Long id);
 
+    int deleteByPrimaryKey(Long id);
+
 
 }
