@@ -241,18 +241,22 @@ public class MoiveController {
         String panurl = moiveReq.getString("panurl");
         String panpwd =moiveReq.getString("panpwd");
 
-        Moive old = moiveService.selectByPrimaryKey(Long.parseLong(id));
+        //删除记录
+        moiveService.deleteByPrimaryKey(Long.parseLong(id));
+        //删除文件
+        String filePath =PcmsConst.FILEPATH + "/" + id + ".html";
+        fileService.deleFile(filePath);
 
-        moive.setId(old.getId());
+        //重新 insert
+        String ran = RandomNumber.randomKey(6);
+        long idnew = Long.parseLong(ran);
+        moive.setId(idnew);
         moive.setMname(name);
         moive.setAbstracts(abstracts);
         moive.setPanpwd(panpwd);
         moive.setPanurl(panurl);
-        moiveService.updateByPrimaryKeySelective(moive);
-
-
-        String fileName = old.getMurl().substring(old.getMurl().lastIndexOf("/"));
-        fileService.deleFile(old.getMurl());
+        moive.setMurl(PcmsConst.url + id + ".html");
+        moiveService.insertSelective(moive);
 
         Map map = new HashMap();
         map.put("moive", moive);
