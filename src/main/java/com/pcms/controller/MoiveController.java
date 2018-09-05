@@ -184,9 +184,15 @@ public class MoiveController {
 
             for (Moive moive : moives) {
                 try {
+                    //删除movie
+                    moiveService.deleteByPrimaryKey(moive.getId());
+                    //删除文件
+                    String filePath =PcmsConst.FILEPATH + "/" + moive.getId() + ".html";
+                    fileService.deleFile(filePath);
+                    //重新 insert
                     String ran = RandomNumber.randomKey(6);
                     long id = Long.parseLong(ran);
-
+                    moive.setId(id);
                     moive.setMname(moive.getMname());
                     moive.setAbstracts(moive.getAbstracts());
                     moive.setPanurl(moive.getPanurl());
@@ -195,7 +201,7 @@ public class MoiveController {
                     moive.setId(id);
                     Map map = new HashMap();
                     map.put("moive", moive);
-                    moiveService.updateByMoiveName(moive);
+                    moiveService.insertSelective(moive);
                     fileService.genFile(map);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -223,9 +229,7 @@ public class MoiveController {
     public String updateMoiveByParam(HttpServletRequest request, HttpServletResponse response) {
 
         JSONObject rep = new JSONObject();
-
         Moive moive = new Moive();
-
         String data = request.getParameter("data");
         if(StringUtils.isBlank(data)){
 
@@ -246,6 +250,8 @@ public class MoiveController {
         moive.setPanurl(panurl);
         moiveService.updateByPrimaryKeySelective(moive);
 
+
+        String fileName = old.getMurl().substring(old.getMurl().lastIndexOf("/"));
         fileService.deleFile(old.getMurl());
 
         Map map = new HashMap();
