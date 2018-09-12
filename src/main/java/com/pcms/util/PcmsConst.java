@@ -12,4 +12,18 @@ public interface PcmsConst {
     String RESPMSD = "respMsd";
 
     String url = "http://www.nitethoughts.club/model/";
+
+
+
+    String REQUESTTYPE_NOTFOUNDMOIVE="findMovie";
+
+    String REQUESTTYPE_MOIVELINKNOTUSE="linkINvalid";
+
+    interface  RequestMoive{
+
+      String  STATUS_INIT="0";
+
+      String  STATUS_HASHANDLE="1";
+
+    }
 }

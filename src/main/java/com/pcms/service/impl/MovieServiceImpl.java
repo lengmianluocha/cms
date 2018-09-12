@@ -1,7 +1,11 @@
 package com.pcms.service.impl;
 
+import com.pcms.dao.MoiveFailMapper;
 import com.pcms.dao.MoiveMapper;
+import com.pcms.dao.RequestMoiveMapper;
 import com.pcms.domain.Moive;
+import com.pcms.domain.MoiveFail;
+import com.pcms.domain.RequestMoive;
 import com.pcms.service.MoiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,12 @@ public class MovieServiceImpl implements MoiveService {
 
     @Autowired
     private MoiveMapper moiveMapper;
+
+    @Autowired
+    private RequestMoiveMapper requestMoiveMapper;
+
+    @Autowired
+    private MoiveFailMapper moiveFailMapper;
 
     public  int insert(Moive record){
        return  moiveMapper.insert(record);
@@ -56,6 +66,16 @@ public class MovieServiceImpl implements MoiveService {
     @Override
     public int deleteByPrimaryKey(Long id) {
         return moiveMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int insertMoiveFail(MoiveFail moiveFail) {
+        return moiveFailMapper.insertSelective(moiveFail);
+    }
+
+    @Override
+    public int insertRequestMoive(RequestMoive requestMoive) {
+        return requestMoiveMapper.insertSelective(requestMoive);
     }
 
 

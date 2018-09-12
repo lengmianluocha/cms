@@ -3,6 +3,7 @@ package com.pcms.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.pcms.domain.Moive;
 import com.pcms.domain.Pageable;
+import com.pcms.domain.RequestMoive;
 import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
 import com.pcms.util.PcmsConst;
@@ -54,10 +55,9 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/add")
-    public JSONObject addMovie(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("cont") String cont, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, @RequestParam("panpwd") String panpwd, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("cont") String cont, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, @RequestParam("panpwd") String panpwd, HttpServletRequest request, HttpServletResponse response) {
         JSONObject result = new JSONObject();
         try {
-            if (StringUtils.isBlank(id)) {
                 String ran = RandomNumber.randomKey(6);
                 long id2 = Long.parseLong(ran);
                 Moive moive = new Moive();
@@ -65,7 +65,7 @@ public class MoiveController {
                 moive.setAbstracts(cont);
                 moive.setPanurl(panurl);
                 moive.setPanpwd(panpwd);
-                moive.setMurl(PcmsConst.url + id + ".html");
+                moive.setMurl(PcmsConst.url + id2 + ".html");
                 moive.setId(id2);
 
                 moiveService.insert(moive);
@@ -73,24 +73,6 @@ public class MoiveController {
                 param.put("moive", moive);
 
                 fileService.genFile(param);
-            } else {
-                Long id3 = Long.parseLong(id);
-                Moive moiveOld = moiveService.selectByPrimaryKey(id3);
-
-                fileService.deleFile(moiveOld.getMurl());
-
-                Moive moive = new Moive();
-                moive.setMname(title);
-                moive.setAbstracts(cont);
-                moive.setPanurl(panurl);
-                moive.setPanpwd(panpwd);
-                moive.setMurl(PcmsConst.url + id + ".html");
-                moive.setId(id3);
-                moiveService.updateByPrimaryKeySelective(moive);
-                Map param = new HashMap();
-                param.put("moive", moive);
-                fileService.genFile(param);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
@@ -145,11 +127,9 @@ public class MoiveController {
         param.put("pageSize", pageSize);
 
         String search = request.getParameter("search[value]");
-        if(StringUtils.isNotBlank(search)){
-            param.put("mnamelike",search);
+        if (StringUtils.isNotBlank(search)) {
+            param.put("mnamelike", search);
         }
-
-
 
 
         int count = moiveService.getMoiveCountByParam(param);
@@ -187,18 +167,18 @@ public class MoiveController {
                     //删除movie
                     moiveService.deleteByPrimaryKey(moive.getId());
                     //删除文件
-                    String filePath =PcmsConst.FILEPATH + "/" + moive.getId() + ".html";
+                    String filePath = PcmsConst.FILEPATH + "/" + moive.getId() + ".html";
                     fileService.deleFile(filePath);
                     //重新 insert
-                    String ran = RandomNumber.randomKey(6);
-                    long id = Long.parseLong(ran);
-                    moive.setId(id);
+//                    String ran = RandomNumber.randomKey(6);
+//                    long id = Long.parseLong(ran);
+//                    moive.setId(id);
                     moive.setMname(moive.getMname());
                     moive.setAbstracts(moive.getAbstracts());
                     moive.setPanurl(moive.getPanurl());
                     moive.setPanpwd(moive.getPanpwd());
-                    moive.setMurl(PcmsConst.url + id + ".html");
-                    moive.setId(id);
+                    moive.setMurl(PcmsConst.url + moive.getId() + ".html");
+                    moive.setId(moive.getId());
                     Map map = new HashMap();
                     map.put("moive", moive);
                     moiveService.insertSelective(moive);
@@ -231,20 +211,20 @@ public class MoiveController {
         JSONObject rep = new JSONObject();
         Moive moive = new Moive();
         String data = request.getParameter("data");
-        if(StringUtils.isBlank(data)){
+        if (StringUtils.isBlank(data)) {
 
         }
-        JSONObject moiveReq=JSONObject.parseObject(data);
+        JSONObject moiveReq = JSONObject.parseObject(data);
         String id = moiveReq.getString("id");
         String name = moiveReq.getString("title");
         String abstracts = moiveReq.getString("abstracts");
         String panurl = moiveReq.getString("panurl");
-        String panpwd =moiveReq.getString("panpwd");
+        String panpwd = moiveReq.getString("panpwd");
 
         //删除记录
         moiveService.deleteByPrimaryKey(Long.parseLong(id));
         //删除文件
-        String filePath =PcmsConst.FILEPATH + "/" + id + ".html";
+        String filePath = PcmsConst.FILEPATH + "/" + id + ".html";
         fileService.deleFile(filePath);
 
         //重新 insert
@@ -255,16 +235,56 @@ public class MoiveController {
         moive.setAbstracts(abstracts);
         moive.setPanpwd(panpwd);
         moive.setPanurl(panurl);
-        moive.setMurl(PcmsConst.url + id + ".html");
+        moive.setMurl(PcmsConst.url + idnew + ".html");
         moiveService.insertSelective(moive);
 
         Map map = new HashMap();
         map.put("moive", moive);
         fileService.genFile(map);
 
-        rep.put("desc","");
-        rep.put("result","success");
+        rep.put("desc", "");
+        rep.put("result", "success");
 
+        return rep.toJSONString();
+    }
+
+
+    public ModelAndView requestInfo(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
+
+
+        String type = request.getParameter("requestType");
+
+        //tring tToken = RandomNumber.ConfirmId(10);
+
+
+        if (StringUtils.equals(PcmsConst.REQUESTTYPE_NOTFOUNDMOIVE, type)) {
+            mav.setViewName("moive/moiveNotFound");
+        } else if (StringUtils.equals(PcmsConst.REQUESTTYPE_MOIVELINKNOTUSE, type)) {
+            mav.setViewName("moive/linkInvalid");
+        }
+
+
+        return mav;
+    }
+
+
+    public String requestOrAdvice(HttpServletRequest request, HttpServletResponse response) {
+
+        JSONObject rep = new JSONObject();
+
+        //TODO 获取微信用户的信息
+
+        String name = request.getParameter("moiveName");
+
+        RequestMoive requestMoive = new RequestMoive();
+        requestMoive.setMoivename(name);
+        requestMoive.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
+
+        moiveService.insertRequestMoive(requestMoive);
+
+
+        rep.put("desc", "");
+        rep.put("result", "success");
         return rep.toJSONString();
 
     }

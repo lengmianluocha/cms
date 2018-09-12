@@ -1,6 +1,8 @@
 package com.pcms.service;
 
 import com.pcms.domain.Moive;
+import com.pcms.domain.MoiveFail;
+import com.pcms.domain.RequestMoive;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,11 @@ public interface MoiveService {
     Moive selectByPrimaryKey(Long id);
 
     int deleteByPrimaryKey(Long id);
+
+
+    int insertMoiveFail(MoiveFail moiveFail);
+
+    int insertRequestMoive(RequestMoive requestMoive);
 
 
 }
