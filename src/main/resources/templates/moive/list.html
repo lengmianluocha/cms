@@ -33,17 +33,9 @@
 						<div >
 
 							<div style="float: left">
-								<button class="btn btn-sm btn-primary" id="reset">重置文件</button>
+								<button class="btn btn-sm btn-primary" id=a"reset">重置文件</button>
+								<a role="button" class="btn btn-sm btn-primary" id="upload" href="#my-modal" data-toggle="modal">上传</a>
 							</div>
-
-							<!--<div style="float: right">-->
-								<!--<div class="nav-search" id="nav-search">-->
-								<!--<span class="input-icon">-->
-									<!--<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off">-->
-									<!--<i class="ace-icon fa fa-search nav-search-icon"></i>-->
-								<!--</span>-->
-								<!--</div>-->
-							<!--</div>-->
 
 						</div>
 
@@ -79,6 +71,44 @@
 					</div><!-- /.page-content -->
 				</div>
 			</div><!-- /.main-content -->
+
+
+			<div id="my-modal" class="modal fade" tabindex="-1">
+				<!--<form id="fileForm" method="post" action="/moive/upload"  enctype="multipart/form-data">-->
+				<form id="fileForm">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3 class="smaller lighter blue no-margin">批量导入</h3>
+						</div>
+
+						<div class="modal-body">
+							<div class="row">
+
+								<div class="form-group">
+									<div class="col-xs-8">
+										<input type="file" name="file"  class="form-control" id="id-input-file-2" />
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<!--<button class="btn btn-sm btn-success pull-left" id="fileSubmit" type="submit">-->
+							<button class="btn btn-sm btn-success pull-left" id="fileSubmit" type="button" data-dismiss="modal">
+								提交
+							</button>
+							<button class="btn btn-sm btn-danger pull-right" data-dismiss="modal">
+								<i class="ace-icon fa fa-times"></i>
+								取消
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+				</form>
+			</div>
 
 			<div th:replace="common/footer::footer"></div>
 		</div><!-- /.main-container -->
@@ -147,15 +177,40 @@
                    	$(this).attr("href","/moive/updateView?id="+id);
 				});
 
-                // $("#nav-search-input").keyup(function(event){
-                //     if(event.keyCode ==13){
-                //         var keyword = $("#nav-search-input").val();
-                //
-                //
-	             //    }
-				//});
-
 			})
+
+            $('#id-input-file-1 , #id-input-file-2').ace_file_input({
+                no_file:'No File ...',
+                btn_choose:'Choose',
+                btn_change:'Change',
+                droppable:false,
+                onchange:null,
+                thumbnail:false //| true | large
+                //whitelist:'gif|png|jpg|jpeg'
+                //blacklist:'exe|php'
+                //onchange:''
+                //
+            });
+
+			$("#fileSubmit").click(function(){
+                var form = new FormData();
+                var file = $("#id-input-file-2")[0].files[0];
+                form.append('file',file);
+
+                $.ajax({
+                        type: "POST",
+                        url: "/moive/upload",
+						data:form,
+                        processData:false,
+                        contentType:false,
+						dataType:"json",
+                        success:function (data) {
+                            console.log(data);   //data即为后台返回的数据
+                        }
+                    });
+
+			   // $("#fileForm").submit();
+			});
 		</script>
 	</body>
 </html>
