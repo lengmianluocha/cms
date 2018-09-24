@@ -13,6 +13,8 @@ public class Moive {
 
     private String murl;
 
+    private String updatetime;
+
     public Long getId() {
         return id;
     }
@@ -59,5 +61,13 @@ public class Moive {
 
     public void setMurl(String murl) {
         this.murl = murl == null ? null : murl.trim();
+    }
+
+    public String getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(String updatetime) {
+        this.updatetime = updatetime == null ? null : updatetime.trim();
     }
 }

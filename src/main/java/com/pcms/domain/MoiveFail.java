@@ -7,6 +7,10 @@ public class MoiveFail {
 
     private String status;
 
+    private String updatetime;
+
+    private String wxname;
+
     public Integer getId() {
         return id;
     }
@@ -29,5 +33,21 @@ public class MoiveFail {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(String updatetime) {
+        this.updatetime = updatetime == null ? null : updatetime.trim();
+    }
+
+    public String getWxname() {
+        return wxname;
+    }
+
+    public void setWxname(String wxname) {
+        this.wxname = wxname == null ? null : wxname.trim();
     }
 }

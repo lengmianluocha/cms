@@ -44,7 +44,7 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
-								<form class="form-horizontal" role="form">
+								<form class="form-horizontal" role="form" id="addForm">
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电影名 </label>
 
@@ -611,6 +611,7 @@
 					$.post("/moive/add",
 						data,function (data) {
 							if(data.respCode=="000000"){
+							    $("#addForm")[0].reset();
 							    alert("记录插入成功");
 
 							}else {

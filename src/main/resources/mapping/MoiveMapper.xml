@@ -1,166 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcms.dao.MoiveMapper">
-  <resultMap id="BaseResultMap" type="com.pcms.domain.Moive">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="mname" jdbcType="VARCHAR" property="mname" />
-    <result column="abstracts" jdbcType="VARCHAR" property="abstracts" />
-    <result column="panurl" jdbcType="VARCHAR" property="panurl" />
-    <result column="panpwd" jdbcType="VARCHAR" property="panpwd" />
-    <result column="murl" jdbcType="VARCHAR" property="murl" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, mname, abstracts, panurl, panpwd, murl
+    <resultMap id="BaseResultMap" type="com.pcms.domain.Moive">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="mname" jdbcType="VARCHAR" property="mname"/>
+        <result column="abstracts" jdbcType="VARCHAR" property="abstracts"/>
+        <result column="panurl" jdbcType="VARCHAR" property="panurl"/>
+        <result column="panpwd" jdbcType="VARCHAR" property="panpwd"/>
+        <result column="murl" jdbcType="VARCHAR" property="murl"/>
+        <result column="updateTime" jdbcType="VARCHAR" property="updatetime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, mname, abstracts, panurl, panpwd, murl, updateTime
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from moive
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from moive
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from moive
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.pcms.domain.Moive">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.pcms.domain.Moive">
     insert into moive (id, mname, abstracts, 
-      panurl, panpwd, murl
-      )
+      panurl, panpwd, murl, 
+      updateTime)
     values (#{id,jdbcType=BIGINT}, #{mname,jdbcType=VARCHAR}, #{abstracts,jdbcType=VARCHAR}, 
-      #{panurl,jdbcType=VARCHAR}, #{panpwd,jdbcType=VARCHAR}, #{murl,jdbcType=VARCHAR}
-      )
+      #{panurl,jdbcType=VARCHAR}, #{panpwd,jdbcType=VARCHAR}, #{murl,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pcms.domain.Moive">
-    insert into moive
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="mname != null">
-        mname,
-      </if>
-      <if test="abstracts != null">
-        abstracts,
-      </if>
-      <if test="panurl != null">
-        panurl,
-      </if>
-      <if test="panpwd != null">
-        panpwd,
-      </if>
-      <if test="murl != null">
-        murl,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="mname != null">
-        #{mname,jdbcType=VARCHAR},
-      </if>
-      <if test="abstracts != null">
-        #{abstracts,jdbcType=VARCHAR},
-      </if>
-      <if test="panurl != null">
-        #{panurl,jdbcType=VARCHAR},
-      </if>
-      <if test="panpwd != null">
-        #{panpwd,jdbcType=VARCHAR},
-      </if>
-      <if test="murl != null">
-        #{murl,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.Moive">
-    update moive
-    <set>
-      <if test="mname != null">
-        mname = #{mname,jdbcType=VARCHAR},
-      </if>
-      <if test="abstracts != null">
-        abstracts = #{abstracts,jdbcType=VARCHAR},
-      </if>
-      <if test="panurl != null">
-        panurl = #{panurl,jdbcType=VARCHAR},
-      </if>
-      <if test="panpwd != null">
-        panpwd = #{panpwd,jdbcType=VARCHAR},
-      </if>
-      <if test="murl != null">
-        murl = #{murl,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.pcms.domain.Moive">
+    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Moive">
+        insert into moive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="mname != null">
+                mname,
+            </if>
+            <if test="abstracts != null">
+                abstracts,
+            </if>
+            <if test="panurl != null">
+                panurl,
+            </if>
+            <if test="panpwd != null">
+                panpwd,
+            </if>
+            <if test="murl != null">
+                murl,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="mname != null">
+                #{mname,jdbcType=VARCHAR},
+            </if>
+            <if test="abstracts != null">
+                #{abstracts,jdbcType=VARCHAR},
+            </if>
+            <if test="panurl != null">
+                #{panurl,jdbcType=VARCHAR},
+            </if>
+            <if test="panpwd != null">
+                #{panpwd,jdbcType=VARCHAR},
+            </if>
+            <if test="murl != null">
+                #{murl,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.Moive">
+        update moive
+        <set>
+            <if test="mname != null">
+                mname = #{mname,jdbcType=VARCHAR},
+            </if>
+            <if test="abstracts != null">
+                abstracts = #{abstracts,jdbcType=VARCHAR},
+            </if>
+            <if test="panurl != null">
+                panurl = #{panurl,jdbcType=VARCHAR},
+            </if>
+            <if test="panpwd != null">
+                panpwd = #{panpwd,jdbcType=VARCHAR},
+            </if>
+            <if test="murl != null">
+                murl = #{murl,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pcms.domain.Moive">
     update moive
     set mname = #{mname,jdbcType=VARCHAR},
       abstracts = #{abstracts,jdbcType=VARCHAR},
       panurl = #{panurl,jdbcType=VARCHAR},
       panpwd = #{panpwd,jdbcType=VARCHAR},
-      murl = #{murl,jdbcType=VARCHAR}
+      murl = #{murl,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByMoiveName" parameterType="com.pcms.domain.Moive">
-    update moive
-    set mname = #{mname,jdbcType=VARCHAR},
-      abstracts = #{abstracts,jdbcType=VARCHAR},
-      panurl = #{panurl,jdbcType=VARCHAR},
-      panpwd = #{panpwd,jdbcType=VARCHAR},
-      murl = #{murl,jdbcType=VARCHAR}
-    where mname = #{mname,jdbcType=VARCHAR}
-  </update>
 
     <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="mname!=null and mname!='' ">
-           mv.mname=#{mname}
+            mv.mname=#{mname}
         </if>
         <if test="mnamelike!=null and mnamelike!='' ">
-            AND mv.mname LIKE  CONCAT('%',#{mnamelike},'%')
+            AND mv.mname LIKE CONCAT('%',#{mnamelike},'%')
         </if>
     </sql>
 
 
     <select id="searchMoiveForWXByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from moive as mv
         <where>
-            <include refid="searchParamter" />
+            <include refid="searchParamter"/>
         </where>
         limit 0,8
     </select>
 
 
-  <select id="searchMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from moive as mv
-    <where>
-      <include refid="searchParamter" />
-    </where>
-    limit #{currentPage},#{pageSize}
-  </select>
+    <select id="searchMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from moive as mv
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+        order by updatetime desc
+        limit #{currentPage},#{pageSize}
+    </select>
 
 
-  <select id="getMoiveCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
-    select count(*)
-    from moive as mv
-    <where>
-      <include refid="searchParamter" />
-    </where>
-  </select>
+    <select id="getMoiveCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(*)
+        from moive as mv
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+    </select>
 
-  <select id="getMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from moive as mv
-    <where>
-      <include refid="searchParamter" />
-    </where>
-  </select>
+    <select id="getMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from moive as mv
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+    </select>
+
+
 </mapper>

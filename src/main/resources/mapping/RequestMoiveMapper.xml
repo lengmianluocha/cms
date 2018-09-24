@@ -1,71 +1,106 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pcms.dao.RequestMoiveMapper" >
-  <resultMap id="BaseResultMap" type="com.pcms.domain.RequestMoive" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="moiveName" property="moivename" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pcms.dao.RequestMoiveMapper">
+  <resultMap id="BaseResultMap" type="com.pcms.domain.RequestMoive">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="moiveName" jdbcType="VARCHAR" property="moivename" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="updateTime" jdbcType="VARCHAR" property="updatetime" />
+    <result column="wxName" jdbcType="VARCHAR" property="wxname" />
+    <result column="moiveDesc" jdbcType="VARCHAR" property="moivedesc" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, moiveName, status
+  <sql id="Base_Column_List">
+    id, moiveName, status, updateTime, wxName, moiveDesc
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from requestMoive
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from requestMoive
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.pcms.domain.RequestMoive" >
-    insert into requestMoive (id, moiveName, status
+  <insert id="insert"  useGeneratedKeys="true" keyProperty="id"   parameterType="com.pcms.domain.RequestMoive">
+    insert into requestMoive (id, moiveName, status, 
+      updateTime, wxName, moiveDesc
       )
-    values (#{id,jdbcType=INTEGER}, #{moivename,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{moivename,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=VARCHAR}, #{wxname,jdbcType=VARCHAR}, #{moivedesc,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.pcms.domain.RequestMoive" >
+  <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="id"   parameterType="com.pcms.domain.RequestMoive">
     insert into requestMoive
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="moivename != null" >
+      <if test="moivename != null">
         moiveName,
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status,
       </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="wxname != null">
+        wxName,
+      </if>
+      <if test="moivedesc != null">
+        moiveDesc,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="moivename != null" >
+      <if test="moivename != null">
         #{moivename,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="wxname != null">
+        #{wxname,jdbcType=VARCHAR},
+      </if>
+      <if test="moivedesc != null">
+        #{moivedesc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.RequestMoive" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.RequestMoive">
     update requestMoive
-    <set >
-      <if test="moivename != null" >
+    <set>
+      <if test="moivename != null">
         moiveName = #{moivename,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="wxname != null">
+        wxName = #{wxname,jdbcType=VARCHAR},
+      </if>
+      <if test="moivedesc != null">
+        moiveDesc = #{moivedesc,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pcms.domain.RequestMoive" >
+  <update id="updateByPrimaryKey" parameterType="com.pcms.domain.RequestMoive">
     update requestMoive
     set moiveName = #{moivename,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR}
+      status = #{status,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=VARCHAR},
+      wxName = #{wxname,jdbcType=VARCHAR},
+      moiveDesc = #{moivedesc,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

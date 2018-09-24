@@ -4,6 +4,7 @@ import com.pcms.domain.Moive;
 import com.pcms.domain.MoiveFail;
 import com.pcms.domain.RequestMoive;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,8 @@ public interface MoiveService {
     int insertMoiveFail(MoiveFail moiveFail);
 
     int insertRequestMoive(RequestMoive requestMoive);
+
+    boolean parseExcelFile(File file);
 
 
 }

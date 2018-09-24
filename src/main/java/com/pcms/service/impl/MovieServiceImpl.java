@@ -6,10 +6,17 @@ import com.pcms.dao.RequestMoiveMapper;
 import com.pcms.domain.Moive;
 import com.pcms.domain.MoiveFail;
 import com.pcms.domain.RequestMoive;
+import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
+import com.pcms.util.DateUtil;
+import com.pcms.util.PcmsConst;
+import com.pcms.util.RandomNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,42 +33,45 @@ public class MovieServiceImpl implements MoiveService {
     @Autowired
     private MoiveFailMapper moiveFailMapper;
 
-    public  int insert(Moive record){
-       return  moiveMapper.insert(record);
+    @Autowired
+    private FileService fileService;
+
+    public int insert(Moive record) {
+        return moiveMapper.insert(record);
     }
 
-    public List<Moive> searchMoiveByParam(Map param){
+    public List<Moive> searchMoiveByParam(Map param) {
         return moiveMapper.searchMoiveByParam(param);
     }
 
-    public List<Moive> searchMoiveForWXByParam(Map param){
+    public List<Moive> searchMoiveForWXByParam(Map param) {
         return moiveMapper.searchMoiveForWXByParam(param);
     }
 
-    public Moive getMoiveByParam(Map param){
+    public Moive getMoiveByParam(Map param) {
         return moiveMapper.getMoiveByParam(param);
     }
 
 
-    public int getMoiveCountByParam(Map param){
+    public int getMoiveCountByParam(Map param) {
         return moiveMapper.getMoiveCountByParam(param);
     }
 
-    public int updateByPrimaryKeySelective(Moive record){
+    public int updateByPrimaryKeySelective(Moive record) {
         return moiveMapper.updateByPrimaryKeySelective(record);
     }
 
-    public int updateByMoiveName(Moive record){
+    public int updateByMoiveName(Moive record) {
         return moiveMapper.updateByMoiveName(record);
     }
 
-   public int insertSelective(Moive record){
-       return moiveMapper.insertSelective(record);
-   }
+    public int insertSelective(Moive record) {
+        return moiveMapper.insertSelective(record);
+    }
 
-   public Moive selectByPrimaryKey(Long id){
-       return moiveMapper.selectByPrimaryKey(id);
-   }
+    public Moive selectByPrimaryKey(Long id) {
+        return moiveMapper.selectByPrimaryKey(id);
+    }
 
     @Override
     public int deleteByPrimaryKey(Long id) {
@@ -76,6 +86,34 @@ public class MovieServiceImpl implements MoiveService {
     @Override
     public int insertRequestMoive(RequestMoive requestMoive) {
         return requestMoiveMapper.insertSelective(requestMoive);
+    }
+
+    @Override
+    public boolean parseExcelFile(File file) {
+
+        ArrayList<ArrayList<String>> arrayLists = fileService.parseExcelFile(file);
+
+        if (arrayLists == null || arrayLists.size() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < arrayLists.size(); i++) {
+            ArrayList arrayList = arrayLists.get(i);
+            Moive moive = new Moive();
+            long id = Long.parseLong(RandomNumber.randomKey(6));
+            moive.setId(id);
+            moive.setPanurl(arrayList.get(1) + "");
+            moive.setPanpwd(arrayList.get(2) + "");
+            moive.setMname(arrayList.get(0) + "");
+            moive.setMurl(PcmsConst.url + id + ".html");
+            moive.setUpdatetime(DateUtil.getCurTimestamp());
+            this.insert(moive);
+            Map param = new HashMap();
+            param.put("moive", moive);
+            fileService.genFile(param);
+        }
+
+        return true;
     }
 
 

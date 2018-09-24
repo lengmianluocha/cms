@@ -19,12 +19,10 @@ public class ExcelUtil {
     //excel_name为文件名，arg为需要查询的列号
     //返回二维字符串数组
     @SuppressWarnings({ "resource", "unused" })
-    public ArrayList<ArrayList<String>> xlsx_reader(String excel_url,int ... args) throws IOException {
-
+    public static ArrayList<ArrayList<String>> xlsx_reader(File excelFile,int ... args) throws IOException {
         //读取xlsx文件
         XSSFWorkbook xssfWorkbook = null;
         //寻找目录读取文件
-        File excelFile = new File(excel_url);
         InputStream is = new FileInputStream(excelFile);
         xssfWorkbook = new XSSFWorkbook(is);
 

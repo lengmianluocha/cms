@@ -2,6 +2,7 @@ package com.pcms.service.impl;
 
 import com.pcms.domain.Moive;
 import com.pcms.service.FileService;
+import com.pcms.util.ExcelUtil;
 import com.pcms.util.PcmsConst;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -10,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ */
 @Service("fileService")
 public class FileServiceImpl implements FileService {
 
@@ -49,12 +54,32 @@ public class FileServiceImpl implements FileService {
     @Override
     public void deleFile(String filePath) {
         try {
-            if(StringUtils.isNotBlank(filePath)){
+            if (StringUtils.isNotBlank(filePath)) {
                 File file = new File(filePath);
                 file.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 解析上传的excel文件
+     *
+     * @param file
+     * @return
+     */
+    @Override
+    public ArrayList<ArrayList<String>> parseExcelFile(File file) {
+
+        try {
+            ArrayList<ArrayList<String>> arrayLists = ExcelUtil.xlsx_reader(file, 0,1,2);
+            return arrayLists;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }
