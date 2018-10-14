@@ -103,4 +103,36 @@
       moiveDesc = #{moivedesc,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <sql id="searchParamter">
+    <if test="mname!=null and mname!='' ">
+      rm.moiveName=#{mname}
+    </if>
+    <if test="mnamelike!=null and mnamelike!='' ">
+      AND rm.moiveName LIKE CONCAT('%',#{mnamelike},'%')
+    </if>
+  </sql>
+
+
+  <select id="MoiveRequestByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from requestMoive as rm
+    <where>
+      <include refid="searchParamter"/>
+    </where>
+    order by updateTime desc
+    limit #{currentPage},#{pageSize}
+  </select>
+
+
+  <select id="getMoiveRequestCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    select count(*)
+    from requestMoive as rm
+    <where>
+      <include refid="searchParamter"/>
+    </where>
+  </select>
+
 </mapper>

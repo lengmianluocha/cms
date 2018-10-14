@@ -35,7 +35,17 @@ public interface MoiveService {
 
     int insertRequestMoive(RequestMoive requestMoive);
 
+    int getMoiveFailCountByParam(Map param);
+
+    List<MoiveFail> searchMoiveFailByParam(Map param);
+
+    int getMoiveRequestCountByParam(Map param);
+
+    List<RequestMoive> MoiveRequestByParam(Map param);
+
     boolean parseExcelFile(File file);
+
+
 
 
 }

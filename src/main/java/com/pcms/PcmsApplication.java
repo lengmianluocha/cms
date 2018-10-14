@@ -6,6 +6,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.weixin4j.Weixin;
 
 import javax.servlet.MultipartConfigElement;
 
@@ -28,6 +29,10 @@ public class PcmsApplication {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
+
+
+        Weixin weixin =new Weixin();
+
         //单个文件最大
         factory.setMaxFileSize("10240KB"); //KB,MB
         /// 设置总上传数据总大小

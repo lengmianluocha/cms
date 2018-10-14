@@ -29,7 +29,9 @@ public class WebConfig extends  WebMvcAutoConfiguration   implements WebMvcConfi
         loginRegistry.excludePathPatterns("/wx");
         loginRegistry.excludePathPatterns("/moive/search");
         loginRegistry.excludePathPatterns("/moive/qmoive");
+        loginRegistry.excludePathPatterns("/moive/request");
         loginRegistry.excludePathPatterns("/moive/limoive");//link invalid
+        loginRegistry.excludePathPatterns("/moive/invalid");//link invalid
         // 排除资源请求
         loginRegistry.excludePathPatterns("/static/**");
         loginRegistry.excludePathPatterns("/templates/**");

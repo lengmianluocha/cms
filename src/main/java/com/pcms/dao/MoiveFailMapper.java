@@ -2,6 +2,9 @@ package com.pcms.dao;
 
 import com.pcms.domain.MoiveFail;
 
+import java.util.List;
+import java.util.Map;
+
 public interface MoiveFailMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +17,8 @@ public interface MoiveFailMapper {
     int updateByPrimaryKeySelective(MoiveFail record);
 
     int updateByPrimaryKey(MoiveFail record);
+
+    int getMoiveFailCountByParam(Map param);
+
+    List<MoiveFail> searchMoiveFailByParam(Map param);
 }

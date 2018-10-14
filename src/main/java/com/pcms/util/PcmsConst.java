@@ -4,9 +4,11 @@ public interface PcmsConst {
     /**
      * 生成文件存放地址
      */
-    //String FILEPATH = "/usr/local/website/model";
-    String FILEPATH = "//Users/feng/html";
-    String EXCELPATH = "/Users/feng/excel";
+    String FILEPATH = "/usr/local/website/model";
+    String EXCELPATH = "/usr/local/excel";
+    //String FILEPATH = "//Users/feng/html";
+    //String EXCELPATH = "/Users/feng/excel";
+
 
     String RESPCODE = "respCode";
 

@@ -56,7 +56,9 @@ public class FileServiceImpl implements FileService {
         try {
             if (StringUtils.isNotBlank(filePath)) {
                 File file = new File(filePath);
-                file.delete();
+                if (file.exists()) {
+                    file.delete();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +75,7 @@ public class FileServiceImpl implements FileService {
     public ArrayList<ArrayList<String>> parseExcelFile(File file) {
 
         try {
-            ArrayList<ArrayList<String>> arrayLists = ExcelUtil.xlsx_reader(file, 0,1,2);
+            ArrayList<ArrayList<String>> arrayLists = ExcelUtil.xlsx_reader(file, 0, 1, 2);
             return arrayLists;
 
         } catch (IOException e) {

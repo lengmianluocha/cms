@@ -3,13 +3,11 @@ package com.pcms.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.pcms.domain.Moive;
 import com.pcms.domain.Pageable;
-import com.pcms.domain.RequestMoive;
 import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
 import com.pcms.util.DateUtil;
 import com.pcms.util.PcmsConst;
 import com.pcms.util.RandomNumber;
-import com.pcms.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -34,66 +32,27 @@ public class MoiveController {
     @Autowired
     private FileService fileService;
 
-    @ResponseBody
-    @RequestMapping("/moive/addview")
-    public ModelAndView addView(Model model, ModelAndView mav, HttpSession session) {
-
-        String s = (String) session.getAttribute("user");
-        mav.addObject("username", s);
-        mav.setViewName("moive/add");
-        return mav;
-    }
-
     @RequestMapping("/moive/list")
     public ModelAndView listView(Model model, HttpSession session, ModelAndView mav) {
-
         String s = (String) session.getAttribute("user");
-
         mav.addObject("username", s);
         mav.setViewName("moive/list");
         return mav;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/moive/delete")
-    public JSONObject delete(HttpServletRequest request, HttpServletResponse response) {
-
-        String id = request.getParameter("id");
-
-        JSONObject result = new JSONObject();
-
-        try {
-            Long idi = Long.parseLong(id);
-
-            moiveService.deleteByPrimaryKey(idi);
-
-            String filePath = PcmsConst.FILEPATH + "/" + idi + ".html";
-            fileService.deleFile(filePath);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            result.put(PcmsConst.RESPCODE, "999999");
-            result.put(PcmsConst.RESPMSD, "系统异常");
-            return result;
-        }
-
-        result.put(PcmsConst.RESPCODE, "000000");
-        result.put(PcmsConst.RESPMSD, "成功");
-        return result;
-
-    }
-
-    @ResponseBody
     @RequestMapping("/moive/add")
-    public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("cont") String cont, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, @RequestParam("panpwd") String panpwd, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
         JSONObject result = new JSONObject();
         try {
             String ran = RandomNumber.randomKey(6);
             long id2 = Long.parseLong(ran);
             Moive moive = new Moive();
             moive.setMname(title);
-            moive.setAbstracts(cont);
-            moive.setPanurl(panurl);
-            moive.setPanpwd(panpwd);
+
+            String[] pram = panurl.split("密码");
+            moive.setPanurl(pram[0]);
+            moive.setPanpwd(pram[1]);
             moive.setMurl(PcmsConst.url + id2 + ".html");
             moive.setId(id2);
             moive.setUpdatetime(DateUtil.getCurTimestamp());
@@ -114,35 +73,6 @@ public class MoiveController {
         return result;
     }
 
-
-    @ResponseBody
-    @RequestMapping("/moive/updateView")
-    public ModelAndView updateMovieView(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-
-        try {
-            String idStr = request.getParameter("id");
-
-            if (StringUtils.isBlank(idStr)) {
-                mav.setViewName("redirect:/blank");
-            }
-
-            Long id = Long.parseLong(idStr);
-
-            Moive moive = moiveService.selectByPrimaryKey(id);
-
-            if (moive == null) {
-
-            }
-            //fileService.deleFile(moive.getMurl());
-            mav.addObject(moive);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mav.setViewName("moive/update");
-        return mav;
-    }
-
-
     @ResponseBody
     @RequestMapping(value = "/moive/list2")
     public JSONObject searchMoiveListByParam(HttpServletRequest request, HttpServletResponse response) {
@@ -160,7 +90,6 @@ public class MoiveController {
         if (StringUtils.isNotBlank(search)) {
             param.put("mnamelike", search);
         }
-
 
         int count = moiveService.getMoiveCountByParam(param);
 
@@ -219,6 +148,28 @@ public class MoiveController {
         return rep;
     }
 
+    @RequestMapping(value = "/moive/search", method = RequestMethod.GET)
+    public String SearchMovie(@RequestParam("keyword") String keyword) {
+
+        Map map = new HashMap();
+        map.put("mnamelike", keyword);
+
+        List<Moive> list = moiveService.searchMoiveByParam(map);
+
+        return JSONObject.toJSONString(list);
+    }
+
+    @RequestMapping(value = "/moive/search", method = RequestMethod.POST)
+    public String SearchMovie2(@RequestParam("keyword") String keyword) {
+
+        Map map = new HashMap();
+        map.put("mnamelike", keyword);
+
+        List<Moive> list = moiveService.searchMoiveByParam(map);
+
+        return JSONObject.toJSONString(list);
+    }
+
     @ResponseBody
     @RequestMapping("/moive/get")
     public String getMoiveByParam(@RequestParam("id") String id) {
@@ -232,90 +183,73 @@ public class MoiveController {
     }
 
     @ResponseBody
-    @RequestMapping("/moive/update")
-    public String updateMoiveByParam(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping("/moive/updateView")
+    public ModelAndView updateMovieView(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 
-        JSONObject rep = new JSONObject();
-        Moive moive = new Moive();
-        String data = request.getParameter("data");
-        if (StringUtils.isBlank(data)) {
+        try {
+            String idStr = request.getParameter("id");
 
+            if (StringUtils.isBlank(idStr)) {
+                mav.setViewName("redirect:/blank");
+            }
+            Long id = Long.parseLong(idStr);
+            Moive moive = moiveService.selectByPrimaryKey(id);
+            if (moive == null) {
+            }
+            mav.addObject(moive);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        JSONObject moiveReq = JSONObject.parseObject(data);
-        String id = moiveReq.getString("id");
-        String name = moiveReq.getString("title");
-        String abstracts = moiveReq.getString("abstracts");
-        String panurl = moiveReq.getString("panurl");
-        String panpwd = moiveReq.getString("panpwd");
-
-        //删除记录
-        moiveService.deleteByPrimaryKey(Long.parseLong(id));
-        //删除文件
-        String filePath = PcmsConst.FILEPATH + "/" + id + ".html";
-        fileService.deleFile(filePath);
-
-        //重新 insert
-        String ran = RandomNumber.randomKey(6);
-        long idnew = Long.parseLong(ran);
-        moive.setId(idnew);
-        moive.setMname(name);
-        moive.setAbstracts(abstracts);
-        moive.setPanpwd(panpwd);
-        moive.setPanurl(panurl);
-        moive.setMurl(PcmsConst.url + idnew + ".html");
-        moive.setUpdatetime(DateUtil.getCurTimestamp());
-        moiveService.insertSelective(moive);
-
-        Map map = new HashMap();
-        map.put("moive", moive);
-        fileService.genFile(map);
-
-        rep.put("desc", "");
-        rep.put("result", "success");
-
-        return rep.toJSONString();
-    }
-
-
-    public ModelAndView requestInfo(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-
-        String type = request.getParameter("requestType");
-
-        //tring tToken = RandomNumber.ConfirmId(10);
-
-        if (StringUtils.equals(PcmsConst.REQUESTTYPE_NOTFOUNDMOIVE, type)) {
-            mav.setViewName("moive/moiveNotFound");
-        } else if (StringUtils.equals(PcmsConst.REQUESTTYPE_MOIVELINKNOTUSE, type)) {
-            mav.setViewName("moive/linkInvalid");
-        }
-
+        mav.setViewName("moive/update");
         return mav;
     }
 
-
-    @RequestMapping(value = "/moive/qmoive", method = RequestMethod.POST)
     @ResponseBody
-    public String requestOrAdvice(HttpServletRequest request, HttpServletResponse response) {
-        JSONObject rep = new JSONObject();
-        //TODO 获取微信用户的信息
-        String name = request.getParameter("moiveName");
-        String desc = request.getParameter("moiveDesc");
+    @RequestMapping("/moive/update")
+    public JSONObject updateMoiveByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("panpwd") String panpwd, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
 
-        if(StringUtils.isBlank(name)){
+        JSONObject result = new JSONObject();
 
+        Moive moive = new Moive();
+        try {
+            //删除记录
+            moiveService.deleteByPrimaryKey(Long.parseLong(id));
+            //删除文件
+            String filePath = PcmsConst.FILEPATH + "/" + id + ".html";
+            fileService.deleFile(filePath);
+
+            //重新 insert
+            String ran = RandomNumber.randomKey(6);
+            long idnew = Long.parseLong(ran);
+            moive.setId(idnew);
+            moive.setMname(title);
+            moive.setPanpwd(panpwd);
+            moive.setPanurl(panurl);
+            moive.setMurl(PcmsConst.url + idnew + ".html");
+            moive.setUpdatetime(DateUtil.getCurTimestamp());
+            moiveService.insertSelective(moive);
+
+            Map map = new HashMap();
+            map.put("moive", moive);
+            fileService.genFile(map);
+
+            result.put("desc", "");
+            result.put("result", "success");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
         }
-        RequestMoive requestMoive = new RequestMoive();
-        requestMoive.setMoivename(name);
-        requestMoive.setMoivedesc(desc);
-        requestMoive.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
-        requestMoive.setUpdatetime(DateUtil.getCurTimestamp());
-
-        moiveService.insertRequestMoive(requestMoive);
-
-        rep.put("desc", "");
-        rep.put("result", "success");
-        return rep.toJSONString();
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
     }
+
+
+
+
 
     @RequestMapping(value = "/moive/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -349,5 +283,34 @@ public class MoiveController {
             rep.put("result", "failed");
         }
         return rep.toJSONString();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/moive/delete")
+    public JSONObject delete(HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("id");
+
+        JSONObject result = new JSONObject();
+
+        try {
+            Long idi = Long.parseLong(id);
+
+            moiveService.deleteByPrimaryKey(idi);
+
+            String filePath = PcmsConst.FILEPATH + "/" + idi + ".html";
+            fileService.deleFile(filePath);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+
     }
 }

@@ -24,25 +24,12 @@
                     </li>
 
                     <li>
-                        <a href="#">电影列表</a>
+                        <a href="#">链接失效</a>
                     </li>
                 </ul><!-- /.breadcrumb -->
             </div>
 
             <div class="page-content">
-
-                <div>
-                    <div style="float: left">
-                        <button class="btn btn-sm btn-primary" id="reset">重置文件</button>
-                        <a role="button" class="btn btn-sm btn-primary" id="upload" href="#my-modal"
-                           data-toggle="modal">上传</a>
-                        <button class="btn btn-sm btn-primary" id="add">增加电影</button>
-                    </div>
-                </div>
-
-
-                <br/>
-                <br/>
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -54,10 +41,9 @@
                                     <tr>
                                         <th class="center"></th>
                                         <th>电影名</th>
-                                        <th>修改时间</th>
-                                        <th>网盘地址</th>
-                                        <!--<th>访问地址</th>-->
-                                        <th>密码</th>
+                                        <th>微信名</th>
+                                        <th>备注</th>
+                                        <th>状态</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
@@ -242,14 +228,6 @@
         }));
 
 
-        $("#reset").click(function () {
-            var param = '';
-            $.post('/moive/reset', param, function (data) {
-                alert("success");
-            });
-        });
-
-        //initiate dataTables plugin
         var myTable =
             $('#dynamic-table')
                 .DataTable({
@@ -264,17 +242,16 @@
                         ['20 页', '30 页', '50 页']
                     ],
                     ajax: {
-                        "url": '/moive/list2',
+                        "url": '/moive/requestList',
                         "type": "POST"
                     },
                     columns:
                         [
                             {"data": "id", "defaultContent": ""},
-                            {"data": "mname", "defaultContent": ""},
-                            {"data": "updatetime", "defaultContent": ""},
-                            {"data": "panurl", "defaultContent": ""},
-                            //{"data": "murl", "defaultContent": ""},
-                            {"data": "panpwd", "defaultContent": ""},
+                            {"data": "moivename", "defaultContent": ""},
+                            {"data": "wxname", "defaultContent": ""},
+                            {"data": "moiveDesc", "defaultContent": ""},
+                            {"data": "status", "defaultContent": ""},
                             {
                                 "data": "",
                                 "defaultContent": "<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-yellow modify'>修改</button> <a class='btn btn-minier btn-red delete'>删除</a></div>"
@@ -283,196 +260,6 @@
                     ,
                 });
 
-        //myTable
-        $('#dynamic-table').on("click", ".modify", function () {
-            var data = myTable.row($(this).parent().parent().parent('tr')).data();
-            var id = data.id;
-
-            $("#form-moiveName").val(data.mname);
-            $("#form-moiveUrl").val(data.panurl);
-            $("#form-moivePwd").val(data.panpwd);
-
-
-            $("#dialog-update").removeClass('hide').dialog({
-                resizable: false,
-                width: '480',
-                modal: true,
-                title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon glyphicon-plus green'></i>修改电影</h4></div>",
-                title_html: true,
-                buttons: [
-                    {
-                        html: "<i class='btn btn-success bigger-110'></i>确定",
-                        "class": "btn btn-success btn-minier",
-                        click: function () {
-                            //获取参数止
-                            var title = $("#form-moiveName").val();
-                            var panurl = $("#form-moiveUrl").val();
-                            var panpwd = $("#form-moivePwd").val();
-
-                            var data = {
-                                id: id,
-                                title: title,
-                                panpwd: panpwd,
-                                panurl: panurl
-                            };
-                            $.post("/moive/update",
-                                data, function (data) {
-                                    if (data.respCode == "000000") {
-                                        alert("电影修改成功");
-                                        setTimeout(function () {
-                                            window.location.href = '/moive/list';
-                                        }, 3)
-
-                                    } else {
-                                        alert("记录增加失败");
-                                    }
-                                }
-                            )
-
-                        }
-                    }
-                    ,
-                    {
-                        html: "<i class='ace-icon fa fa-times bigger-110'></i>取消",
-                        "class": "btn btn-minier",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                ]
-            });
-
-
-        });
-
-        //myTable
-        $('#dynamic-table').on("click", ".delete", function () {
-
-            var data = myTable.row($(this).parent().parent().parent('tr')).data();
-            deleid = data.id;
-
-            $("#dialog-confirm").removeClass('hide').dialog({
-                resizable: false,
-                width: '360',
-                modal: true,
-                title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon fa fa-exclamation-triangle red'></i>确认删除吗？</h4></div>",
-                title_html: true,
-                buttons: [
-                    {
-                        html: "<i class='ace-icon fa fa-trash-o bigger-110'></i>删除",
-                        "class": "btn btn-danger btn-minier",
-                        click: function () {
-                            $(this).dialog("close");
-                            $.post("/moive/delete",
-                                {id: deleid}, function (data) {
-                                    if (data.respCode == "000000") {
-                                        window.location.href = '/moive/list';
-                                        alert("删除记录成功");
-                                    } else {
-                                        alert("删除记录失败");
-                                    }
-                                }
-                            )
-                        }
-                    }
-                    ,
-                    {
-                        html: "<i class='ace-icon fa fa-times bigger-110'></i>取消",
-                        "class": "btn btn-minier",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                ]
-            });
-        });
-
-        //myTable
-        $('#add').click(function () {
-            $("#dialog-add").removeClass('hide').dialog({
-                resizable: false,
-                width: '480',
-                modal: true,
-                title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon gl glyphicon-plus green'></i>增加电影</h4></div>",
-                title_html: true,
-                buttons: [
-                    {
-                        html: "<i class='btn btn-success bigger-110'></i>确定",
-                        "class": "btn btn-success btn-minier",
-                        click: function () {
-                            //获取参数止
-                            var title = $("#form-field-1").val();
-                            var panurl = $("#form-field-3").val();
-                            var tags = $("#form-field-tags").val();
-
-                            var data = {
-                                title: title,
-                                tags: tags,
-                                panurl: panurl
-                            };
-                            $.post("/moive/add",
-                                data, function (data) {
-                                    if (data.respCode == "000000") {
-                                        alert("记录插入成功");
-                                        //TODO 刷新表格
-                                        setTimeout(function () {
-                                            window.location.href = '/moive/list';
-                                        }, 3)
-
-                                    } else {
-                                        $("#addForm")[0].reset();
-                                        alert("记录增加失败")
-                                    }
-                                }
-                            )
-
-                        }
-                    }
-                    ,
-                    {
-                        html: "<i class='ace-icon fa fa-times bigger-110'></i>取消",
-                        "class": "btn btn-minier",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                ]
-            });
-        });
-
-
-    });
-
-    $('#id-input-file-1 , #id-input-file-2').ace_file_input({
-        no_file: 'No File ...',
-        btn_choose: 'Choose',
-        btn_change: 'Change',
-        droppable: false,
-        onchange: null,
-        thumbnail: false //| true | large
-        //whitelist:'gif|png|jpg|jpeg'
-        //blacklist:'exe|php'
-        //onchange:''
-        //
-    });
-
-    $("#fileSubmit").click(function () {
-        var form = new FormData();
-        var file = $("#id-input-file-2")[0].files[0];
-        form.append('file', file);
-        $.ajax({
-            type: "POST",
-            url: "/moive/upload",
-            data: form,
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            success: function (data) {
-                alert("上传成功，请稍后检查");
-            }
-        });
-
-        // $("#fileForm").submit();
     });
 </script>
 </body>

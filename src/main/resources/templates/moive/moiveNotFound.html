@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>求电影</title>
+    <link rel="stylesheet" href="../../static/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
+</head>
+<body>
+
+<div class="container">
+    <div class="row" style="margin-top: 200px;">
+        <div class="col-md-offset-4 col-md-4">
+            <form role="form" action="/moive/request" method="post">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title">求电影</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div>
+                                <label for="moiveName">电影名字</label>
+                                <textarea class="form-control" id="moiveName" name="moiveName" placeholder="电影名"></textarea>
+                            </div>
+                            <hr/>
+                            <div>
+                                <label for="moiveDesc">描述</label>
+                                <textarea class="form-control limited" id="moiveDesc" name="moiveDesc" maxlength="50" placeholder="你有什么想说的"></textarea>
+                            </div>
+                            <hr/>
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

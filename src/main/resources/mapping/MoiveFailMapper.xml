@@ -90,4 +90,38 @@
       wxName = #{wxname,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
 </update>
+
+
+  <!--=================================================================================-->
+  <sql id="searchParamter">
+    <if test="mname!=null and mname!='' ">
+      mf.mname=#{mname}
+    </if>
+    <if test="mnamelike!=null and mnamelike!='' ">
+      AND mf.mname LIKE CONCAT('%',#{mnamelike},'%')
+    </if>
+  </sql>
+
+
+  <select id="searchMoiveFailByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from moiveFail as mf
+    <where>
+      <include refid="searchParamter"/>
+    </where>
+    order by updateTime desc
+    limit #{currentPage},#{pageSize}
+  </select>
+
+
+  <select id="getMoiveFailCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    select count(*)
+    from moiveFail as mf
+    <where>
+      <include refid="searchParamter"/>
+    </where>
+  </select>
+
+
 </mapper>

@@ -2,6 +2,7 @@ package com.pcms.dao;
 
 import com.pcms.domain.Userinfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserinfoMapper {
@@ -19,4 +20,8 @@ public interface UserinfoMapper {
     int updateByPrimaryKey(Userinfo record);
 
     Userinfo getUserinfoByParam(Map param);
+
+    int getUserCountByParam(Map param);
+
+    List<Userinfo> searchUserByParam(Map param);
 }

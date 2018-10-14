@@ -157,4 +157,24 @@
         </where>
     </select>
 
+    <select id="searchUserByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from userinfo as ui
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+        limit #{currentPage},#{pageSize}
+    </select>
+
+
+    <select id="getUserCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(*)
+        from userinfo as ui
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+    </select>
+
+
 </mapper>
