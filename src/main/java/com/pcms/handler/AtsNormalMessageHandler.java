@@ -2,6 +2,7 @@ package com.pcms.handler;
 
 import com.pcms.domain.Moive;
 import com.pcms.service.MoiveService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,19 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Moive> list = moiveService.searchMoiveForWXByParam(map);
 
         if (list == null || list.size() == 0) {
-            TextOutputMessage out = new TextOutputMessage();
-            out.setCreateTime(new Date().getTime());
-            out.setFromUserName(msg.getToUserName());
-            out.setToUserName(msg.getFromUserName());
+            NewsOutputMessage outno = new NewsOutputMessage();
+            outno.setCreateTime(new Date().getTime());
+            outno.setFromUserName(msg.getFromUserName());
+            outno.setToUserName(msg.getToUserName());
+            Articles article = new Articles();
 
-            String cont = "很遗憾，没有找到相关内容，请换其它关键词试试。";
-            out.setContent(cont);
+            article.setDescription("暂无简介");
+            article.setTitle("很遗憾，没有找到您要的电影，请戳求片页留言");
+            article.setUrl("http://www.nitethoughts.club/moive/qmoive");
+            List<Articles> articles = new ArrayList<>(list.size());
+            articles.add(article);
+            outno.setArticles(articles);
+            return outno;
         }
 
         NewsOutputMessage out = new NewsOutputMessage();
@@ -57,9 +64,13 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Articles> articles = new ArrayList<>(list.size());
         for (Moive moive : list) {
             Articles article = new Articles();
-            article.setDescription(moive.getAbstracts());
+            if(StringUtils.isBlank(moive.getAbstracts())){
+                article.setDescription("暂无简介");
+            }else{
+                article.setDescription(moive.getAbstracts());
+            }
             article.setTitle(moive.getMname());
-            article.setTitle(moive.getMurl());
+            article.setUrl(moive.getMurl());
             articles.add(article);
         }
         out.setArticles(articles);
@@ -86,13 +97,33 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Moive> list = moiveService.searchMoiveForWXByParam(map);
 
         if (list == null || list.size() == 0) {
-            TextOutputMessage out = new TextOutputMessage();
-            out.setCreateTime(new Date().getTime());
-            out.setFromUserName(msg.getToUserName());
-            out.setToUserName(msg.getFromUserName());
 
-            String cont = "很遗憾，没有找到相关内容，请换其它关键词试试。";
-            out.setContent(cont);
+            NewsOutputMessage outno = new NewsOutputMessage();
+            outno.setCreateTime(new Date().getTime());
+            outno.setFromUserName(msg.getFromUserName());
+            outno.setToUserName(msg.getToUserName());
+            Articles article = new Articles();
+
+            article.setDescription("暂无简介");
+            article.setTitle("很遗憾，没有找到您要的电影，请戳求片页留言");
+            article.setUrl("http://www.nitethoughts.club/moive/qmoive");
+            List<Articles> articles = new ArrayList<>(list.size());
+            articles.add(article);
+            outno.setArticles(articles);
+            return outno;
+
+//            TextOutputMessage out = new TextOutputMessage();
+//            out.setCreateTime(new Date().getTime());
+//            out.setFromUserName(msg.getToUserName());
+//            out.setToUserName(msg.getFromUserName());
+//
+//            String cont = "很遗憾，没有找到相关内容，请换其它关键词试试。由于微信只能返回一条结果，请输入电影全称；如没有搜到电影，请移步求片页";
+//            out.setContent(cont);
+//            return out;
+
+
+
+
         }
 
         NewsOutputMessage out = new NewsOutputMessage();
@@ -105,9 +136,14 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Articles> articles = new ArrayList<>(list.size());
         for (Moive moive : list) {
             Articles article = new Articles();
-            article.setDescription(moive.getAbstracts());
+            if(StringUtils.isBlank(moive.getAbstracts())){
+                article.setDescription("暂无简介");
+            }else{
+                article.setDescription(moive.getAbstracts());
+            }
+
             article.setTitle(moive.getMname());
-            article.setTitle(moive.getMurl());
+            article.setUrl(moive.getMurl());
             articles.add(article);
         }
         out.setArticles(articles);

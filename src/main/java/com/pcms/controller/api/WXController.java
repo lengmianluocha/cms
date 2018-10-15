@@ -103,7 +103,9 @@ public class WXController {
      * @return
      */
     @RequestMapping("/moive/qmoive")
-    public ModelAndView requestListView(ModelAndView mav) {
+    public ModelAndView requestListView(ModelAndView mav,HttpServletRequest request) {
+        String sessionid=request.getSession().getId();
+
         mav.setViewName("moive/moiveNotFound");
         return mav;
     }
@@ -111,26 +113,32 @@ public class WXController {
 
     @RequestMapping(value = "/moive/request", method = RequestMethod.POST)
     @ResponseBody
-    public String requestOrAdvice(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView requestOrAdvice(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
         JSONObject rep = new JSONObject();
         //TODO 获取微信用户的信息
         String name = request.getParameter("moiveName");
         String desc = request.getParameter("moiveDesc");
 
-        if (StringUtils.isBlank(name)) {
+        try {
+            if (StringUtils.isBlank(name)) {
+                mav.setViewName("moive/error");
+                return mav;
+            }
+            RequestMoive requestMoive = new RequestMoive();
+            requestMoive.setMoivename(name);
+            requestMoive.setMoivedesc(desc);
+            requestMoive.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
+            requestMoive.setUpdatetime(DateUtil.getCurTimestamp());
 
+            moiveService.insertRequestMoive(requestMoive);
+
+            mav.setViewName("moive/success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mav.setViewName("moive/error");
         }
-        RequestMoive requestMoive = new RequestMoive();
-        requestMoive.setMoivename(name);
-        requestMoive.setMoivedesc(desc);
-        requestMoive.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
-        requestMoive.setUpdatetime(DateUtil.getCurTimestamp());
+        return mav;
 
-        moiveService.insertRequestMoive(requestMoive);
-
-        rep.put("desc", "");
-        rep.put("result", "success");
-        return rep.toJSONString();
     }
 
 
@@ -148,22 +156,31 @@ public class WXController {
 
     @RequestMapping(value = "/moive/invalid", method = RequestMethod.POST)
     @ResponseBody
-    public String invalid(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView invalid(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
         JSONObject rep = new JSONObject();
         //TODO 获取微信用户的信息
         String name = request.getParameter("moiveName");
-        if (StringUtils.isBlank(name)) {
+
+
+        try {
+            if (StringUtils.isBlank(name)) {
+                mav.setViewName("moive/error");
+                return mav;
+            }
+            MoiveFail moiveFail = new MoiveFail();
+            moiveFail.setMoivename(name);
+            moiveFail.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
+            moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+
+
+            moiveService.insertMoiveFail(moiveFail);
+            mav.setViewName("moive/success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mav.setViewName("moive/error");
         }
-        MoiveFail moiveFail = new MoiveFail();
-        moiveFail.setMoivename(name);
-        moiveFail.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
-        moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+        return mav;
 
-        moiveService.insertMoiveFail(moiveFail);
-
-        rep.put("desc", "");
-        rep.put("result", "success");
-        return rep.toJSONString();
     }
 
 }
