@@ -50,8 +50,8 @@ public class MoiveController {
             Moive moive = new Moive();
             moive.setMname(title);
 
-            String[] pram = panurl.split("密码");
-            moive.setPanurl(pram[0]);
+            String[] pram = panurl.split("提取码：");
+            moive.setPanurl(pram[0].replace("链接：",""));
             moive.setPanpwd(pram[1]);
             moive.setMurl(PcmsConst.url + id2 + ".html");
             moive.setId(id2);
@@ -246,10 +246,6 @@ public class MoiveController {
         result.put(PcmsConst.RESPMSD, "成功");
         return result;
     }
-
-
-
-
 
     @RequestMapping(value = "/moive/upload", method = RequestMethod.POST)
     @ResponseBody

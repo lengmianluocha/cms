@@ -1,7 +1,10 @@
 package com.pcms.service;
 
+import org.weixin4j.model.message.Articles;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public interface FileService {
@@ -21,5 +24,8 @@ public interface FileService {
      * @return
      */
     public ArrayList<ArrayList<String>> parseExcelFile(File file);
+
+
+    public void genResultFile(List<Articles> articles,String user);
 
 }

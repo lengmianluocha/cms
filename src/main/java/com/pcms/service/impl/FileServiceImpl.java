@@ -9,10 +9,12 @@ import freemarker.template.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.weixin4j.model.message.Articles;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,8 +30,6 @@ public class FileServiceImpl implements FileService {
     public void genFile(Map param) {
 
         Moive moive = (Moive) param.get("moive");
-
-        //String id = String.format("%06d", moive.getId());
         try {
             Template template = configuration.getTemplate("/vm/moivetmp.ftl");
             //获得保存静态资源路径
@@ -82,6 +82,41 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
         return null;
+
+    }
+
+    @Override
+    public void genResultFile(List<Articles> articles, String user) {
+
+        try {
+            //获得保存静态资源路径
+            Template template = configuration.getTemplate("/vm/qresult.ftl");
+
+            // 创建文件对象
+            File htmlFile = new File(PcmsConst.RESULTPATH + "/" + user + ".html");
+            htmlFile.getParentFile().mkdirs();
+
+            StringBuilder builder = new StringBuilder();
+
+            for (Articles article : articles) {
+                builder.append("<a href='" + article.getUrl() + "'><h3>" + article.getTitle() + "</h3></a>");
+                builder.append("<br/>");
+            }
+            builder.append("<br/>");
+
+
+            //创建map集合
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("content", builder.toString());
+
+
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlFile), "UTF-8"));
+            // 合并输出 创建页面文件
+            template.process(map, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

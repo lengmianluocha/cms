@@ -1,6 +1,7 @@
 package com.pcms.handler;
 
 import com.pcms.domain.Moive;
+import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
     @Autowired
     private MoiveService moiveService;
 
+    @Autowired
+    private FileService fileService;
+
     @Override
     public OutputMessage textTypeMsg(TextInputMessage msg) {
         logger.info("文本消息：" + msg.getContent());
@@ -46,6 +50,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
             Articles article = new Articles();
 
             article.setDescription("暂无简介");
+            article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
             article.setTitle("很遗憾，没有找到您要的电影，请戳求片页留言");
             article.setUrl("http://www.nitethoughts.club/moive/qmoive");
             List<Articles> articles = new ArrayList<>(list.size());
@@ -64,16 +69,33 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Articles> articles = new ArrayList<>(list.size());
         for (Moive moive : list) {
             Articles article = new Articles();
-            if(StringUtils.isBlank(moive.getAbstracts())){
+            if (StringUtils.isBlank(moive.getAbstracts())) {
                 article.setDescription("暂无简介");
-            }else{
+            } else {
                 article.setDescription(moive.getAbstracts());
             }
             article.setTitle(moive.getMname());
             article.setUrl(moive.getMurl());
             articles.add(article);
         }
-        out.setArticles(articles);
+
+
+        logger.info("搜素结果构建：记录条数："+articles.size()+"用户："+msg.getFromUserName());
+
+
+        //构建搜索结果页面
+        fileService.genResultFile(articles, msg.getFromUserName());
+
+        //构建返回数据articles
+        List<Articles> results = new ArrayList<>(list.size());
+        Articles articles1 = new Articles();
+        articles1.setDescription("请戳这里查看");
+        articles1.setPicUrl("http://www.nitethoughts.club/result.png");
+        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html");
+        articles1.setTitle("资源匹配完成");
+        results.add(articles1);
+
+        out.setArticles(results);
         return out;
     }
 
@@ -87,12 +109,12 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
     @Override
     public OutputMessage voiceTypeMsg(VoiceInputMessage msg) {
 
-        logger.info("语音消息识别结果："+msg.getRecognition());
+        logger.info("语音消息识别结果：" + msg.getRecognition());
 
         Map map = new HashMap();
 
-        String keyword = msg.getRecognition().replace("。","");
-        logger.info("语音消息排除标点",keyword);
+        String keyword = msg.getRecognition().replace("。", "");
+        logger.info("语音消息排除标点", keyword);
         map.put("mnamelike", keyword);
         List<Moive> list = moiveService.searchMoiveForWXByParam(map);
 
@@ -105,6 +127,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
             Articles article = new Articles();
 
             article.setDescription("暂无简介");
+            article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
             article.setTitle("很遗憾，没有找到您要的电影，请戳求片页留言");
             article.setUrl("http://www.nitethoughts.club/moive/qmoive");
             List<Articles> articles = new ArrayList<>(list.size());
@@ -122,8 +145,6 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
 //            return out;
 
 
-
-
         }
 
         NewsOutputMessage out = new NewsOutputMessage();
@@ -136,9 +157,9 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Articles> articles = new ArrayList<>(list.size());
         for (Moive moive : list) {
             Articles article = new Articles();
-            if(StringUtils.isBlank(moive.getAbstracts())){
+            if (StringUtils.isBlank(moive.getAbstracts())) {
                 article.setDescription("暂无简介");
-            }else{
+            } else {
                 article.setDescription(moive.getAbstracts());
             }
 
@@ -146,7 +167,24 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
             article.setUrl(moive.getMurl());
             articles.add(article);
         }
-        out.setArticles(articles);
+
+        logger.info("搜素结果构建：记录条数："+articles.size()+"用户："+msg.getFromUserName());
+
+
+        //构建搜索结果页面
+        fileService.genResultFile(articles, msg.getFromUserName());
+
+
+        //构建返回数据articles
+        List<Articles> results = new ArrayList<>(list.size());
+        Articles articles1 = new Articles();
+        articles1.setDescription("请戳这里查看");
+        articles1.setPicUrl("http://www.nitethoughts.club/result.png");
+        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html");
+        //articles1.setUrl("http://www.ihfplus.com/result/"+msg.getFromUserName()+".html");
+        articles1.setTitle("资源匹配完成");
+        results.add(articles1);
+        out.setArticles(results);
         return out;
     }
 
