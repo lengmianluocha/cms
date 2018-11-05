@@ -52,7 +52,7 @@ public class MoiveController {
 
             String[] pram = panurl.split("提取码：");
             moive.setPanurl(pram[0].replace("链接：",""));
-            moive.setPanpwd(pram[1]);
+            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦",""));
             moive.setMurl(PcmsConst.url + id2 + ".html");
             moive.setId(id2);
             moive.setUpdatetime(DateUtil.getCurTimestamp());
@@ -172,12 +172,24 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/get")
-    public String getMoiveByParam(@RequestParam("id") String id) {
+    public String getMoiveById(@RequestParam("id") String id) {
 
         Map param = new HashMap();
         param.put("id", id);
 
         Moive moive = moiveService.getMoiveByParam(param);
+        return JSONObject.toJSONString(moive);
+
+    }
+
+    @ResponseBody
+    @RequestMapping("/moive/getByName")
+    public String getMoiveByName(@RequestParam("name") String name) {
+
+        Map map = new HashMap();
+        map.put("mname", name);
+
+        Moive moive = moiveService.getMoiveByParam(map);
         return JSONObject.toJSONString(moive);
 
     }

@@ -118,6 +118,9 @@
 
     <!--=================================================================================-->
     <sql id="searchParamter">
+        <if test="id!=null and id!='' ">
+            mv.id=#{id}
+        </if>
         <if test="mname!=null and mname!='' ">
             mv.mname=#{mname}
         </if>

@@ -103,8 +103,8 @@ public class WXController {
      * @return
      */
     @RequestMapping("/moive/qmoive")
-    public ModelAndView requestListView(ModelAndView mav,HttpServletRequest request) {
-        String sessionid=request.getSession().getId();
+    public ModelAndView requestListView(ModelAndView mav, HttpServletRequest request) {
+        String sessionid = request.getSession().getId();
 
         mav.setViewName("moive/moiveNotFound");
         return mav;
@@ -113,7 +113,7 @@ public class WXController {
 
     @RequestMapping(value = "/moive/request", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView requestOrAdvice(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView requestOrAdvice(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
         JSONObject rep = new JSONObject();
         //TODO 获取微信用户的信息
         String name = request.getParameter("moiveName");
@@ -154,9 +154,10 @@ public class WXController {
         return mav;
     }
 
+
     @RequestMapping(value = "/moive/invalid", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView invalid(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView invalid(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
         JSONObject rep = new JSONObject();
         //TODO 获取微信用户的信息
         String name = request.getParameter("moiveName");
@@ -181,6 +182,80 @@ public class WXController {
         }
         return mav;
 
+    }
+
+
+    /**
+     * 链接失效 举报
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/moive/invalidadd", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject invalidadd(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject rep = new JSONObject();
+        //TODO 获取微信用户的信息
+        String name = request.getParameter("moiveName");
+
+        try {
+
+            MoiveFail moiveFail = new MoiveFail();
+            moiveFail.setMoivename(name);
+            moiveFail.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
+            moiveFail.setCounter(moiveFail.getCounter()+1);
+            moiveFail.setFailtype(MoiveFail.FAILTYPE_INVAILD);
+
+            moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+
+
+            moiveService.insertMoiveFail(moiveFail);
+            rep.put("respCode", "000000");
+            rep.put("respMsg", "成功");
+        } catch (Exception e) {
+            rep.put("respCode", "999999");
+            rep.put("respMsg", "系统异常");
+            e.printStackTrace();
+        }
+        return rep;
+    }
+
+
+    /**
+     * 链接催更
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/moive/invalidurge", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject invalidurge(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject rep = new JSONObject();
+        //TODO 获取微信用户的信息
+        String name = request.getParameter("moiveName");
+
+        try {
+
+            MoiveFail moiveFail = new MoiveFail();
+            moiveFail.setMoivename(name);
+            moiveFail.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
+            moiveFail.setCounter(moiveFail.getCounter()+1);
+            moiveFail.setFailtype(MoiveFail.FAILTYPE_URGEMORE);
+
+            moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+
+
+            moiveService.insertMoiveFail(moiveFail);
+            rep.put("respCode", "000000");
+            rep.put("respMsg", "成功");
+        } catch (Exception e) {
+            rep.put("respCode", "999999");
+            rep.put("respMsg", "系统异常");
+            e.printStackTrace();
+        }
+        return rep;
     }
 
 }

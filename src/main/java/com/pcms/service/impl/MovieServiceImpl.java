@@ -73,6 +73,10 @@ public class MovieServiceImpl implements MoiveService {
         return moiveMapper.selectByPrimaryKey(id);
     }
 
+    public int updateMoviveFail(MoiveFail moiveFail) {
+        return moiveFailMapper.updateByPrimaryKey(moiveFail);
+    }
+
     @Override
     public int deleteByPrimaryKey(Long id) {
         return moiveMapper.deleteByPrimaryKey(id);
@@ -90,7 +94,7 @@ public class MovieServiceImpl implements MoiveService {
     }
 
     @Override
-    public List<MoiveFail> searchMoiveFailByParam(Map param){
+    public List<MoiveFail> searchMoiveFailByParam(Map param) {
         return moiveFailMapper.searchMoiveFailByParam(param);
     }
 
@@ -100,12 +104,12 @@ public class MovieServiceImpl implements MoiveService {
     }
 
     @Override
-    public int getMoiveRequestCountByParam(Map param){
+    public int getMoiveRequestCountByParam(Map param) {
         return requestMoiveMapper.getMoiveRequestCountByParam(param);
     }
 
     @Override
-    public List<RequestMoive> MoiveRequestByParam(Map param){
+    public List<RequestMoive> MoiveRequestByParam(Map param) {
         return requestMoiveMapper.MoiveRequestByParam(param);
     }
 

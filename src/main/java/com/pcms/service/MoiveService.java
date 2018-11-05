@@ -33,6 +33,8 @@ public interface MoiveService {
 
     int insertMoiveFail(MoiveFail moiveFail);
 
+    int updateMoviveFail(MoiveFail moiveFail);
+
     int insertRequestMoive(RequestMoive requestMoive);
 
     int getMoiveFailCountByParam(Map param);

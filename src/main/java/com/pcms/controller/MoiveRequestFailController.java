@@ -5,11 +5,16 @@ import com.pcms.domain.Moive;
 import com.pcms.domain.MoiveFail;
 import com.pcms.domain.Pageable;
 import com.pcms.domain.RequestMoive;
+import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
+import com.pcms.util.DateUtil;
+import com.pcms.util.PcmsConst;
+import com.pcms.util.RandomNumber;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +34,9 @@ public class MoiveRequestFailController {
 
     @Autowired
     private MoiveService moiveService;
+
+    @Autowired
+    private FileService fileService;
 
     @RequestMapping("/moive/failListView")
     public ModelAndView listView(Model model, HttpSession session, ModelAndView mav) {
@@ -51,6 +59,7 @@ public class MoiveRequestFailController {
         Map param = new HashMap();
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
+        param.put("failType",MoiveFail.FAILTYPE_INVAILD);
 
         String search = request.getParameter("search[value]");
         if (StringUtils.isNotBlank(search)) {
@@ -67,6 +76,60 @@ public class MoiveRequestFailController {
         pageable.setTotal(Long.parseLong(count + ""));
         return JSONObject.parseObject(JSONObject.toJSONString(pageable));
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/moive/failupdate")
+    public JSONObject updateMoiveFailByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("failid") String failid, @RequestParam("panpwd") String panpwd, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
+
+        JSONObject result = new JSONObject();
+
+        Moive moive = new Moive();
+        try {
+
+
+            MoiveFail moiveFail = new MoiveFail();
+            moiveFail.setId(Integer.parseInt(failid));
+            moiveFail.setStatus(MoiveFail.HANLED);
+            //更新 moviefail 表信息
+            moiveService.updateMoviveFail(moiveFail);
+
+            //删除记录
+            moiveService.deleteByPrimaryKey(Long.parseLong(id));
+            //删除文件
+            String filePath = PcmsConst.FILEPATH + "/" + id + ".html";
+            fileService.deleFile(filePath);
+
+            //重新 insert
+            String ran = RandomNumber.randomKey(6);
+            long idnew = Long.parseLong(ran);
+            moive.setId(idnew);
+            moive.setMname(title);
+            moive.setPanpwd(panpwd);
+            moive.setPanurl(panurl);
+            moive.setMurl(PcmsConst.url + idnew + ".html");
+            moive.setUpdatetime(DateUtil.getCurTimestamp());
+            moiveService.insertSelective(moive);
+
+            Map map = new HashMap();
+            map.put("moive", moive);
+            fileService.genFile(map);
+
+            result.put("desc", "");
+            result.put("result", "success");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+    }
+
+
 
 
     @RequestMapping("/moive/requestListView")

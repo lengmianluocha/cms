@@ -51,7 +51,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
 
             article.setDescription("暂无简介");
             article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
-            article.setTitle("很遗憾，没有找到您要的电影，请戳求片页留言");
+            article.setTitle("猛戳这里，留下片名");
             article.setUrl("http://www.nitethoughts.club/moive/qmoive");
             List<Articles> articles = new ArrayList<>(list.size());
             articles.add(article);
@@ -128,7 +128,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
 
             article.setDescription("暂无简介");
             article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
-            article.setTitle("很遗憾，没有找到您要的电影，请戳求片页留言");
+            article.setTitle("猛戳这里，留下片名");
             article.setUrl("http://www.nitethoughts.club/moive/qmoive");
             List<Articles> articles = new ArrayList<>(list.size());
             articles.add(article);

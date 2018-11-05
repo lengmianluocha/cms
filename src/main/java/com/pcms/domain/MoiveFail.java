@@ -1,6 +1,21 @@
 package com.pcms.domain;
 
 public class MoiveFail {
+
+
+    /**
+     * 链接失效
+     */
+    public final static String FAILTYPE_INVAILD="01";
+
+    /**
+     *  催更
+     */
+    public final  static String FAILTYPE_URGEMORE="02";
+
+    public final static String HANLING="01";
+    public final static String HANLED="02";
+
     private Integer id;
 
     private String moivename;
@@ -10,6 +25,10 @@ public class MoiveFail {
     private String updatetime;
 
     private String wxname;
+
+    private String failtype;
+
+    private Integer counter;
 
     public Integer getId() {
         return id;
@@ -49,5 +68,21 @@ public class MoiveFail {
 
     public void setWxname(String wxname) {
         this.wxname = wxname == null ? null : wxname.trim();
+    }
+
+    public String getFailtype() {
+        return failtype;
+    }
+
+    public void setFailtype(String failtype) {
+        this.failtype = failtype == null ? null : failtype.trim();
+    }
+
+    public Integer getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Integer counter) {
+        this.counter = counter;
     }
 }
