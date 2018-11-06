@@ -97,6 +97,10 @@ public class MovieServiceImpl implements MoiveService {
     public List<MoiveFail> searchMoiveFailByParam(Map param) {
         return moiveFailMapper.searchMoiveFailByParam(param);
     }
+    @Override
+    public MoiveFail getMoiveFailByParam(Map param) {
+        return moiveFailMapper.getMoiveFailByParam(param);
+    }
 
     @Override
     public int insertRequestMoive(RequestMoive requestMoive) {

@@ -118,10 +118,10 @@
   <!--=================================================================================-->
   <sql id="searchParamter">
     <if test="mname!=null and mname!='' ">
-      mf.mname=#{mname}
+      mf.moiveName=#{mname}
     </if>
     <if test="mnamelike!=null and mnamelike!='' ">
-      AND mf.mname LIKE CONCAT('%',#{mnamelike},'%')
+      AND mf.moiveName LIKE CONCAT('%',#{mnamelike},'%')
     </if>
     <if test="failType!=null and failType!='' ">
       mf.failType=#{failType}
@@ -130,14 +130,23 @@
 
 
   <select id="searchMoiveFailByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from moiveFail as mf
+  <where>
+    <include refid="searchParamter" />
+  </where>
+  order by updateTime desc
+  limit #{currentPage},#{pageSize}
+</select>
+
+  <select id="getMoiveFailByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from moiveFail as mf
     <where>
       <include refid="searchParamter" />
     </where>
-    order by updateTime desc
-    limit #{currentPage},#{pageSize}
   </select>
 
 

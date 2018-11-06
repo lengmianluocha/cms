@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head::head"></head>
+
+<link rel="stylesheet" href="../../static/assets/css/jquery-ui.min.css"/>
+
+<body class="no-skin">
+
+<div th:replace="common/navbar ::#navbar"></div>
+
+<div class="main-container ace-save-state" id="main-container">
+
+    <div th:replace="common/sidebar::sidebar"></div>
+
+    <div class="main-content">
+
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="/blank">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="#">催更</a>
+                    </li>
+                </ul><!-- /.breadcrumb -->
+            </div>
+
+            <div class="page-content">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="center"></th>
+                                        <th>电影名</th>
+                                        <th>微信名</th>
+                                        <th>催更人数</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div>
+    </div><!-- /.main-content -->
+
+
+    <div id="my-modal" class="modal fade" tabindex="-1">
+        <!--<form id="fileForm" method="post" action="/moive/upload"  enctype="multipart/form-data">-->
+        <form id="fileForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="smaller lighter blue no-margin">批量导入</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="form-group">
+                                <div class="col-xs-8">
+                                    <input type="file" name="file" class="form-control" id="id-input-file-2"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!--<button class="btn btn-sm btn-success pull-left" id="fileSubmit" type="submit">-->
+                        <button class="btn btn-sm btn-success pull-left" id="fileSubmit" type="button"
+                                data-dismiss="modal">
+                            提交
+                        </button>
+                        <button class="btn btn-sm btn-danger pull-right" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>
+                            取消
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </form>
+    </div>
+
+    <div th:replace="common/footer::footer"></div>
+</div><!-- /.main-container -->
+
+
+<div id="dialog-confirm" class="hide">
+    <div class="alert alert-info bigger-110">
+        These items will be permanently deleted and cannot be recovered.
+    </div>
+
+    <div class="space-6"></div>
+
+    <p class="bigger-110 bolder center grey">
+        <i class="ace-icon fa fa-hand-o-right blue bigger-120"></i>
+        Are you sure?
+    </p>
+</div><!-- #dialog-confirm -->
+
+
+<div id="dialog-add" class="hide">
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <form class="form-horizontal" role="form" id="addForm">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电影名 </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="form-field-1" placeholder="电影名称" class="col-xs-10 col-sm-5"/>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-tags">标签</label>
+
+                    <div class="col-sm-9">
+                        <div class="inline">
+                            <input type="text" name="tags" id="form-field-tags" value="电影标签"
+                                   placeholder="Enter tags ..."/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码 </label>
+                    <div class="col-sm-9">
+                        <input type="text" id="form-field-3" placeholder="百度网盘地址" class="col-xs-10 col-sm-5"/>
+                    </div>
+                </div>
+            </form>
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div>
+
+<div id="dialog-update" class="hide">
+    <div class="row">
+        <div class="col-xs-20">
+            <!-- PAGE CONTENT BEGINS -->
+            <form class="form-horizontal" role="form" id="updateForm">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电影名 </label>
+
+                    <div class="col-sm-17">
+                        <input type="text" id="form-moiveName" placeholder="电影名称" class="col-xs-10 col-sm-5"/>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址 </label>
+                    <div class="col-sm-17">
+                        <input type="text" id="form-moiveUrl" placeholder="网盘地址" class="col-xs-10 col-sm-5"/>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>
+                    <div class="col-sm-17">
+                        <input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>
+                    </div>
+                </div>
+            </form>
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div>
+
+
+<!-- basic scripts -->
+<script src="../../static/assets/js/jquery-2.1.4.min.js"></script>
+<script src="../../static/assets/js/bootstrap.min.js"></script>
+<!-- page specific plugin scripts -->
+<script src="../../static/assets/js/jquery.dataTables.min.js"></script>
+<script src="../../static/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+<script src="../../static/assets/js/dataTables.buttons.min.js"></script>
+<script src="../../static/assets/js/buttons.flash.min.js"></script>
+<script src="../../static/assets/js/buttons.html5.min.js"></script>
+<script src="../../static/assets/js/buttons.print.min.js"></script>
+<script src="../../static/assets/js/buttons.colVis.min.js"></script>
+<script src="../../static/assets/js/dataTables.select.min.js"></script>
+<script src="../../static/assets/js/jquery-ui.min.js"></script>
+<script src="../../static/assets/js/jquery.ui.touch-punch.min.js"></script>
+
+<!-- ace scripts -->
+<script src="../../static/assets/js/ace-elements.min.js"></script>
+<script src="../../static/assets/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+
+    var deleid;
+
+    jQuery(function ($) {
+        //override dialog's title function to allow for HTML titles
+        $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title: function (title) {
+                var $title = this.options.title || '&nbsp;'
+                if (("title_html" in this.options) && this.options.title_html == true)
+                    title.html($title);
+                else title.text($title);
+            }
+        }));
+
+
+        var myTable =
+            $('#dynamic-table')
+                .DataTable({
+                    "processing": true,//刷新的那个对话框
+                    "serverSide": true,//服务器端获取数据
+                    search: true,
+                    //bFilter: false,
+                    "paging": true,//开启分页
+                    ordering: false,
+                    lengthMenu: [ //自定义分页长度
+                        [20, 30, 50],
+                        ['20 页', '30 页', '50 页']
+                    ],
+                    ajax: {
+                        "url": '/moive/urgeMoreList',
+                        "type": "POST"
+                    },
+                    columns:
+                        [
+                            {"data": "id", "defaultContent": ""},
+                            {"data": "moivename", "defaultContent": ""},
+                            {"data": "wxname", "defaultContent": ""},
+                            {"data": "counter", "defaultContent": ""},
+                            {"data": "status", "defaultContent": ""},
+                            {
+                                "data": "",
+                                "defaultContent": "<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-yellow modify'>修改</button></div>"
+                            },
+                        ]
+                    ,
+                });
+
+
+        //myTable
+        $('#dynamic-table').on("click", ".modify", function () {
+            var data = myTable.row($(this).parent().parent().parent('tr')).data();
+            var id = data.id;
+
+            var moive = '';
+            $.post("/moive/get",
+                {id:id}, function (data) {
+                    moive=JSON.parse(data);
+
+                    if(moive==null){
+                        return ;
+                    }
+
+                    $("#form-moiveName").val(moive.mname);
+                    $("#form-moiveUrl").val(moive.panurl);
+                    $("#form-moivePwd").val(moive.panpwd);
+                }
+            )
+
+            $("#dialog-update").removeClass('hide').dialog({
+                resizable: false,
+                width: '480',
+                modal: true,
+                title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon glyphicon-plus green'></i>修改电影</h4></div>",
+                title_html: true,
+                buttons: [
+                    {
+                        html: "<i class='btn btn-success bigger-110'></i>确定",
+                        "class": "btn btn-success btn-minier",
+                        click: function () {
+                            //获取参数止
+                            var title = $("#form-moiveName").val();
+                            var mname = moive.mname;
+                            var panurl = $("#form-moiveUrl").val();
+                            var panpwd = $("#form-moivePwd").val();
+
+                            var data = {
+                                failid:id,
+                                id: moive.id,
+                                title: title,
+                                panpwd: panpwd,
+                                panurl: panurl
+                            };
+                            $.post("/moive/failupdate",
+                                data, function (data) {
+                                    if (data.respCode == "000000") {
+                                        alert("电影修改成功");
+                                        setTimeout(function () {
+                                            window.location.href = '/moive/urgeMoreListView';
+                                        }, 3)
+
+                                    } else {
+                                        alert("记录增加失败");
+                                    }
+                                }
+                            )
+
+                        }
+                    }
+                    ,
+                    {
+                        html: "<i class='ace-icon fa fa-times bigger-110'></i>取消",
+                        "class": "btn btn-minier",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+
+
+        });
+
+
+    });
+</script>
+</body>
+</html>

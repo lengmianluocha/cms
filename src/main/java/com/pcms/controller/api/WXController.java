@@ -24,6 +24,8 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 提供外部调用，搜索查询
@@ -105,7 +107,6 @@ public class WXController {
     @RequestMapping("/moive/qmoive")
     public ModelAndView requestListView(ModelAndView mav, HttpServletRequest request) {
         String sessionid = request.getSession().getId();
-
         mav.setViewName("moive/moiveNotFound");
         return mav;
     }
@@ -118,7 +119,6 @@ public class WXController {
         //TODO 获取微信用户的信息
         String name = request.getParameter("moiveName");
         String desc = request.getParameter("moiveDesc");
-
         try {
             if (StringUtils.isBlank(name)) {
                 mav.setViewName("moive/error");
@@ -143,6 +143,93 @@ public class WXController {
 
 
     /**
+     * 链接失效 举报
+     *
+     * @param mav
+     * @return
+     */
+    @RequestMapping("/moive/minvalid")
+    public JSONObject moiveinvalid(ModelAndView mav,HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        String name = request.getParameter("moiveName");
+
+        Map map = new HashMap<>();
+        map.put("mname",name);
+
+        try {
+            MoiveFail moiveFailold= moiveService.getMoiveFailByParam(map);
+
+            if(moiveFailold!=null){
+                MoiveFail moiveFail = new MoiveFail();
+                Integer counter = moiveFailold.getCounter();
+                moiveFailold.setCounter(counter+1);
+                moiveService.updateMoviveFail(moiveFail);
+            }else {
+                MoiveFail moiveFail = new MoiveFail();
+                moiveFail.setCounter(1);
+                moiveFail.setFailtype(MoiveFail.FAILTYPE_INVAILD);
+                moiveFail.setMoivename(name);
+                moiveFail.setStatus(MoiveFail.HANLING);
+                moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+                //moiveFail.setWxname();
+                moiveService.insertMoiveFail(moiveFail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+    }
+
+    /**
+     * 催更
+     *
+     * @param mav
+     * @return
+     */
+    @RequestMapping("/moive/murge")
+    public JSONObject moiveurge(ModelAndView mav,HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        String name = request.getParameter("moiveName");
+
+        Map map = new HashMap<>();
+        map.put("mname",name);
+
+        try {
+            MoiveFail moiveFailold= moiveService.getMoiveFailByParam(map);
+
+            if(moiveFailold!=null){
+                MoiveFail moiveFail = new MoiveFail();
+                Integer counter = moiveFailold.getCounter();
+                moiveFailold.setCounter(counter+1);
+                moiveService.updateMoviveFail(moiveFail);
+            }else {
+                MoiveFail moiveFail = new MoiveFail();
+                moiveFail.setCounter(1);
+                moiveFail.setFailtype(MoiveFail.FAILTYPE_URGEMORE);
+                moiveFail.setMoivename(name);
+                moiveFail.setStatus(MoiveFail.HANLING);
+                moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+                //moiveFail.setWxname();
+                moiveService.insertMoiveFail(moiveFail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+
+    }
+
+    /**
      * 链接失效
      *
      * @param mav
@@ -161,8 +248,6 @@ public class WXController {
         JSONObject rep = new JSONObject();
         //TODO 获取微信用户的信息
         String name = request.getParameter("moiveName");
-
-
         try {
             if (StringUtils.isBlank(name)) {
                 mav.setViewName("moive/error");

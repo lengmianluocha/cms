@@ -46,6 +46,43 @@ public class MoiveRequestFailController {
         return mav;
     }
 
+    @RequestMapping("/moive/urgeMoreListView")
+    public ModelAndView urge(Model model, HttpSession session, ModelAndView mav) {
+        String s = (String) session.getAttribute("user");
+        mav.addObject("username", s);
+        mav.setViewName("moive/urgeMoreList");
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/moive/urgeMoreList")
+    public JSONObject searchurgeMoreList(HttpServletRequest request, HttpServletResponse response) {
+
+        Integer draw = Integer.parseInt(request.getParameter("draw"));
+        Integer length = Integer.parseInt(request.getParameter("length"));
+        Integer start = Integer.parseInt(request.getParameter("start"));
+
+        int pageSize = length;
+        Map param = new HashMap();
+        param.put("currentPage", start);
+        param.put("pageSize", pageSize);
+        param.put("failType",MoiveFail.FAILTYPE_URGEMORE);
+
+        String search = request.getParameter("search[value]");
+        if (StringUtils.isNotBlank(search)) {
+            param.put("mnamelike", search);
+        }
+
+        int count = moiveService.getMoiveFailCountByParam(param);
+
+        List<MoiveFail> moives = moiveService.searchMoiveFailByParam(param);
+
+        Pageable<MoiveFail> pageable = new Pageable<>();
+        pageable.setData(moives);
+        pageable.setDraw(draw);
+        pageable.setTotal(Long.parseLong(count + ""));
+        return JSONObject.parseObject(JSONObject.toJSONString(pageable));
+    }
 
     @ResponseBody
     @RequestMapping(value = "/moive/failList")
@@ -86,7 +123,6 @@ public class MoiveRequestFailController {
 
         Moive moive = new Moive();
         try {
-
 
             MoiveFail moiveFail = new MoiveFail();
             moiveFail.setId(Integer.parseInt(failid));

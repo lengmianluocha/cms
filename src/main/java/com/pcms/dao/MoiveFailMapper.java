@@ -21,4 +21,6 @@ public interface MoiveFailMapper {
     int getMoiveFailCountByParam(Map param);
 
     List<MoiveFail> searchMoiveFailByParam(Map param);
+
+    MoiveFail getMoiveFailByParam(Map param);
 }

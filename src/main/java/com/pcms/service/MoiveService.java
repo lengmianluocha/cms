@@ -41,6 +41,8 @@ public interface MoiveService {
 
     List<MoiveFail> searchMoiveFailByParam(Map param);
 
+    MoiveFail getMoiveFailByParam(Map param);
+
     int getMoiveRequestCountByParam(Map param);
 
     List<RequestMoive> MoiveRequestByParam(Map param);
