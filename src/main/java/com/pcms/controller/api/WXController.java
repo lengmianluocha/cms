@@ -149,21 +149,21 @@ public class WXController {
      * @return
      */
     @RequestMapping("/moive/minvalid")
-    public JSONObject moiveinvalid(ModelAndView mav,HttpServletRequest request) {
+    public ModelAndView moiveinvalid(ModelAndView mav,HttpServletRequest request) {
         JSONObject result = new JSONObject();
         String name = request.getParameter("moiveName");
 
         Map map = new HashMap<>();
         map.put("mname",name);
+        map.put("failType",MoiveFail.FAILTYPE_INVAILD);
 
         try {
             MoiveFail moiveFailold= moiveService.getMoiveFailByParam(map);
 
             if(moiveFailold!=null){
-                MoiveFail moiveFail = new MoiveFail();
                 Integer counter = moiveFailold.getCounter();
                 moiveFailold.setCounter(counter+1);
-                moiveService.updateMoviveFail(moiveFail);
+                moiveService.updateMoviveFail(moiveFailold);
             }else {
                 MoiveFail moiveFail = new MoiveFail();
                 moiveFail.setCounter(1);
@@ -178,11 +178,12 @@ public class WXController {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
             result.put(PcmsConst.RESPMSD, "系统异常");
-            return result;
+            mav.setViewName("moive/error");
         }
         result.put(PcmsConst.RESPCODE, "000000");
         result.put(PcmsConst.RESPMSD, "成功");
-        return result;
+        mav.setViewName("moive/success");
+        return mav;
     }
 
     /**
@@ -192,12 +193,13 @@ public class WXController {
      * @return
      */
     @RequestMapping("/moive/murge")
-    public JSONObject moiveurge(ModelAndView mav,HttpServletRequest request) {
+    public ModelAndView moiveurge(ModelAndView mav,HttpServletRequest request) {
         JSONObject result = new JSONObject();
         String name = request.getParameter("moiveName");
 
         Map map = new HashMap<>();
         map.put("mname",name);
+        map.put("failType",MoiveFail.FAILTYPE_URGEMORE);
 
         try {
             MoiveFail moiveFailold= moiveService.getMoiveFailByParam(map);
@@ -221,11 +223,12 @@ public class WXController {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
             result.put(PcmsConst.RESPMSD, "系统异常");
-            return result;
+            mav.setViewName("moive/error");
         }
         result.put(PcmsConst.RESPCODE, "000000");
         result.put(PcmsConst.RESPMSD, "成功");
-        return result;
+        mav.setViewName("moive/success");
+        return mav;
 
     }
 

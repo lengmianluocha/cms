@@ -33,6 +33,20 @@
 <div class="entry-content">
 <p style="padding-left: 20px;" >地址：<a href="${panurl}">${title}</a></p>
 <p style="padding-left: 20px;">密码：${panpwd}</p>
+    <br/>
+    <br/>
+
+
+    <a href="http://www.nitethoughts.club/moive/minvalid?moiveName=${encodetitle}" style="padding-left: 20px;" > 链接失效</a>
+    <a href="http://www.nitethoughts.club/moive/murge?moiveName=${encodetitle}" style="padding-left: 60px;">  催更</a>
+
+
+    <!--<a href="http://localhost:8081/moive/minvalid?moiveName=22" style="padding-left: 20px;" > 链接失效</a>-->
+    <!--<a href="http://localhost:8081/moive/murge?moiveName=22" style="padding-left: 60px;">  催更</a>-->
+
+
+
+    <br/>
 </div>
 	<div align="center" width="200px;" height="200px;"><img src="http://www.nitethoughts.club/zan.png" width="200px;" height="200px;"></div>
 	</main>

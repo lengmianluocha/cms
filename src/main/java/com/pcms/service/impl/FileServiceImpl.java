@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.weixin4j.model.message.Articles;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ public class FileServiceImpl implements FileService {
             //创建map集合
             Map<String, Object> map = new HashMap<>();
             map.put("title", moive.getMname());
+            map.put("encodetitle", URLEncoder.encode(moive.getMname(),"UTF-8"));
             map.put("content", moive.getAbstracts());
             map.put("panurl", moive.getPanurl());
             map.put("panpwd", moive.getPanpwd());

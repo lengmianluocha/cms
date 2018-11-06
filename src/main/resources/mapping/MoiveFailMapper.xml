@@ -118,13 +118,13 @@
   <!--=================================================================================-->
   <sql id="searchParamter">
     <if test="mname!=null and mname!='' ">
-      mf.moiveName=#{mname}
+      AND mf.moiveName=#{mname}
     </if>
     <if test="mnamelike!=null and mnamelike!='' ">
       AND mf.moiveName LIKE CONCAT('%',#{mnamelike},'%')
     </if>
     <if test="failType!=null and failType!='' ">
-      mf.failType=#{failType}
+     AND  mf.failType=#{failType}
     </if>
   </sql>
 
