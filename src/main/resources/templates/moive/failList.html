@@ -265,10 +265,11 @@
         $('#dynamic-table').on("click", ".modify", function () {
             var data = myTable.row($(this).parent().parent().parent('tr')).data();
             var id = data.id;
+            var moivename = data.moivename;
 
             var moive = '';
-            $.post("/moive/get",
-                {id:id}, function (data) {
+            $.post("/moive/getByName",
+                {name:moivename}, function (data) {
                     moive=JSON.parse(data);
 
                     if(moive==null){
