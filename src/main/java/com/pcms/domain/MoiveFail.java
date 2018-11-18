@@ -15,6 +15,7 @@ public class MoiveFail {
 
     public final static String HANLING="01";
     public final static String HANLED="02";
+    public final static String INGORE="03";
 
     private Integer id;
 

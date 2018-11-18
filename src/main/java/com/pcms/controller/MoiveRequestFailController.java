@@ -67,6 +67,7 @@ public class MoiveRequestFailController {
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
         param.put("failType",MoiveFail.FAILTYPE_URGEMORE);
+        param.put("status",MoiveFail.HANLING);
 
         String search = request.getParameter("search[value]");
         if (StringUtils.isNotBlank(search)) {
@@ -97,6 +98,7 @@ public class MoiveRequestFailController {
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
         param.put("failType",MoiveFail.FAILTYPE_INVAILD);
+        param.put("status",MoiveFail.HANLING);
 
         String search = request.getParameter("search[value]");
         if (StringUtils.isNotBlank(search)) {
@@ -117,7 +119,7 @@ public class MoiveRequestFailController {
 
     @ResponseBody
     @RequestMapping(value = "/moive/failupdate")
-    public JSONObject updateMoiveFailByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("failid") String failid, @RequestParam("panpwd") String panpwd, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject updateMoiveFailByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("failid") String failid, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
 
         JSONObject result = new JSONObject();
 
@@ -141,8 +143,9 @@ public class MoiveRequestFailController {
             long idnew = Long.parseLong(ran);
             moive.setId(idnew);
             moive.setMname(title);
-            moive.setPanpwd(panpwd);
-            moive.setPanurl(panurl);
+            String[] pram = panurl.split("提取码：");
+            moive.setPanurl(pram[0].replace("链接：",""));
+            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦",""));
             moive.setMurl(PcmsConst.url + idnew + ".html");
             moive.setUpdatetime(DateUtil.getCurTimestamp());
             moiveService.insertSelective(moive);
@@ -150,6 +153,35 @@ public class MoiveRequestFailController {
             Map map = new HashMap();
             map.put("moive", moive);
             fileService.genFile(map);
+
+            result.put("desc", "");
+            result.put("result", "success");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/moive/ignore")
+    public JSONObject ignore(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) {
+
+        JSONObject result = new JSONObject();
+
+        try {
+
+            MoiveFail moiveFail = new MoiveFail();
+            moiveFail.setId(Integer.parseInt(id));
+            moiveFail.setStatus(MoiveFail.INGORE);
+            //更新 moviefail 表信息
+            moiveService.updateMoviveFail(moiveFail);
 
             result.put("desc", "");
             result.put("result", "success");
@@ -204,6 +236,38 @@ public class MoiveRequestFailController {
         pageable.setTotal(Long.parseLong(count + ""));
         return JSONObject.parseObject(JSONObject.toJSONString(pageable));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/moive/reqdelete")
+    public JSONObject delete(HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("id");
+
+        JSONObject result = new JSONObject();
+
+        try {
+            Long idi = Long.parseLong(id);
+
+            moiveService.deleteByPrimaryKey(idi);
+
+            String filePath = PcmsConst.FILEPATH + "/" + idi + ".html";
+            fileService.deleFile(filePath);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+
+    }
+
+
+
+
 
 
 }

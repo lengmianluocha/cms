@@ -3,6 +3,8 @@ package com.pcms.handler;
 import com.pcms.domain.Moive;
 import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
+import com.pcms.util.RandomNumber;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +93,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         Articles articles1 = new Articles();
         articles1.setDescription("请戳这里查看");
         articles1.setPicUrl("http://www.nitethoughts.club/result.png");
-        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html");
+        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html?random="+RandomNumber.randomKey(8));
         articles1.setTitle("资源匹配完成");
         results.add(articles1);
 
@@ -180,7 +182,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         Articles articles1 = new Articles();
         articles1.setDescription("请戳这里查看");
         articles1.setPicUrl("http://www.nitethoughts.club/result.png");
-        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html");
+        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html?random="+RandomNumber.randomKey(8));
         //articles1.setUrl("http://www.ihfplus.com/result/"+msg.getFromUserName()+".html");
         articles1.setTitle("资源匹配完成");
         results.add(articles1);

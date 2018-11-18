@@ -74,7 +74,7 @@ public class MovieServiceImpl implements MoiveService {
     }
 
     public int updateMoviveFail(MoiveFail moiveFail) {
-        return moiveFailMapper.updateByPrimaryKey(moiveFail);
+        return moiveFailMapper.updateByPrimaryKeySelective(moiveFail);
     }
 
     @Override

@@ -30,7 +30,6 @@
             </div>
 
             <div class="page-content">
-
                 <div>
                     <div style="float: left">
                         <button class="btn btn-sm btn-primary" id="reset">重置文件</button>
@@ -186,20 +185,20 @@
                 <div class="space-4"></div>
 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址 </label>
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码 </label>
                     <div class="col-sm-17">
-                        <input type="text" id="form-moiveUrl" placeholder="网盘地址" class="col-xs-10 col-sm-5"/>
+                        <input type="text" id="form-moiveUrl" placeholder="网盘地址&密码" class="col-xs-10 col-sm-5"/>
                     </div>
                 </div>
 
-                <div class="space-4"></div>
+                <!--<div class="space-4"></div>-->
 
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>
-                    <div class="col-sm-17">
-                        <input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>-->
+                    <!--<div class="col-sm-17">-->
+                        <!--<input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>-->
+                    <!--</div>-->
+                <!--</div>-->
             </form>
 
         </div><!-- /.col -->
@@ -309,12 +308,12 @@
                             //获取参数止
                             var title = $("#form-moiveName").val();
                             var panurl = $("#form-moiveUrl").val();
-                            var panpwd = $("#form-moivePwd").val();
+                            //var panpwd = $("#form-moivePwd").val();
 
                             var data = {
                                 id: id,
                                 title: title,
-                                panpwd: panpwd,
+                                //panpwd: panpwd,
                                 panurl: panurl
                             };
                             $.post("/moive/update",
@@ -326,7 +325,7 @@
                                         }, 3)
 
                                     } else {
-                                        alert("记录增加失败");
+                                        alert("修改增加失败");
                                     }
                                 }
                             )

@@ -218,7 +218,7 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/update")
-    public JSONObject updateMoiveByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("panpwd") String panpwd, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject updateMoiveByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
 
         JSONObject result = new JSONObject();
 
@@ -230,13 +230,17 @@ public class MoiveController {
             String filePath = PcmsConst.FILEPATH + "/" + id + ".html";
             fileService.deleFile(filePath);
 
+
+
+
             //重新 insert
             String ran = RandomNumber.randomKey(6);
             long idnew = Long.parseLong(ran);
             moive.setId(idnew);
             moive.setMname(title);
-            moive.setPanpwd(panpwd);
-            moive.setPanurl(panurl);
+            String[] pram = panurl.split("提取码：");
+            moive.setPanurl(pram[0].replace("链接：",""));
+            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦",""));
             moive.setMurl(PcmsConst.url + idnew + ".html");
             moive.setUpdatetime(DateUtil.getCurTimestamp());
             moiveService.insertSelective(moive);

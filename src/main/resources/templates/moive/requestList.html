@@ -114,84 +114,6 @@
     </p>
 </div><!-- #dialog-confirm -->
 
-
-<div id="dialog-add" class="hide">
-    <div class="row">
-        <div class="col-xs-12">
-            <!-- PAGE CONTENT BEGINS -->
-            <form class="form-horizontal" role="form" id="addForm">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电影名 </label>
-
-                    <div class="col-sm-9">
-                        <input type="text" id="form-field-1" placeholder="电影名称" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
-
-                <div class="space-4"></div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-tags">标签</label>
-
-                    <div class="col-sm-9">
-                        <div class="inline">
-                            <input type="text" name="tags" id="form-field-tags" value="电影标签"
-                                   placeholder="Enter tags ..."/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-4"></div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码 </label>
-                    <div class="col-sm-9">
-                        <input type="text" id="form-field-3" placeholder="百度网盘地址" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
-            </form>
-
-        </div><!-- /.col -->
-    </div><!-- /.row -->
-</div>
-
-<div id="dialog-update" class="hide">
-    <div class="row">
-        <div class="col-xs-20">
-            <!-- PAGE CONTENT BEGINS -->
-            <form class="form-horizontal" role="form" id="updateForm">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电影名 </label>
-
-                    <div class="col-sm-17">
-                        <input type="text" id="form-moiveName" placeholder="电影名称" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
-
-                <div class="space-4"></div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址 </label>
-                    <div class="col-sm-17">
-                        <input type="text" id="form-moiveUrl" placeholder="网盘地址" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
-
-                <div class="space-4"></div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>
-                    <div class="col-sm-17">
-                        <input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
-            </form>
-
-        </div><!-- /.col -->
-    </div><!-- /.row -->
-</div>
-
-
 <!-- basic scripts -->
 <script src="../../static/assets/js/jquery-2.1.4.min.js"></script>
 <script src="../../static/assets/js/bootstrap.min.js"></script>
@@ -254,12 +176,96 @@
                             {"data": "status", "defaultContent": ""},
                             {
                                 "data": "",
-                                "defaultContent": "<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-yellow modify'>修改</button> <a class='btn btn-minier btn-red delete'>删除</a></div>"
+                                "defaultContent": "<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-yellow modify'>已处理</button> <a class='btn btn-minier btn-red delete'>删除</a></div>"
                             },
                         ]
                     ,
                 });
 
+    });
+
+    //myTable
+    $('#dynamic-table').on("click", ".modify", function () {
+
+        var data = myTable.row($(this).parent().parent().parent('tr')).data();
+        deleid = data.id;
+
+        $("#dialog-confirm").removeClass('hide').dialog({
+            resizable: false,
+            width: '360',
+            modal: true,
+            title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon fa fa-exclamation-triangle red'></i>确认处理吗？</h4></div>",
+            title_html: true,
+            buttons: [
+                {
+                    html: "<i class='ace-icon fa fa-trash-o bigger-110'></i>处理",
+                    "class": "btn btn-danger btn-minier",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.post("/moive/delete",
+                            {id: deleid}, function (data) {
+                                if (data.respCode == "000000") {
+                                    window.location.href = '/moive/requestList';
+                                    alert("已标记");
+                                } else {
+                                    alert("标记失败");
+                                }
+                            }
+                        )
+                    }
+                }
+                ,
+                {
+                    html: "<i class='ace-icon fa fa-times bigger-110'></i>取消",
+                    "class": "btn btn-minier",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+    });
+
+    //myTable
+    $('#dynamic-table').on("click", ".delete", function () {
+
+        var data = myTable.row($(this).parent().parent().parent('tr')).data();
+        deleid = data.id;
+
+        $("#dialog-confirm").removeClass('hide').dialog({
+            resizable: false,
+            width: '360',
+            modal: true,
+            title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon fa fa-exclamation-triangle red'></i>确认删除吗？</h4></div>",
+            title_html: true,
+            buttons: [
+                {
+                    html: "<i class='ace-icon fa fa-trash-o bigger-110'></i>删除",
+                    "class": "btn btn-danger btn-minier",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.post("/moive/delete",
+                            {id: deleid}, function (data) {
+                                if (data.respCode == "000000") {
+                                    window.location.href = '/moive/requestList';
+                                    alert("删除记录成功");
+                                } else {
+                                    alert("删除记录失败");
+                                }
+                            }
+                        )
+                    }
+                }
+                ,
+                {
+                    html: "<i class='ace-icon fa fa-times bigger-110'></i>取消",
+                    "class": "btn btn-minier",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
     });
 </script>
 </body>

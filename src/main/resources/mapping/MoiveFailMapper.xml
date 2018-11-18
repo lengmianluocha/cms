@@ -126,6 +126,9 @@
     <if test="failType!=null and failType!='' ">
      AND  mf.failType=#{failType}
     </if>
+    <if test="status!=null and status!='' ">
+     AND  mf.status=#{status}
+    </if>
   </sql>
 
 

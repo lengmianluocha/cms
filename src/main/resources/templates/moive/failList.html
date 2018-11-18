@@ -171,20 +171,20 @@
                 <div class="space-4"></div>
 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址 </label>
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码  </label>
                     <div class="col-sm-17">
-                        <input type="text" id="form-moiveUrl" placeholder="网盘地址" class="col-xs-10 col-sm-5"/>
+                        <input type="text" id="form-moiveUrl" placeholder="网盘地址&密码 " class="col-xs-10 col-sm-5"/>
                     </div>
                 </div>
 
-                <div class="space-4"></div>
+                <!--<div class="space-4"></div>-->
 
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>
-                    <div class="col-sm-17">
-                        <input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>-->
+                    <!--<div class="col-sm-17">-->
+                        <!--<input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>-->
+                    <!--</div>-->
+                <!--</div>-->
             </form>
 
         </div><!-- /.col -->
@@ -254,7 +254,7 @@
                             {"data": "status", "defaultContent": ""},
                             {
                                 "data": "",
-                                "defaultContent": "<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-yellow modify'>修改</button></div>"
+                                "defaultContent": "<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-yellow modify'>修改</button><button class='btn btn-minier btn-yellow ignore'>忽略</button></div>"
                             },
                         ]
                     ,
@@ -277,8 +277,8 @@
                     }
 
                     $("#form-moiveName").val(moive.mname);
-                    $("#form-moiveUrl").val(moive.panurl);
-                    $("#form-moivePwd").val(moive.panpwd);
+                    $("#form-moiveUrl").val(moive.panurl+"提取码："+moive.panpwd);
+                    //$("#form-moivePwd").val(moive.panpwd);
                 }
             )
 
@@ -286,7 +286,7 @@
                 resizable: false,
                 width: '480',
                 modal: true,
-                title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon glyphicon-plus green'></i>修改电影</h4></div>",
+                title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon glyphicon-plus green'></i>链接失效修改</h4></div>",
                 title_html: true,
                 buttons: [
                     {
@@ -303,7 +303,7 @@
                                 failid:id,
                                 id: moive.id,
                                 title: title,
-                                panpwd: panpwd,
+                                //panpwd: panpwd,
                                 panurl: panurl
                             };
                             $.post("/moive/failupdate",
@@ -315,7 +315,7 @@
                                         }, 3)
 
                                     } else {
-                                        alert("记录增加失败");
+                                        alert("电影修改失败");
                                     }
                                 }
                             )
@@ -335,6 +335,34 @@
 
 
         });
+
+        //myTable
+        $('#dynamic-table').on("click", ".ignore", function () {
+            var data = myTable.row($(this).parent().parent().parent('tr')).data();
+            var id = data.id;
+            var moivename = data.moivename;
+
+            var param = {
+                id: id,
+            };
+
+            $.post("/moive/ignore",
+                param, function (data) {
+                    if (data.respCode == "000000") {
+                        alert("已忽略");
+                        setTimeout(function () {
+                            window.location.href = '/moive/failListView';
+                        }, 3)
+
+                    } else {
+                        alert("电影修改失败");
+                    }
+                }
+            )
+
+        });
+
+
 
 
     });
