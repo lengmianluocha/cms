@@ -38,7 +38,7 @@
 
 
     <a href="http://www.nitethoughts.club/moive/minvalid?moiveName=${encodetitle}" style="padding-left: 20px;" > 链接失效</a>
-	<#if '${title}'.content?index_of("更新至")!=-1>
+	<#if '${title}'?index_of("更新至")!=-1>
     <a href="http://www.nitethoughts.club/moive/murge?moiveName=${encodetitle}" style="padding-left: 60px;">  催更</a>
 	</#if>
 

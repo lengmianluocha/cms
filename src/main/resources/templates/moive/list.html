@@ -290,8 +290,8 @@
             var id = data.id;
 
             $("#form-moiveName").val(data.mname);
-            $("#form-moiveUrl").val(data.panurl);
-            $("#form-moivePwd").val(data.panpwd);
+            $("#form-moiveUrl").val(data.panurl+"提取码："+data.panpwd);
+            //$("#form-moivePwd").val(data.panpwd);
 
 
             $("#dialog-update").removeClass('hide').dialog({
@@ -308,12 +308,11 @@
                             //获取参数止
                             var title = $("#form-moiveName").val();
                             var panurl = $("#form-moiveUrl").val();
-                            //var panpwd = $("#form-moivePwd").val();
+                            var panpwd = $("#form-moivePwd").val();
 
                             var data = {
                                 id: id,
                                 title: title,
-                                //panpwd: panpwd,
                                 panurl: panurl
                             };
                             $.post("/moive/update",
