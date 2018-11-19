@@ -242,16 +242,35 @@ public class MoiveRequestFailController {
     public JSONObject delete(HttpServletRequest request, HttpServletResponse response) {
 
         String id = request.getParameter("id");
-
         JSONObject result = new JSONObject();
-
         try {
-            Long idi = Long.parseLong(id);
+            Integer idi = Integer.parseInt(id);
+            moiveService.deleteRequestMoiveByPrimaryKey(idi);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            result.put(PcmsConst.RESPCODE, "999999");
+            result.put(PcmsConst.RESPMSD, "系统异常");
+            return result;
+        }
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
+    }
 
-            moiveService.deleteByPrimaryKey(idi);
+    @ResponseBody
+    @RequestMapping(value = "/moive/reqDone")
+    public JSONObject reqDone(HttpServletRequest request, HttpServletResponse response) {
 
-            String filePath = PcmsConst.FILEPATH + "/" + idi + ".html";
-            fileService.deleFile(filePath);
+        String id = request.getParameter("id");
+        JSONObject result = new JSONObject();
+        try {
+
+            Integer idi = Integer.parseInt(id);
+            RequestMoive moive = new RequestMoive();
+            moive.setId(idi);
+            moive.setStatus(PcmsConst.RequestMoive.STATUS_HASHANDLE);
+            moiveService.updateByPrimaryKeySelective(moive);
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
@@ -262,10 +281,7 @@ public class MoiveRequestFailController {
         result.put(PcmsConst.RESPCODE, "000000");
         result.put(PcmsConst.RESPMSD, "成功");
         return result;
-
     }
-
-
 
 
 

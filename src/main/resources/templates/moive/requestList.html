@@ -202,7 +202,7 @@
                     "class": "btn btn-danger btn-minier",
                     click: function () {
                         $(this).dialog("close");
-                        $.post("/moive/delete",
+                        $.post("/moive/reqDone",
                             {id: deleid}, function (data) {
                                 if (data.respCode == "000000") {
                                     window.location.href = '/moive/requestList';
@@ -244,7 +244,7 @@
                     "class": "btn btn-danger btn-minier",
                     click: function () {
                         $(this).dialog("close");
-                        $.post("/moive/delete",
+                        $.post("/moive/reqdelete",
                             {id: deleid}, function (data) {
                                 if (data.respCode == "000000") {
                                     window.location.href = '/moive/requestList';

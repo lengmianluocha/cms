@@ -29,7 +29,6 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void genFile(Map param) {
-
         Moive moive = (Moive) param.get("moive");
         try {
             Template template = configuration.getTemplate("/vm/moivetmp.ftl");

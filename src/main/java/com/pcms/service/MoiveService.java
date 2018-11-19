@@ -30,12 +30,17 @@ public interface MoiveService {
 
     int deleteByPrimaryKey(Long id);
 
-
     int insertMoiveFail(MoiveFail moiveFail);
 
     int updateMoviveFail(MoiveFail moiveFail);
 
     int insertRequestMoive(RequestMoive requestMoive);
+
+    int updateRequestMoive(RequestMoive requestMoive);
+
+    int updateByPrimaryKeySelective(RequestMoive requestMoive);
+
+    int deleteRequestMoiveByPrimaryKey(Integer id);
 
     int getMoiveFailCountByParam(Map param);
 

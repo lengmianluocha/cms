@@ -1,6 +1,5 @@
 package com.pcms.dao;
 
-import com.pcms.domain.MoiveFail;
 import com.pcms.domain.RequestMoive;
 
 import java.util.List;
