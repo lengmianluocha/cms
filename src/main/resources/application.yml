@@ -51,7 +51,9 @@ mybatis:
   type-aliases-package: com.pcms.domain  # 注意：对应实体类的路径
 
 
-
+com:
+    neo:
+       title:纯洁的微笑
 
 
 

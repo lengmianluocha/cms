@@ -113,8 +113,8 @@ public class MovieServiceImpl implements MoiveService {
     }
 
     @Override
-    public int updateRequestMoive(RequestMoive requestMoive){
-        return requestMoiveMapper.updateByPrimaryKey(requestMoive);
+    public RequestMoive getRequestMoiveByParam(Map param) {
+        return requestMoiveMapper.getRequestMoiveByParam(param);
     }
 
     @Override
@@ -128,8 +128,8 @@ public class MovieServiceImpl implements MoiveService {
     }
 
     @Override
-    public List<RequestMoive> MoiveRequestByParam(Map param) {
-        return requestMoiveMapper.MoiveRequestByParam(param);
+    public List<RequestMoive> SearchMoiveRequestByParam(Map param) {
+        return requestMoiveMapper.SearchMoiveRequestByParam(param);
     }
 
     @Override

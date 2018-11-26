@@ -16,11 +16,11 @@ public interface RequestMoiveMapper {
 
     int updateByPrimaryKeySelective(RequestMoive record);
 
-    int updateByPrimaryKey(RequestMoive record);
-
     int getMoiveRequestCountByParam(Map param);
 
-    List<RequestMoive> MoiveRequestByParam(Map param);
+    List<RequestMoive> SearchMoiveRequestByParam(Map param);
+
+    RequestMoive getRequestMoiveByParam(Map param);
 
 
 }
