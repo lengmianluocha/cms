@@ -36,7 +36,7 @@ public interface MoiveService {
 
     int insertRequestMoive(RequestMoive requestMoive);
 
-    int updateRequestMoive(RequestMoive requestMoive);
+    RequestMoive getRequestMoiveByParam(Map param);
 
     int updateByPrimaryKeySelective(RequestMoive requestMoive);
 
@@ -50,7 +50,7 @@ public interface MoiveService {
 
     int getMoiveRequestCountByParam(Map param);
 
-    List<RequestMoive> MoiveRequestByParam(Map param);
+    List<RequestMoive> SearchMoiveRequestByParam(Map param);
 
     boolean parseExcelFile(File file);
 

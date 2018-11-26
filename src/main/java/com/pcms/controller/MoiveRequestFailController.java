@@ -119,7 +119,7 @@ public class MoiveRequestFailController {
 
     @ResponseBody
     @RequestMapping(value = "/moive/failupdate")
-    public JSONObject updateMoiveFailByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("failid") String failid, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject updateMoiveFailByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("failid") String failid, @RequestParam("panurl") String panurl) {
 
         JSONObject result = new JSONObject();
 
@@ -215,7 +215,7 @@ public class MoiveRequestFailController {
 
     @ResponseBody
     @RequestMapping(value = "/moive/requestList")
-    public JSONObject searchRequestListByParam(HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject searchRequestListByParam(HttpServletRequest request) {
 
         Integer draw = Integer.parseInt(request.getParameter("draw"));
         Integer length = Integer.parseInt(request.getParameter("length"));
@@ -233,7 +233,7 @@ public class MoiveRequestFailController {
 
         int count = moiveService.getMoiveRequestCountByParam(param);
 
-        List<RequestMoive> moives = moiveService.MoiveRequestByParam(param);
+        List<RequestMoive> moives = moiveService.SearchMoiveRequestByParam(param);
 
         Pageable<RequestMoive> pageable = new Pageable<>();
         pageable.setData(moives);
@@ -244,7 +244,7 @@ public class MoiveRequestFailController {
 
     @ResponseBody
     @RequestMapping(value = "/moive/reqdelete")
-    public JSONObject delete(HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject delete(HttpServletRequest request) {
 
         String id = request.getParameter("id");
         JSONObject result = new JSONObject();
@@ -264,7 +264,7 @@ public class MoiveRequestFailController {
 
     @ResponseBody
     @RequestMapping(value = "/moive/reqDone")
-    public JSONObject reqDone(HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject reqDone(HttpServletRequest request) {
 
         String id = request.getParameter("id");
         JSONObject result = new JSONObject();

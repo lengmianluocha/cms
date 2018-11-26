@@ -13,6 +13,8 @@ public class RequestMoive {
 
     private String moivedesc;
 
+    private Integer counter;
+
     public Integer getId() {
         return id;
     }
@@ -59,5 +61,13 @@ public class RequestMoive {
 
     public void setMoivedesc(String moivedesc) {
         this.moivedesc = moivedesc == null ? null : moivedesc.trim();
+    }
+
+    public Integer getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Integer counter) {
+        this.counter = counter;
     }
 }

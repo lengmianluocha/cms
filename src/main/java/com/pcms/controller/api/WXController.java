@@ -124,15 +124,26 @@ public class WXController {
                 mav.setViewName("moive/error");
                 return mav;
             }
+
+            Map param = new HashMap();
+            param.put("mnamelike",name);
+            RequestMoive hasRequest = moiveService.getRequestMoiveByParam(param);
+            if(hasRequest!=null){
+                hasRequest.setCounter(hasRequest.getCounter()+1);
+                moiveService.updateByPrimaryKeySelective(hasRequest);
+                mav.setViewName("moive/success");
+                return mav;
+            }
+
             RequestMoive requestMoive = new RequestMoive();
             requestMoive.setMoivename(name);
             requestMoive.setMoivedesc(desc);
+            requestMoive.setCounter(1);
             requestMoive.setStatus(PcmsConst.RequestMoive.STATUS_INIT);
             requestMoive.setUpdatetime(DateUtil.getCurTimestamp());
-
             moiveService.insertRequestMoive(requestMoive);
-
             mav.setViewName("moive/success");
+
         } catch (Exception e) {
             e.printStackTrace();
             mav.setViewName("moive/error");

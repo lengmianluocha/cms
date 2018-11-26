@@ -33,7 +33,7 @@ public class MoiveController {
     private FileService fileService;
 
     @RequestMapping("/moive/list")
-    public ModelAndView listView(Model model, HttpSession session, ModelAndView mav) {
+    public ModelAndView listView(HttpSession session, ModelAndView mav) {
         String s = (String) session.getAttribute("user");
         mav.addObject("username", s);
         mav.setViewName("moive/list");
@@ -42,7 +42,7 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/add")
-    public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl) {
         JSONObject result = new JSONObject();
         try {
             String ran = RandomNumber.randomKey(6);
@@ -58,9 +58,9 @@ public class MoiveController {
             moive.setUpdatetime(DateUtil.getCurTimestamp());
 
             moiveService.insert(moive);
+
             Map param = new HashMap();
             param.put("moive", moive);
-
             fileService.genFile(param);
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,21 +92,19 @@ public class MoiveController {
         }
 
         int count = moiveService.getMoiveCountByParam(param);
-
         List<Moive> moives = moiveService.searchMoiveByParam(param);
 
         Pageable<Moive> pageable = new Pageable<>();
         pageable.setData(moives);
         pageable.setDraw(draw);
         pageable.setTotal(Long.parseLong(count + ""));
-
         return JSONObject.parseObject(JSONObject.toJSONString(pageable));
     }
 
     @ResponseBody
     @RequestMapping(value = "/moive/reset")
-    public JSONObject moiveReset(HttpServletRequest request, HttpServletResponse response) {
-        JSONObject rep = new JSONObject();
+    public JSONObject moiveReset() {
+        JSONObject result = new JSONObject();
 
         int pageSize = 10;
         Map param = new HashMap();
@@ -128,6 +126,7 @@ public class MoiveController {
                     //删除文件
                     String filePath = PcmsConst.FILEPATH + "/" + moive.getId() + ".html";
                     fileService.deleFile(filePath);
+
                     //重新 insert
                     moive.setMname(moive.getMname());
                     moive.setAbstracts(moive.getAbstracts());
@@ -140,12 +139,17 @@ public class MoiveController {
                     map.put("moive", moive);
                     moiveService.insertSelective(moive);
                     fileService.genFile(map);
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    result.put(PcmsConst.RESPCODE, "999999");
+                    result.put(PcmsConst.RESPMSD, "系统异常");
+                    return result;
                 }
             }
         }
-        return rep;
+        result.put(PcmsConst.RESPCODE, "000000");
+        result.put(PcmsConst.RESPMSD, "成功");
+        return result;
     }
 
     @RequestMapping(value = "/moive/search", method = RequestMethod.GET)
@@ -153,9 +157,7 @@ public class MoiveController {
 
         Map map = new HashMap();
         map.put("mnamelike", keyword);
-
         List<Moive> list = moiveService.searchMoiveByParam(map);
-
         return JSONObject.toJSONString(list);
     }
 
@@ -164,19 +166,15 @@ public class MoiveController {
 
         Map map = new HashMap();
         map.put("mnamelike", keyword);
-
         List<Moive> list = moiveService.searchMoiveByParam(map);
-
         return JSONObject.toJSONString(list);
     }
 
     @ResponseBody
     @RequestMapping("/moive/get")
     public String getMoiveById(@RequestParam("id") String id) {
-
         Map param = new HashMap();
         param.put("id", id);
-
         Moive moive = moiveService.getMoiveByParam(param);
         return JSONObject.toJSONString(moive);
 
@@ -188,7 +186,6 @@ public class MoiveController {
 
         Map map = new HashMap();
         map.put("mname", name);
-
         Moive moive = moiveService.getMoiveByParam(map);
         return JSONObject.toJSONString(moive);
 
@@ -229,9 +226,6 @@ public class MoiveController {
             //删除文件
             String filePath = PcmsConst.FILEPATH + "/" + id + ".html";
             fileService.deleFile(filePath);
-
-
-
 
             //重新 insert
             String ran = RandomNumber.randomKey(6);

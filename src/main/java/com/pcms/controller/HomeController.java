@@ -21,7 +21,6 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-
     @RequestMapping("/login/login")
     public String LoginPage(Model model) {
         return "login";
@@ -66,6 +65,4 @@ public class HomeController {
         mav.setViewName("redirect:login/login");
         return mav;
     }
-
-
 }
