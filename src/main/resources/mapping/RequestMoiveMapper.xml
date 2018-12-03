@@ -16,15 +16,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from requestmoive
+    from requestMoive
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from requestmoive
+    delete from requestMoive
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pcms.domain.RequestMoive">
-    insert into requestmoive (id, moiveName, status, 
+    insert into requestMoive (id, moiveName, status,
       updateTime, wxName, moiveDesc, 
       counter)
     values (#{id,jdbcType=INTEGER}, #{moivename,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
@@ -32,7 +32,7 @@
       #{counter,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.pcms.domain.RequestMoive">
-    insert into requestmoive
+    insert into requestMoive
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -81,7 +81,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.RequestMoive">
-    update requestmoive
+    update requestMoive
     <set>
       <if test="moivename != null">
         moiveName = #{moivename,jdbcType=VARCHAR},
@@ -105,7 +105,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pcms.domain.RequestMoive">
-    update requestmoive
+    update requestMoive
     set moiveName = #{moivename,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       updateTime = #{updatetime,jdbcType=VARCHAR},

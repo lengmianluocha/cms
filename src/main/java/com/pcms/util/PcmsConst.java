@@ -5,6 +5,7 @@ public interface PcmsConst {
      * 生成文件存放地址
      */
     String FILEPATH = "/usr/local/website/model";
+    //String FILEPATH = "D://model";
     //String FILEPATH = "/Users/feng/html";
 
     /**

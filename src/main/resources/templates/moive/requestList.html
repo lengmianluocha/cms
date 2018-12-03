@@ -24,12 +24,19 @@
                     </li>
 
                     <li>
-                        <a href="#">链接失效</a>
+                        <a href="#">求电影</a>
                     </li>
                 </ul><!-- /.breadcrumb -->
             </div>
 
             <div class="page-content">
+
+                <div>
+                    <div style="float: left">
+                        <button class="btn btn-sm btn-primary deletes" id="deletes">批量删除</button>
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -40,9 +47,11 @@
                                     <thead>
                                     <tr>
                                         <th class="center"></th>
+                                        <th class="center"></th>
                                         <th>电影名</th>
                                         <th>微信名</th>
                                         <th>备注</th>
+                                        <th>计数</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -170,9 +179,11 @@
                     columns:
                         [
                             {"data": "id", "defaultContent": ""},
+                            {"data": "", "defaultContent": "<input type='checkbox' name='checkBox1' value='id'/>"},
                             {"data": "moivename", "defaultContent": ""},
                             {"data": "wxname", "defaultContent": ""},
                             {"data": "moiveDesc", "defaultContent": ""},
+                            {"data": "counter", "defaultContent": ""},
                             {"data": "status", "defaultContent": ""},
                             {
                                 "data": "",
@@ -267,11 +278,35 @@
             });
         });
 
+        //myTable
+        $("#deletes").click(function () {
 
+            var ids = [];
 
+            var data = $('#dynamic-table >tbody >tr > td input[type=checkbox]:checked');
 
+            for (var i = 0; i < data.length; i++) {
+                var td = $(data[i]);
+                var id = td.parent().prev().html();
+                ids.push(id);
+            }
 
-
+            if (ids.length == 0) {
+                alert("请选择");
+                return;
+            }
+            var deleids = ids.join(",");
+            $.post("/moive/reqdelete",
+                {ids: deleids}, function (data) {
+                    if (data.respCode == "000000") {
+                        window.location.href = '/moive/requestListView';
+                        alert("删除记录成功");
+                    } else {
+                        alert("删除记录失败");
+                    }
+                }
+            )
+        });
 
     });
 

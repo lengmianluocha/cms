@@ -12,7 +12,7 @@ spring:
         content-type: text/html
       mode: HTML5
       prefix: classpath:/templates/
-      cache: true
+      cache: false
 
     datasource:
         name: mysql_test

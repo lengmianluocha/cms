@@ -66,8 +66,8 @@ public class MoiveRequestFailController {
         Map param = new HashMap();
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
-        param.put("failType",MoiveFail.FAILTYPE_URGEMORE);
-        param.put("status",MoiveFail.HANLING);
+        param.put("failType", MoiveFail.FAILTYPE_URGEMORE);
+        param.put("status", MoiveFail.HANLING);
 
         String search = request.getParameter("search[value]");
         if (StringUtils.isNotBlank(search)) {
@@ -97,8 +97,8 @@ public class MoiveRequestFailController {
         Map param = new HashMap();
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
-        param.put("failType",MoiveFail.FAILTYPE_INVAILD);
-        param.put("status",MoiveFail.HANLING);
+        param.put("failType", MoiveFail.FAILTYPE_INVAILD);
+        param.put("status", MoiveFail.HANLING);
 
         String search = request.getParameter("search[value]");
         if (StringUtils.isNotBlank(search)) {
@@ -145,12 +145,12 @@ public class MoiveRequestFailController {
             moive.setMname(title);
             String[] pram = panurl.split("提取码：");
 
-            if(pram.length!=2){
+            if (pram.length != 2) {
                 throw new Exception("参数异常，上送url格式不对。");
             }
 
-            moive.setPanurl(pram[0].replace("链接：",""));
-            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦",""));
+            moive.setPanurl(pram[0].replace("链接：", ""));
+            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦", ""));
             moive.setMurl(PcmsConst.url + idnew + ".html");
             moive.setUpdatetime(DateUtil.getCurTimestamp());
             moiveService.insertSelective(moive);
@@ -176,21 +176,34 @@ public class MoiveRequestFailController {
 
     @ResponseBody
     @RequestMapping(value = "/moive/ignore")
-    public JSONObject ignore(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject ignore(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String ids = request.getParameter("ids");
+
 
         JSONObject result = new JSONObject();
 
         try {
 
-            MoiveFail moiveFail = new MoiveFail();
-            moiveFail.setId(Integer.parseInt(id));
-            moiveFail.setStatus(MoiveFail.INGORE);
-            //更新 moviefail 表信息
-            moiveService.updateMoviveFail(moiveFail);
+            if (StringUtils.isNotBlank(ids)) {
+                String[] idstr = ids.split(",");
+                for (int i = 0; i < idstr.length; i++) {
+                    MoiveFail moiveFail = new MoiveFail();
+                    moiveFail.setId(Integer.parseInt(idstr[i]));
+                    moiveFail.setStatus(MoiveFail.INGORE);
+                    //更新 moviefail 表信息
+                    moiveService.updateMoviveFail(moiveFail);
+                }
 
+            } else {
+                MoiveFail moiveFail = new MoiveFail();
+                moiveFail.setId(Integer.parseInt(id));
+                moiveFail.setStatus(MoiveFail.INGORE);
+                //更新 moviefail 表信息
+                moiveService.updateMoviveFail(moiveFail);
+            }
             result.put("desc", "");
             result.put("result", "success");
-
         } catch (Exception e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
@@ -201,8 +214,6 @@ public class MoiveRequestFailController {
         result.put(PcmsConst.RESPMSD, "成功");
         return result;
     }
-
-
 
 
     @RequestMapping("/moive/requestListView")
@@ -247,10 +258,21 @@ public class MoiveRequestFailController {
     public JSONObject delete(HttpServletRequest request) {
 
         String id = request.getParameter("id");
+        String ids = request.getParameter("ids");
+
+
         JSONObject result = new JSONObject();
         try {
-            Integer idi = Integer.parseInt(id);
-            moiveService.deleteRequestMoiveByPrimaryKey(idi);
+            if (StringUtils.isNotBlank(ids)) {
+                String[] idstr = ids.split(",");
+                for (int i = 0; i < idstr.length; i++) {
+                    Integer idi = Integer.parseInt(idstr[i]);
+                    moiveService.deleteRequestMoiveByPrimaryKey(idi);
+                }
+            } else {
+                Integer idi = Integer.parseInt(id);
+                moiveService.deleteRequestMoiveByPrimaryKey(idi);
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
@@ -287,8 +309,6 @@ public class MoiveRequestFailController {
         result.put(PcmsConst.RESPMSD, "成功");
         return result;
     }
-
-
 
 
 }
