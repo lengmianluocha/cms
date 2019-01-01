@@ -20,12 +20,13 @@ public interface FileService {
 
     /**
      * 解析上传的excel文件
+     *
      * @param file
      * @return
      */
     public ArrayList<ArrayList<String>> parseExcelFile(File file);
 
 
-    public void genResultFile(List<Articles> articles,String user);
+    public void genResultFile(List<Articles> articles, String user);
 
 }

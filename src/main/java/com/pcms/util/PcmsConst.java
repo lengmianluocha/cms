@@ -11,7 +11,7 @@ public interface PcmsConst {
     /**
      * 结果页面存放地址
      */
-    String RESULTPATH="/usr/local/website/result";
+    String RESULTPATH = "/usr/local/website/result";
     String EXCELPATH = "/usr/local/excel";
     //String FILEPATH = "//Users/feng/html";
     //String EXCELPATH = "/Users/feng/excel";
@@ -23,15 +23,15 @@ public interface PcmsConst {
 
     String url = "http://www.nitethoughts.club/model/";
 
-    String REQUESTTYPE_NOTFOUNDMOIVE="findMovie";
+    String REQUESTTYPE_NOTFOUNDMOIVE = "findMovie";
 
-    String REQUESTTYPE_MOIVELINKNOTUSE="linkINvalid";
+    String REQUESTTYPE_MOIVELINKNOTUSE = "linkINvalid";
 
-    interface  RequestMoive{
+    interface RequestMoive {
 
-      String  STATUS_INIT="0";
+        String STATUS_INIT = "0";
 
-      String  STATUS_HASHANDLE="1";
+        String STATUS_HASHANDLE = "1";
 
     }
 }

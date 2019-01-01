@@ -10,9 +10,9 @@
     **************************************************************************
     -->
     <resultMap id="BaseResultMap" type="com.pcms.domain.Userinfo">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="userName" jdbcType="VARCHAR" property="username" />
-        <result column="passWord" jdbcType="VARCHAR" property="password" />
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="userName" jdbcType="VARCHAR" property="username"/>
+        <result column="passWord" jdbcType="VARCHAR" property="password"/>
     </resultMap>
 
     <!--
@@ -37,7 +37,7 @@
     -->
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select 'true' as QUERYID,
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from userinfo
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -63,11 +63,11 @@
     * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Userinfo">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.pcms.domain.Userinfo">
         insert into userinfo (id, userName, passWord
-            )
+        )
         values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
-            )
+        )
     </insert>
 
     <!--
@@ -78,7 +78,7 @@
     * @Copyright(C): 2018 the author chen.biao All rights reserved.
     **************************************************************************
     -->
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pcms.domain.Userinfo">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.pcms.domain.Userinfo">
         insert into userinfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -136,7 +136,7 @@
     <update id="updateByPrimaryKey" parameterType="com.pcms.domain.Userinfo">
         update userinfo
         set userName = #{username,jdbcType=VARCHAR},
-            passWord = #{password,jdbcType=VARCHAR}
+        passWord = #{password,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -144,13 +144,13 @@
     <!--=================================================================================-->
     <sql id="searchParamter">
         <if test="username!=null and username!='' ">
-           and ui.userName=#{username}
+            and ui.userName=#{username}
         </if>
     </sql>
 
-    <select id="getUserinfoByParam" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    <select id="getUserinfoByParam" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from userinfo as ui
         <where>
             <include refid="searchParamter"></include>

@@ -4,7 +4,7 @@ package com.pcms.domain;
 import java.util.List;
 
 /**
- *  分页信息
+ * 分页信息
  */
 public class Pageable<T> {
 

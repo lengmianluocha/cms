@@ -75,7 +75,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         }
 
 
-        logger.info("搜素结果构建：记录条数："+articles.size()+"用户："+msg.getFromUserName());
+        logger.info("搜素结果构建：记录条数：" + articles.size() + "用户：" + msg.getFromUserName());
 
 
         //构建搜索结果页面
@@ -85,8 +85,8 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Articles> results = new ArrayList<>(list.size());
         Articles articles1 = new Articles();
         articles1.setDescription("请戳这里查看");
-        articles1.setPicUrl("http://www.nitethoughts.club/result.png");
-        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html?random="+RandomNumber.randomKey(8));
+        articles1.setPicUrl("http://www.nitethoughts.club/result2.jpg");
+        articles1.setUrl("http://www.nitethoughts.club/result/" + msg.getFromUserName() + ".html?random=" + RandomNumber.randomKey(8));
         articles1.setTitle("资源匹配完成");
         results.add(articles1);
 
@@ -163,7 +163,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
             articles.add(article);
         }
 
-        logger.info("搜素结果构建：记录条数："+articles.size()+"用户："+msg.getFromUserName());
+        logger.info("搜素结果构建：记录条数：" + articles.size() + "用户：" + msg.getFromUserName());
 
 
         //构建搜索结果页面
@@ -175,7 +175,7 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         Articles articles1 = new Articles();
         articles1.setDescription("请戳这里查看");
         articles1.setPicUrl("http://www.nitethoughts.club/result.png");
-        articles1.setUrl("http://www.nitethoughts.club/result/"+msg.getFromUserName()+".html?random="+RandomNumber.randomKey(8));
+        articles1.setUrl("http://www.nitethoughts.club/result/" + msg.getFromUserName() + ".html?random=" + RandomNumber.randomKey(8));
         //articles1.setUrl("http://www.ihfplus.com/result/"+msg.getFromUserName()+".html");
         articles1.setTitle("资源匹配完成");
         results.add(articles1);

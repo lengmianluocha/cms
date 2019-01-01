@@ -102,6 +102,7 @@ public class MovieServiceImpl implements MoiveService {
     public List<MoiveFail> searchMoiveFailByParam(Map param) {
         return moiveFailMapper.searchMoiveFailByParam(param);
     }
+
     @Override
     public MoiveFail getMoiveFailByParam(Map param) {
         return moiveFailMapper.getMoiveFailByParam(param);
@@ -118,7 +119,7 @@ public class MovieServiceImpl implements MoiveService {
     }
 
     @Override
-    public int updateByPrimaryKeySelective(RequestMoive requestMoive){
+    public int updateByPrimaryKeySelective(RequestMoive requestMoive) {
         return requestMoiveMapper.updateByPrimaryKeySelective(requestMoive);
     }
 

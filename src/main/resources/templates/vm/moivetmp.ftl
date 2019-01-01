@@ -6,8 +6,8 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/ace.min.css"/>
     <meta name="keywords" content="电影,"/>
     <meta name="description" content=""/>
     <style>
@@ -46,8 +46,13 @@
 <main id="main" class="hfeed" role="main" itemprop="mainEntityOfPage">
 
     <header class="entry-header">
-        <h1 class="entry-title" itemprop="name headline" align="center">${title}</h1>
+        <h2 class="entry-title" itemprop="name headline" align="center">${title}</h2>
     </header>
+
+
+    <div>
+        <p>又名：${tags}</p>
+    </div>
 
     <div class="entry-content">
         <p style="padding-left: 20px;">地址：<a href="${panurl}">${title}</a></p>
@@ -64,10 +69,12 @@
             复制这段内容后打开百度网盘手机App，操作更方便哦
         </div>
 
-        <a href="http://www.nitethoughts.club/moive/minvalid?moiveName=${encodetitle}" class="btn btn-minier btn-yellow" style="margin-bottom: 20px;margin-top: 20px;" >
+        <a href="http://www.nitethoughts.club/moive/minvalid?moiveName=${encodetitle}" class="btn btn-minier btn-yellow"
+           style="margin-bottom: 20px;margin-top: 20px;">
             链接失效</a>
 	<#if '${title}'?index_of("更新至")!=-1>
-    <a href="http://www.nitethoughts.club/moive/murge?moiveName=${encodetitle}" style="margin-left: 20px;margin-bottom: 20px;margin-top: 20px;"  class="btn btn-minier btn-yellow"> 催更</a>
+    <a href="http://www.nitethoughts.club/moive/murge?moiveName=${encodetitle}"
+       style="margin-left: 20px;margin-bottom: 20px;margin-top: 20px;" class="btn btn-minier btn-yellow"> 催更</a>
     </#if>
 
         <!--<a href="http://localhost:8081/moive/minvalid?moiveName=22" style="padding-left: 20px;" > 链接失效</a>-->

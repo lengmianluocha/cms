@@ -16,7 +16,6 @@
     <div class="main-content">
 
 
-
         <div class="main-content-inner">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                 <ul class="breadcrumb">
@@ -35,7 +34,7 @@
 
                 <div>
                     <div style="float: left">
-                        <button class="btn btn-sm btn-primary deletes" id="deletes" >批量忽略</button>
+                        <button class="btn btn-sm btn-primary deletes" id="deletes">批量忽略</button>
                     </div>
                 </div>
 
@@ -180,7 +179,7 @@
                 <div class="space-4"></div>
 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码  </label>
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码 </label>
                     <div class="col-sm-17">
                         <input type="text" id="form-moiveUrl" placeholder="网盘地址&密码" class="col-xs-10 col-sm-5"/>
                     </div>
@@ -189,10 +188,10 @@
                 <!--<div class="space-4"></div>-->
 
                 <!--<div class="form-group">-->
-                    <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>-->
-                    <!--<div class="col-sm-17">-->
-                        <!--<input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>-->
-                    <!--</div>-->
+                <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>-->
+                <!--<div class="col-sm-17">-->
+                <!--<input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>-->
+                <!--</div>-->
                 <!--</div>-->
             </form>
 
@@ -279,15 +278,15 @@
 
             var moive = '';
             $.post("/moive/getByName",
-                {name:moivename}, function (data) {
-                    moive=JSON.parse(data);
+                {name: moivename}, function (data) {
+                    moive = JSON.parse(data);
 
-                    if(moive==null){
-                        return ;
+                    if (moive == null) {
+                        return;
                     }
 
                     $("#form-moiveName").val(moive.mname);
-                    $("#form-moiveUrl").val(moive.panurl+"提取码："+moive.panpwd);
+                    $("#form-moiveUrl").val(moive.panurl + "提取码：" + moive.panpwd);
                     //$("#form-moivePwd").val(moive.panpwd);
                 }
             )
@@ -310,7 +309,7 @@
                             var panpwd = $("#form-moivePwd").val();
 
                             var data = {
-                                failid:id,
+                                failid: id,
                                 id: moive.id,
                                 title: title,
                                 //panpwd: panpwd,
@@ -345,7 +344,6 @@
 
 
         });
-
 
 
         //myTable

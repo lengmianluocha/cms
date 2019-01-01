@@ -39,10 +39,11 @@ public class FileServiceImpl implements FileService {
             //创建map集合
             Map<String, Object> map = new HashMap<>();
             map.put("title", moive.getMname());
-            map.put("encodetitle", URLEncoder.encode(moive.getMname(),"UTF-8"));
+            map.put("encodetitle", URLEncoder.encode(moive.getMname(), "UTF-8"));
             map.put("content", moive.getAbstracts());
             map.put("panurl", moive.getPanurl());
             map.put("panpwd", moive.getPanpwd());
+            map.put("tags", moive.getTags());
 
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlFile), "UTF-8"));
             // 合并输出 创建页面文件

@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>搜索结果列表</title>
     <link rel="stylesheet" href="http://www.nitethoughts.club/static/assets/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="http://www.nitethoughts.club/static/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="http://www.nitethoughts.club/static/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <link rel="stylesheet"
+          href="http://www.nitethoughts.club/static/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="http://www.nitethoughts.club/static/assets/css/ace.min.css" class="ace-main-stylesheet"
+          id="main-ace-style"/>
 </head>
 <body>
 
@@ -19,7 +21,7 @@
                 </div>
                 <div class="widget-body">
                     <div class="widget-main">
-                        ${content}
+                    ${content}
                         <br/>
 
                     </div>

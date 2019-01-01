@@ -51,11 +51,13 @@ public class MoiveController {
             moive.setMname(title);
 
             String[] pram = panurl.split("提取码：");
-            moive.setPanurl(pram[0].replace("链接：",""));
-            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦",""));
+            moive.setPanurl(pram[0].replace("链接：", ""));
+            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦", ""));
             moive.setMurl(PcmsConst.url + id2 + ".html");
             moive.setId(id2);
             moive.setUpdatetime(DateUtil.getCurTimestamp());
+            moive.setTags(tags);
+
 
             moiveService.insert(moive);
 
@@ -215,7 +217,7 @@ public class MoiveController {
 
     @ResponseBody
     @RequestMapping("/moive/update")
-    public JSONObject updateMoiveByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject updateMoiveByParam(@RequestParam("id") String id, @RequestParam("title") String title, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl, HttpServletRequest request, HttpServletResponse response) {
 
         JSONObject result = new JSONObject();
 
@@ -234,14 +236,15 @@ public class MoiveController {
             moive.setMname(title);
             String[] pram = panurl.split("提取码：");
 
-            if(pram.length!=2){
+            if (pram.length != 2) {
                 throw new Exception("参数异常，上送url格式不对。");
             }
 
-            moive.setPanurl(pram[0].replace("链接：",""));
-            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦",""));
+            moive.setPanurl(pram[0].replace("链接：", ""));
+            moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦", ""));
             moive.setMurl(PcmsConst.url + idnew + ".html");
             moive.setUpdatetime(DateUtil.getCurTimestamp());
+            moive.setTags(tags);
             moiveService.insertSelective(moive);
 
             Map map = new HashMap();

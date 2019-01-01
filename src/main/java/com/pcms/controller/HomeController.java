@@ -27,7 +27,7 @@ public class HomeController {
     }
 
     @RequestMapping("/blank")
-    public ModelAndView blank(Model model, HttpSession session,ModelAndView mav ) {
+    public ModelAndView blank(Model model, HttpSession session, ModelAndView mav) {
         String s = (String) session.getAttribute("user");
         mav.addObject("username", s);
         mav.setViewName("blank");
@@ -37,7 +37,7 @@ public class HomeController {
 
     @ResponseBody
     @RequestMapping(value = "/login/dologin", method = RequestMethod.POST)
-    public ModelAndView doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session,ModelAndView mav ) {
+    public ModelAndView doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, ModelAndView mav) {
         //登陆成功，跳转到首页
         String s = (String) session.getAttribute("user");
         if (!StringUtils.isEmpty(s) && s == username) {
@@ -50,9 +50,9 @@ public class HomeController {
         boolean result = userService.dologin(user);
         if (result) {
             session.setAttribute("user", username);
-             mav.addObject("username", username);
-             mav.setViewName("redirect:/blank");
-        }else {
+            mav.addObject("username", username);
+            mav.setViewName("redirect:/blank");
+        } else {
             //TODO 设置错误码
             mav.setViewName("redirect:login/login");
         }
@@ -60,7 +60,7 @@ public class HomeController {
     }
 
     @RequestMapping("/login/loginout")
-    public ModelAndView loginout(HttpSession session,ModelAndView mav ) {
+    public ModelAndView loginout(HttpSession session, ModelAndView mav) {
         session.removeAttribute("user");
         mav.setViewName("redirect:login/login");
         return mav;

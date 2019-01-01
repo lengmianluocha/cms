@@ -3,7 +3,7 @@
  * @author He.Feng
  * @version 2.3.7
  * @Date 2018-08-01
- * @Copyright(C): 2018 the author chen.biao All rights reserved. 
+ * @Copyright(C): 2018 the author chen.biao All rights reserved.
  */
 package com.pcms.domain;
 

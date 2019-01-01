@@ -15,6 +15,8 @@ public class Moive {
 
     private String updatetime;
 
+    private String tags;
+
     public Long getId() {
         return id;
     }
@@ -69,5 +71,13 @@ public class Moive {
 
     public void setUpdatetime(String updatetime) {
         this.updatetime = updatetime == null ? null : updatetime.trim();
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags == null ? null : tags.trim();
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 @EnableWebMvc
 @ComponentScan
-public class WebConfig extends  WebMvcAutoConfiguration   implements WebMvcConfigurer {
+public class WebConfig extends WebMvcAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-   public int getUserCountByParam(Map param){
-       return userinfoMapper.getUserCountByParam(param);
-   }
+    public int getUserCountByParam(Map param) {
+        return userinfoMapper.getUserCountByParam(param);
+    }
 
-   public List<Userinfo> searchUserByParam(Map param){
-       return userinfoMapper.searchUserByParam(param);
+    public List<Userinfo> searchUserByParam(Map param) {
+        return userinfoMapper.searchUserByParam(param);
     }
 
 

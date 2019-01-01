@@ -6,16 +6,16 @@ public class MoiveFail {
     /**
      * 链接失效
      */
-    public final static String FAILTYPE_INVAILD="01";
+    public final static String FAILTYPE_INVAILD = "01";
 
     /**
-     *  催更
+     * 催更
      */
-    public final  static String FAILTYPE_URGEMORE="02";
+    public final static String FAILTYPE_URGEMORE = "02";
 
-    public final static String HANLING="01";
-    public final static String HANLED="02";
-    public final static String INGORE="03";
+    public final static String HANLING = "01";
+    public final static String HANLED = "02";
+    public final static String INGORE = "03";
 
     private Integer id;
 

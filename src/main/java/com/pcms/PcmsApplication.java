@@ -31,7 +31,7 @@ public class PcmsApplication {
         MultipartConfigFactory factory = new MultipartConfigFactory();
 
 
-        Weixin weixin =new Weixin();
+        Weixin weixin = new Weixin();
 
         //单个文件最大
         factory.setMaxFileSize("10240KB"); //KB,MB

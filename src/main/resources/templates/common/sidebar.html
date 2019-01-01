@@ -2,7 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div id="sidebar" class="sidebar    responsive  ace-save-state" th:fragment="sidebar">
     <script type="text/javascript">
-        try{ace.settings.loadState('sidebar')}catch(e){}
+        try {
+            ace.settings.loadState('sidebar')
+        } catch (e) {
+        }
     </script>
 
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -62,7 +65,8 @@
                         电影列表
                     </a>
                     <b class="arrow"></b>
-                </li><li class="">
+                </li>
+                <li class="">
                     <a href="/moive/requestListView">
                         <i class="menu-icon fa fa-caret-right"></i>
                         求电影列表
@@ -110,7 +114,8 @@
     </ul><!-- /.nav-list -->
 
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-        <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+        <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
+           data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
     </div>
 </div>
 </html>

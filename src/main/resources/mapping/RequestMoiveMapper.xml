@@ -1,157 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcms.dao.RequestMoiveMapper">
-  <resultMap id="BaseResultMap" type="com.pcms.domain.RequestMoive">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="moiveName" jdbcType="VARCHAR" property="moivename" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="updateTime" jdbcType="VARCHAR" property="updatetime" />
-    <result column="wxName" jdbcType="VARCHAR" property="wxname" />
-    <result column="moiveDesc" jdbcType="VARCHAR" property="moivedesc" />
-    <result column="counter" jdbcType="INTEGER" property="counter" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, moiveName, status, updateTime, wxName, moiveDesc, counter
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from requestMoive
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from requestMoive
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.pcms.domain.RequestMoive">
-    insert into requestMoive (id, moiveName, status,
-      updateTime, wxName, moiveDesc, 
-      counter)
-    values (#{id,jdbcType=INTEGER}, #{moivename,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{updatetime,jdbcType=VARCHAR}, #{wxname,jdbcType=VARCHAR}, #{moivedesc,jdbcType=VARCHAR}, 
-      #{counter,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.pcms.domain.RequestMoive">
-    insert into requestMoive
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="moivename != null">
-        moiveName,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="updatetime != null">
-        updateTime,
-      </if>
-      <if test="wxname != null">
-        wxName,
-      </if>
-      <if test="moivedesc != null">
-        moiveDesc,
-      </if>
-      <if test="counter != null">
-        counter,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="moivename != null">
-        #{moivename,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=VARCHAR},
-      </if>
-      <if test="wxname != null">
-        #{wxname,jdbcType=VARCHAR},
-      </if>
-      <if test="moivedesc != null">
-        #{moivedesc,jdbcType=VARCHAR},
-      </if>
-      <if test="counter != null">
-        #{counter,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.RequestMoive">
-    update requestMoive
-    <set>
-      <if test="moivename != null">
-        moiveName = #{moivename,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
+    <resultMap id="BaseResultMap" type="com.pcms.domain.RequestMoive">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="moiveName" jdbcType="VARCHAR" property="moivename"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="updateTime" jdbcType="VARCHAR" property="updatetime"/>
+        <result column="wxName" jdbcType="VARCHAR" property="wxname"/>
+        <result column="moiveDesc" jdbcType="VARCHAR" property="moivedesc"/>
+        <result column="counter" jdbcType="INTEGER" property="counter"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, moiveName, status, updateTime, wxName, moiveDesc, counter
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from requestMoive
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from requestMoive
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.pcms.domain.RequestMoive">
+        insert into requestMoive (id, moiveName, status,
+        updateTime, wxName, moiveDesc,
+        counter)
+        values (#{id,jdbcType=INTEGER}, #{moivename,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+        #{updatetime,jdbcType=VARCHAR}, #{wxname,jdbcType=VARCHAR}, #{moivedesc,jdbcType=VARCHAR},
+        #{counter,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pcms.domain.RequestMoive">
+        insert into requestMoive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="moivename != null">
+                moiveName,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="wxname != null">
+                wxName,
+            </if>
+            <if test="moivedesc != null">
+                moiveDesc,
+            </if>
+            <if test="counter != null">
+                counter,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="moivename != null">
+                #{moivename,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=VARCHAR},
+            </if>
+            <if test="wxname != null">
+                #{wxname,jdbcType=VARCHAR},
+            </if>
+            <if test="moivedesc != null">
+                #{moivedesc,jdbcType=VARCHAR},
+            </if>
+            <if test="counter != null">
+                #{counter,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pcms.domain.RequestMoive">
+        update requestMoive
+        <set>
+            <if test="moivename != null">
+                moiveName = #{moivename,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=VARCHAR},
+            </if>
+            <if test="wxname != null">
+                wxName = #{wxname,jdbcType=VARCHAR},
+            </if>
+            <if test="moivedesc != null">
+                moiveDesc = #{moivedesc,jdbcType=VARCHAR},
+            </if>
+            <if test="counter != null">
+                counter = #{counter,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pcms.domain.RequestMoive">
+        update requestMoive
+        set moiveName = #{moivename,jdbcType=VARCHAR},
         status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="updatetime != null">
         updateTime = #{updatetime,jdbcType=VARCHAR},
-      </if>
-      <if test="wxname != null">
         wxName = #{wxname,jdbcType=VARCHAR},
-      </if>
-      <if test="moivedesc != null">
         moiveDesc = #{moivedesc,jdbcType=VARCHAR},
-      </if>
-      <if test="counter != null">
-        counter = #{counter,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.pcms.domain.RequestMoive">
-    update requestMoive
-    set moiveName = #{moivename,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      updateTime = #{updatetime,jdbcType=VARCHAR},
-      wxName = #{wxname,jdbcType=VARCHAR},
-      moiveDesc = #{moivedesc,jdbcType=VARCHAR},
-      counter = #{counter,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        counter = #{counter,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <sql id="searchParamter">
-    <if test="mname!=null and mname!='' ">
-      rm.moiveName=#{mname}
-    </if>
-    <if test="mnamelike!=null and mnamelike!='' ">
-      AND rm.moiveName LIKE CONCAT('%',#{mnamelike},'%')
-    </if>
-  </sql>
+    <sql id="searchParamter">
+        <if test="mname!=null and mname!='' ">
+            rm.moiveName=#{mname}
+        </if>
+        <if test="mnamelike!=null and mnamelike!='' ">
+            AND rm.moiveName LIKE CONCAT('%',#{mnamelike},'%')
+        </if>
+    </sql>
 
 
-  <select id="SearchMoiveRequestByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from requestMoive as rm
-    <where>
-      <include refid="searchParamter" />
-    </where>
-    order by updateTime desc
-    limit #{currentPage},#{pageSize}
-  </select>
+    <select id="SearchMoiveRequestByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from requestMoive as rm
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+        order by updateTime desc
+        limit #{currentPage},#{pageSize}
+    </select>
 
-  <select id="getMoiveRequestCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
-    select count(*)
-    from requestMoive as rm
-    <where>
-      <include refid="searchParamter" />
-    </where>
-  </select>
+    <select id="getMoiveRequestCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(*)
+        from requestMoive as rm
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+    </select>
 
 
-  <select id="getRequestMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from requestMoive as rm
-    <where>
-      <include refid="searchParamter" />
-    </where>
-  </select>
+    <select id="getRequestMoiveByParam" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from requestMoive as rm
+        <where>
+            <include refid="searchParamter"/>
+        </where>
+        limit 0,1
+    </select>
 
 </mapper>

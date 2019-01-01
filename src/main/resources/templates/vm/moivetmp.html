@@ -1,72 +1,91 @@
 <!DOCTYPE html>
 <head>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="applicable-device" content="pc,mobile">
-<meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="电影," /><meta name="description" content="" />
-	<link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/ace.min.css" />
-<title>${title}</title>
-<style>
-	body{ text-align:center}
-	#divcss5{margin:0 auto;}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="keywords" content="电影,"/>
+    <meta name="description" content=""/>
+    <link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/ace.min.css"/>
+    <title>${title}</title>
+    <style>
+        body {
+            text-align: center
+        }
 
-	#copycont{margin:0 auto;border: 1px solid #000;width:350px;white-space: normal;word-break: break-all;word-wrap: break-word;}
-</style>
+        #divcss5 {
+            margin: 0 auto;
+        }
+
+        #copycont {
+            margin: 0 auto;
+            border: 1px solid #000;
+            width: 350px;
+            white-space: normal;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 
-<body >
+<body>
 
 
 <br/>
 <br/>
 
 <header id="header" role="banner" itemscope itemtype="http://schema.org/WPHeader">
-	<div class="connect"></div>
+    <div class="connect"></div>
 </header>
-        
+
 <main id="main" class="hfeed">
 
-<header class="entry-header">
-	<h1 class="entry-title" itemprop="name headline" align="center">${title}</h1>
-</header>
+    <header class="entry-header">
+        <h2 class="entry-title" itemprop="name headline" align="center">${title}</h2>
+    </header>
 
-<div>
-<p >地址：<a href="${panurl}">${title}</a></p>
-<p >密码：${panpwd}</p>
-</div>
+    <div>
+        <p>又名：${tags}</p>
+    </div>
 
-	<br/>
-	<br/>
+    <div>
+        <p>地址：<a href="${panurl}">${title}</a></p>
+        <p>密码：${panpwd}</p>
+    </div>
 
-<div id="copycont">
+    <br/>
+    <br/>
 
-	链接：https://pan.baidu.com/s/1gnDa6DC8TPox5_Y4_JIMOg
+    <div id="copycont">
 
-	提取码：86vp
+        链接：https://pan.baidu.com/s/1gnDa6DC8TPox5_Y4_JIMOg
 
-	复制这段内容后打开百度网盘手机App，操作更方便哦
-</div>
+        提取码：86vp
 
-	<br/>
-	<br/>
+        复制这段内容后打开百度网盘手机App，操作更方便哦
+    </div>
 
-<div >
-	<a href="http://www.nitethoughts.club/moive/minvalid?moiveName="+${title}  class="btn btn-minier btn-yellow" style="margin-bottom: 20px;margin-top: 20px;"> 链接失效</a>
-	<a href="http://www.nitethoughts.club/moive/murge?moiveName="+${title} style="margin-left: 20px;margin-bottom: 20px;margin-top: 20px;"  class="btn btn-minier btn-yellow">  催更</a>
-</div>
+    <br/>
+    <br/>
 
-	<!--<a href="http://localhost:8081/moive/minvalid?moiveName=22" style="padding-left: 20px;" > 链接失效</a>-->
-	<!--<a href="http://localhost:8081/moive/murge?moiveName=22" style="padding-left: 60px;">  催更</a>-->
+    <div>
+        <a href="http://www.nitethoughts.club/moive/minvalid?moiveName=" +${title} class="btn btn-minier btn-yellow"
+           style="margin-bottom: 20px;margin-top: 20px;"> 链接失效</a>
+        <a href="http://www.nitethoughts.club/moive/murge?moiveName=" +${title}
+           style="margin-left: 20px;margin-bottom: 20px;margin-top: 20px;" class="btn btn-minier btn-yellow"> 催更</a>
+    </div>
 
-	<br/>
-	<br/>
+    <!--<a href="http://localhost:8081/moive/minvalid?moiveName=22" style="padding-left: 20px;" > 链接失效</a>-->
+    <!--<a href="http://localhost:8081/moive/murge?moiveName=22" style="padding-left: 60px;">  催更</a>-->
+
+    <br/>
+    <br/>
 
 
-
-	<div align="center" width="200px;" height="200px;" style="margin:0 auto"><img src="http://www.nitethoughts.club/zan.png" width="200px;" height="200px;"></div>
+    <div align="center" width="200px;" height="200px;" style="margin:0 auto"><img
+            src="http://www.nitethoughts.club/zan.png" width="200px;" height="200px;"></div>
 
 
 </main>
@@ -75,17 +94,16 @@
 </body>
 
 
-
 <!--<script type="text/javascript">-->
-    <!--// 对浏览器的UserAgent进行正则匹配，不含有微信独有标识的则为其他浏览器-->
-    <!--var useragent = navigator.userAgent;-->
-    <!--if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {-->
-        <!--// 这里警告框会阻塞当前页面继续加载-->
-        <!--alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！');-->
-        <!--// 以下代码是用javascript强行关闭当前页面-->
-        <!--var opened = window.open('about:blank', '_self');-->
-        <!--opened.opener = null;-->
-        <!--opened.close();-->
-    <!--}-->
+<!--// 对浏览器的UserAgent进行正则匹配，不含有微信独有标识的则为其他浏览器-->
+<!--var useragent = navigator.userAgent;-->
+<!--if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {-->
+<!--// 这里警告框会阻塞当前页面继续加载-->
+<!--alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！');-->
+<!--// 以下代码是用javascript强行关闭当前页面-->
+<!--var opened = window.open('about:blank', '_self');-->
+<!--opened.opener = null;-->
+<!--opened.close();-->
+<!--}-->
 <!--</script>-->
 </html>

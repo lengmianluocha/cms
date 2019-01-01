@@ -12,7 +12,7 @@ public class ReplyMessage {
 
 
     //  获取关注事件
-    public static RequestTextMessage getRequestFocus(String xml){
+    public static RequestTextMessage getRequestFocus(String xml) {
 
         XStream xstream = new XStream(new DomDriver());
 
@@ -25,13 +25,13 @@ public class ReplyMessage {
         xstream.aliasField("EventKey", RequestTextMessage.class, "eventKey");
 //            xstream.aliasField("Content", RequestTextMessage.class, "content");
 //            xstream.aliasField("MsgId", RequestTextMessage.class, "msgId");
-        RequestTextMessage requestTextMessage = (RequestTextMessage)xstream.fromXML(xml);
+        RequestTextMessage requestTextMessage = (RequestTextMessage) xstream.fromXML(xml);
         return requestTextMessage;
 
     }
 
     //  获取推送文本消息
-    public static RequestTextMessage getRequestTextMessage(String xml){
+    public static RequestTextMessage getRequestTextMessage(String xml) {
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("xml", RequestTextMessage.class);
         xstream.aliasField("URL", RequestTextMessage.class, "url");
@@ -42,17 +42,17 @@ public class ReplyMessage {
         xstream.aliasField("Content", RequestTextMessage.class, "content");
         xstream.aliasField("MsgId", RequestTextMessage.class, "msgId");
 
-        RequestTextMessage requestTextMessage = (RequestTextMessage)xstream.fromXML(xml);
+        RequestTextMessage requestTextMessage = (RequestTextMessage) xstream.fromXML(xml);
         return requestTextMessage;
     }
 
 
     //    回复文本消息
-    public static String getReplyTextMessage(String content, String fromUserName,String toUserName){
+    public static String getReplyTextMessage(String content, String fromUserName, String toUserName) {
         ReplyTextMessage we = new ReplyTextMessage();
         we.setMessageType("text");
         we.setFuncFlag("0");
-        we.setCreateTime(new Date().getTime()+"");
+        we.setCreateTime(new Date().getTime() + "");
         we.setContent(content);
         we.setToUserName(fromUserName);
         we.setFromUserName(toUserName);
@@ -64,21 +64,21 @@ public class ReplyMessage {
         xstream.aliasField("MsgType", ReplyTextMessage.class, "messageType");
         xstream.aliasField("Content", ReplyTextMessage.class, "content");
         xstream.aliasField("FuncFlag", ReplyTextMessage.class, "funcFlag");
-        String xml =xstream.toXML(we);
+        String xml = xstream.toXML(we);
         return xml;
 
     }
 
 
     //    回复图文消息
-    public static String getReplyPicTextMessage(String fromUserName,String toUserName,List<Article> articleList){
+    public static String getReplyPicTextMessage(String fromUserName, String toUserName, List<Article> articleList) {
         ReplyPicTextMessage we = new ReplyPicTextMessage();
 
         we.setMsgType("news");
         we.setCreateTime(new Long(new Date().getTime()).toString());
         we.setToUserName(fromUserName);
         we.setFromUserName(toUserName);
-        we.setArticleCount(articleList.size()+"");
+        we.setArticleCount(articleList.size() + "");
         we.setArticles(articleList);
 
         XStream xstream = new XStream(new DomDriver());
@@ -98,7 +98,7 @@ public class ReplyMessage {
         xstream.aliasField("Description", Article.class, "description");
         xstream.aliasField("PicUrl", Article.class, "picUrl");
         xstream.aliasField("Url", Article.class, "url");
-        String xml =xstream.toXML(we);
+        String xml = xstream.toXML(we);
         return xml;
     }
 

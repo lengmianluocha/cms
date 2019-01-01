@@ -183,6 +183,15 @@
                 </div>
 
                 <div class="space-4"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标签 </label>
+
+                    <div class="col-sm-17">
+                        <input type="text" id="form-moiveTags" placeholder="电影标签" class="col-xs-10 col-sm-5"/>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 网盘地址&密码 </label>
@@ -194,10 +203,10 @@
                 <!--<div class="space-4"></div>-->
 
                 <!--<div class="form-group">-->
-                    <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>-->
-                    <!--<div class="col-sm-17">-->
-                        <!--<input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>-->
-                    <!--</div>-->
+                <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>-->
+                <!--<div class="col-sm-17">-->
+                <!--<input type="text" id="form-moivePwd" placeholder="网盘提取密码" class="col-xs-10 col-sm-5"/>-->
+                <!--</div>-->
                 <!--</div>-->
             </form>
 
@@ -290,7 +299,8 @@
             var id = data.id;
 
             $("#form-moiveName").val(data.mname);
-            $("#form-moiveUrl").val(data.panurl+"提取码："+data.panpwd);
+            $("#form-moiveTags").val(data.tags);
+            $("#form-moiveUrl").val(data.panurl + "提取码：" + data.panpwd);
             //$("#form-moivePwd").val(data.panpwd);
 
 
@@ -309,11 +319,13 @@
                             var title = $("#form-moiveName").val();
                             var panurl = $("#form-moiveUrl").val();
                             var panpwd = $("#form-moivePwd").val();
+                            var tags = $("#form-moiveTags").val();
 
                             var data = {
                                 id: id,
                                 title: title,
-                                panurl: panurl
+                                panurl: panurl,
+                                tags:tags
                             };
                             $.post("/moive/update",
                                 data, function (data) {
