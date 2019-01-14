@@ -63,11 +63,11 @@
 
                                     <div class="space-6"></div>
 
-                                    <form id="loginForm" action="/login/dologin" method="post">
+                                    <form id="loginForm" method="post">
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" name="username"
+															<input type="text" class="form-control" name="username" id="username"
                                                                    placeholder="Username"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
@@ -75,7 +75,7 @@
 
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" name="password"
+															<input type="password" class="form-control" name="password" id="password"
                                                                    placeholder="Password"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
@@ -135,6 +135,7 @@
 
 <!--[if IE]>
 <script src="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/js/jquery-1.11.3.min.js"></script>
+<script src="https://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/js/jquery.md5.js"></script>
 <![endif]-->
 <script type="text/javascript">
     if ('ontouchstart' in document.documentElement) document.write("<script src='../assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
@@ -174,6 +175,23 @@
             $('#id-company-text').attr('class', 'light-blue');
 
             e.preventDefault();
+        });
+
+        $("#loginbutton").on('click',function(e){
+            var data = {
+                username:$("#username").val(),
+                password: $.md5($("#password").val()).toUpperCase()
+            }
+
+            $.ajax({
+                url:"/login/dologin",
+                type:"POST",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    window.location.href = data.addr;
+                }
+            })
         });
 
     });

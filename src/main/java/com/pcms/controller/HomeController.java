@@ -1,6 +1,7 @@
 package com.pcms.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.pcms.domain.Userinfo;
 import com.pcms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,13 @@ public class HomeController {
 
     @ResponseBody
     @RequestMapping(value = "/login/dologin", method = RequestMethod.POST)
-    public ModelAndView doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, ModelAndView mav) {
+    public JSONObject doLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, ModelAndView mav) {
+        JSONObject resp = new JSONObject();
         //登陆成功，跳转到首页
         String s = (String) session.getAttribute("user");
         if (!StringUtils.isEmpty(s) && s == username) {
-            mav.addObject("username", username);
-            mav.setViewName("redirect:/blank");
+            //mav.addObject("username", username);
+            resp.put("addr","/blank");
         }
         Userinfo user = new Userinfo();
         user.setUsername(username);
@@ -50,13 +52,14 @@ public class HomeController {
         boolean result = userService.dologin(user);
         if (result) {
             session.setAttribute("user", username);
-            mav.addObject("username", username);
-            mav.setViewName("redirect:/blank");
+           // mav.addObject("username", username);
+            resp.put("addr","/blank");
+
         } else {
             //TODO 设置错误码
-            mav.setViewName("redirect:login/login");
+            resp.put("addr","login/login");
         }
-        return mav;
+        return resp;
     }
 
     @RequestMapping("/login/loginout")
