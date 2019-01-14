@@ -194,44 +194,27 @@ public class WXController {
             mav.setViewName("moive/error");
             return mav;
         }
-
         Map map = new HashMap<>();
-        map.put("mname", name);
-        map.put("failType", MoiveFail.FAILTYPE_INVAILD);
+        map.put("mname",name);
+        map.put("failType",MoiveFail.FAILTYPE_INVAILD);
 
         try {
-            MoiveFail moiveFailold = moiveService.getMoiveFailByParam(map);
+            MoiveFail moiveFailold= moiveService.getMoiveFailByParam(map);
 
-            if (moiveFailold != null) {
-                //请求判断，判断电影是否失效
-                //TODO 改造成异步
-                Moive moive = moiveService.getMoiveByParam(map);
-                if (moive != null) {
-                    boolean res = crawlerService.isOk(moive.getPanurl());
-                    if (!res) {
-                        Integer counter = moiveFailold.getCounter();
-                        moiveFailold.setCounter(counter + 1);
-                        moiveService.updateMoviveFail(moiveFailold);
-                    }
-                }
-            } else {
-                //请求判断，判断电影是否失效
-                //TODO 改造成异步
-                Moive moive = moiveService.getMoiveByParam(map);
-                if (moive != null) {
-                    boolean res = crawlerService.isOk(moive.getPanurl());
-                    if (!res) {
-                        MoiveFail moiveFail = new MoiveFail();
-                        moiveFail.setCounter(1);
-                        moiveFail.setFailtype(MoiveFail.FAILTYPE_INVAILD);
-                        moiveFail.setMoivename(name);
-                        moiveFail.setStatus(MoiveFail.HANLING);
-                        moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
-                        moiveService.insertMoiveFail(moiveFail);
-                    }
-                }
+            if(moiveFailold!=null){
+                Integer counter = moiveFailold.getCounter();
+                moiveFailold.setCounter(counter+1);
+                moiveService.updateMoviveFail(moiveFailold);
+            }else {
+                MoiveFail moiveFail = new MoiveFail();
+                moiveFail.setCounter(1);
+                moiveFail.setFailtype(MoiveFail.FAILTYPE_INVAILD);
+                moiveFail.setMoivename(name);
+                moiveFail.setStatus(MoiveFail.HANLING);
+                moiveFail.setUpdatetime(DateUtil.getCurTimestamp());
+                //moiveFail.setWxname();
+                moiveService.insertMoiveFail(moiveFail);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
