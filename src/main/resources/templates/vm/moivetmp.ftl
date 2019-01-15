@@ -50,9 +50,9 @@
     </header>
 
 
-    <div>
-        <p>又名：${tags}</p>
-    </div>
+    <#--<div>-->
+        <#--<p>又名：${tags}</p>-->
+    <#--</div>-->
 
     <div class="entry-content">
         <p style="padding-left: 20px;">地址：<a href="${panurl}">${title}</a></p>
