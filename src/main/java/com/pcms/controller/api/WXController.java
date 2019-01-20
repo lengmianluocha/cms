@@ -44,9 +44,6 @@ public class WXController {
     @Autowired
     private MoiveService moiveService;
 
-    @Autowired
-    private CrawlerService crawlerService;
-
     //第一次调用，用于微信服务器验证
     @RequestMapping(value = "/wx", method = RequestMethod.GET)
     public void WXGET(HttpServletRequest request, HttpServletResponse response) throws IOException {

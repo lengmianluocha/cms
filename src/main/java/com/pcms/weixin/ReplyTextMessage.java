@@ -1,8 +1,8 @@
 package com.pcms.weixin;
 
-import java.util.Date;
 
 public class ReplyTextMessage {
+
 
 
     private String messageType;

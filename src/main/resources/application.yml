@@ -25,7 +25,7 @@ spring:
       #基本属性
       url: jdbc:mysql://127.0.0.1:3306/pcms?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
       username: root
-      password: Ju3Kfk3zTG
+      password: root
       #配置初始化大小/最小/最大
       initial-size: 1
       min-idle: 1
@@ -45,17 +45,28 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
   mvc:
     static-path-pattern: /static/**
+
+
 ## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
 mybatis:
   mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.pcms.domain  # 注意：对应实体类的路径
 
 
-com:
-  neo:
-    title:纯洁的微笑
-
 logging:
   file:  main.log
   path:  /usr/local/pcms
+
+  redis:
+    host: 172.27.0.2
+    port: 6379
+    password: dj5LLOHBVx
+    instanceid: redis01
+
+
+
+pcms:
+    xiao:
+        access_token_url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx4b8bfa16bade1a72&secret=6a7d5d9011447880b5afccb73996b3a7
+        sendCustomerMessageUrl: https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=
 
