@@ -1,5 +1,6 @@
 package com.pcms.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pcms.domain.Moive;
 import com.pcms.domain.MoiveFail;
@@ -7,10 +8,12 @@ import com.pcms.domain.Pageable;
 import com.pcms.domain.RequestMoive;
 import com.pcms.service.FileService;
 import com.pcms.service.MoiveService;
-import com.pcms.util.DateUtil;
-import com.pcms.util.PcmsConst;
-import com.pcms.util.RandomNumber;
+import com.pcms.service.impl.RedisService;
+import com.pcms.service.impl.XiaoTokenService;
+import com.pcms.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +41,14 @@ public class MoiveRequestFailController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private XiaoTokenService xiaoTokenService;
+
+    private Logger logger = LoggerFactory.getLogger(MoiveRequestFailController.class);
 
     @RequestMapping("/moive/failListView")
     public ModelAndView listView(Model model, HttpSession session, ModelAndView mav) {
@@ -236,6 +248,7 @@ public class MoiveRequestFailController {
         Map param = new HashMap();
         param.put("currentPage", start);
         param.put("pageSize", pageSize);
+        param.put("status",PcmsConst.RequestMoive.STATUS_INIT);
 
         String search = request.getParameter("search[value]");
         if (StringUtils.isNotBlank(search)) {
@@ -293,10 +306,44 @@ public class MoiveRequestFailController {
         try {
 
             Integer idi = Integer.parseInt(id);
-            RequestMoive moive = new RequestMoive();
+
+            Map map = new HashMap();
+            map.put("id",idi);
+            RequestMoive moive =moiveService.getRequestMoiveByParam(map);
             moive.setId(idi);
             moive.setStatus(PcmsConst.RequestMoive.STATUS_HASHANDLE);
             moiveService.updateByPrimaryKeySelective(moive);
+
+            //TODO 将请求队列上的数据 通知
+            String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,moive.getMoivename());
+            if(StringUtils.isNotBlank(requestList)){
+                JSONArray requestArray = JSONArray.parseArray(requestList);
+                for(int i=0;i<requestArray.size();i++){
+                    String str =  requestArray.getString(i);
+                    JSONObject req = JSONObject.parseObject(str);
+                    String requestUserId=req.getString("requestUserId");
+                    long expire=req.getLong("expire");
+                    long now = new Date().getTime();
+                    if(now<expire){
+                        //发送请求给用户
+                        JSONObject resp = new JSONObject();
+                        resp.put("touser",requestUserId);
+                        resp.put("msgtype","text");
+                        JSONObject text = new JSONObject();
+                        text.put("content","您请求的资源已更新。再试试看呢！");
+                        resp.put("text",text);
+
+                        //响应用户请求
+
+                        String url = xiaoTokenService.getAccessToken();
+
+                        if(StringUtils.isNotBlank(url)){
+                            String result1= HttpClient.doPostForJson("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+url,resp.toJSONString());
+                            logger.info("实时回复用户请求信息信息: "+result1);
+                        }
+                    }
+                }
+            }
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

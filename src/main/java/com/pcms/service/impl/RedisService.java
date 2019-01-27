@@ -9,10 +9,10 @@ public class RedisService {
     Jedis jedis;
 
     {
-        String host = "172.27.0.2";
+        String host = "172.27.0.13";
         int port = 6379;
-        String instanceid = "crs-c9ar95cg";
-        String password = "dj5LLOHBVx";
+        String instanceid = "crs-b99c0acv";
+        String password = "9G1HGgOnuLON0Ruj";
         //连接Redis
         jedis = new Jedis(host, port);
         //鉴权

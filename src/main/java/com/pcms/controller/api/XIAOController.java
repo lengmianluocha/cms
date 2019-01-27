@@ -54,21 +54,28 @@ public class XIAOController {
     public void XIAOGET(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         logger.info("进入wx方法。。。。。。");
+        try {
+            String signature = request.getParameter("signature");
+            String timestamp = request.getParameter("timestamp");
+            String nonce = request.getParameter("nonce");
+            String echostr = request.getParameter("echostr")==null?"":request.getParameter("echostr");
 
-        String signature = request.getParameter("signature");
-        String timestamp = request.getParameter("timestamp");
-        String nonce = request.getParameter("nonce");
-        String echostr = request.getParameter("echostr");
+            String tToken = TokenUtil.get();
 
-        String tToken = TokenUtil.get();
-
-        //成为开发者验证
-        //确认此次GET请求来自微信服务器，原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败
+            //成为开发者验证
+            //确认此次GET请求来自微信服务器，原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败
 //        if (TokenUtil.checkSignature(tToken, signature, timestamp, nonce)) {
 //            response.getWriter().write(echostr);
 //        }
-        logger.info("echostr:"+echostr);
-        response.getWriter().write(echostr);
+            logger.info("echostr:"+echostr);
+            response.getWriter().write(echostr);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.getWriter().write("");
+        }
+
+
+
     }
 
     @RequestMapping(value = "/xiao", method = RequestMethod.POST)

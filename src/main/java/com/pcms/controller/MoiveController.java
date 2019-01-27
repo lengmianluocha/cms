@@ -104,8 +104,6 @@ public class MoiveController {
                            logger.info("实时回复用户请求信息信息: "+result1);
                        }
                    }
-
-
                }
            }
 

@@ -32,7 +32,7 @@ public class XiaoTokenService {
             logger.info("从redis 中获得 accessToken： "+accessToken);
             return accessToken;
         }else {
-            String result = HttpClient.doGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx4b8bfa16bade1a72&secret=6a7d5d9011447880b5afccb73996b3a7");
+            String result = HttpClient.doGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxbbcbac036e9b5f61&secret=046c21d02b55d4db89c52811255c93b7");
             logger.info("调用请求获得  accessToken： "+result);
             JSONObject reslt = JSONObject.parseObject(result);
 
@@ -47,7 +47,7 @@ public class XiaoTokenService {
     }
 
     public static void main(String[] args) {
-        String result = HttpClient.doGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx4b8bfa16bade1a72&secret=6a7d5d9011447880b5afccb73996b3a7");
+        String result = HttpClient.doGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxbbcbac036e9b5f61&secret=046c21d02b55d4db89c52811255c93b7");
         System.out.println("调用请求获得  accessToken： "+result);
 
     }

@@ -122,6 +122,9 @@
         <if test="mnamelike!=null and mnamelike!='' ">
             AND rm.moiveName LIKE CONCAT('%',#{mnamelike},'%')
         </if>
+        <if test="id!=null and id!='' ">
+            rm.id=#{id}
+        </if>
     </sql>
 
 
