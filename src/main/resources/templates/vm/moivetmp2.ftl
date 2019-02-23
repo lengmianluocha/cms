@@ -15,14 +15,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="http://static-1257119014.cos.ap-chengdu.myqcloud.com/assets/css/bootstrap.min.css" rel="stylesheet">
-    <!--<link href="./bootstrap.min.css" rel="stylesheet">-->
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]>
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
@@ -72,10 +65,10 @@
             <a class="btn btn-primary btn-sm"
                    href="http://www.nitethoughts.club/moive/minvalid?moiveName=${encodetitle}" role="button">链接失效</a>
 
-            <#--<#if '${title}'?index_of("更新至")!=-1>-->
+            <#if title ? contains("更新至")  >
             <a class="btn btn-primary btn-sm"
                    href="http://www.nitethoughts.club/moive/murge?moiveName=${encodetitle}" role="button">催更</a>
-            <#--</#if>-->
+            </#if>
          </div>
 
         <div class="col-md-2"></div>
