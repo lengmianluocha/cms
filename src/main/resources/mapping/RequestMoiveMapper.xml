@@ -125,6 +125,9 @@
         <if test="id!=null and id!='' ">
             rm.id=#{id}
         </if>
+        <if test="status!=null and status!='' ">
+            AND rm.status=#{status}
+        </if>
     </sql>
 
 

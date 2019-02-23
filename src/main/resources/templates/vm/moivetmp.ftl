@@ -49,11 +49,6 @@
         <h2 class="entry-title" itemprop="name headline" align="center">${title}</h2>
     </header>
 
-
-    <#--<div>-->
-        <#--<p>又名：${tags}</p>-->
-    <#--</div>-->
-
     <div class="entry-content">
         <p style="padding-left: 20px;">地址：<a href="${panurl}">${title}</a></p>
         <p style="padding-left: 20px;">密码：${panpwd}</p>

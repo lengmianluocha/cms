@@ -76,8 +76,7 @@ public class MoiveController {
             param.put("moive", moive);
             fileService.genFile(param);
 
-            //TODO 将请求队列上的数据 通知
-           String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,moive.getMname());
+           String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,UnicodeUtil.string2Unicode(moive.getMname()));
            if(StringUtils.isNotBlank(requestList)){
                JSONArray requestArray = JSONArray.parseArray(requestList);
                for(int i=0;i<requestArray.size();i++){
@@ -92,7 +91,7 @@ public class MoiveController {
                        resp.put("touser",requestUserId);
                        resp.put("msgtype","text");
                        JSONObject text = new JSONObject();
-                       text.put("content","您请求的资源已更新。再试试看呢！");
+                       text.put("content","资源已更，公众号再次输入");
                        resp.put("text",text);
 
                        //响应用户请求

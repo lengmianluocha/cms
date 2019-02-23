@@ -6,10 +6,7 @@ import com.pcms.domain.RequestMoive;
 import com.pcms.service.MoiveService;
 import com.pcms.service.impl.RedisService;
 import com.pcms.service.impl.XiaoTokenService;
-import com.pcms.util.DateUtil;
-import com.pcms.util.HttpClient;
-import com.pcms.util.PcmsConst;
-import com.pcms.util.RedisConts;
+import com.pcms.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +46,8 @@ public class XIAOController {
     @Value("${pcms.xiao.sendCustomerMessageUrl}")
     private String sendCustomerMessageUrl;
 
+
+
     //第一次调用，用于微信服务器验证
     @RequestMapping(value = "/xiao", method = RequestMethod.GET)
     public void XIAOGET(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -78,6 +77,9 @@ public class XIAOController {
 
     }
 
+
+
+
     @RequestMapping(value = "/xiao", method = RequestMethod.POST)
     public void XIAOPOST(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("进入xiao方法。。。。。。");
@@ -99,38 +101,62 @@ public class XIAOController {
         try {
             //获取POST流
             ServletInputStream in = request.getInputStream();
-
             String reqMsg = XStreamFactory.inputStream2String(in);
+
             logger.info("请求参数："+reqMsg);
 
             JSONObject reqJSON = JSONObject.parseObject(reqMsg);
 
             String msgtype  = reqJSON.getString("MsgType");
-            if(StringUtils.equals(msgtype,"text")){
+
+            if("event".equals(msgtype)){
                 JSONObject resp = new JSONObject();
                 resp.put("touser",reqJSON.getString("FromUserName"));
                 resp.put("msgtype","text");
                 JSONObject text = new JSONObject();
-                text.put("content","您的反馈已收到，请等候客服联系。");
+                text.put("content","输入电影名并以#开头");
+                resp.put("text",text);
+
+                String url = xiaoTokenService.getAccessToken();
+                if(StringUtils.isNotBlank(url)){
+                    String result= HttpClient.doPostForJson("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+url,resp.toJSONString());
+                    logger.info("实时回复用户打开小程序事件: "+result);
+                    return;
+                }else {
+                    logger.info("未能获取小程序给用户发送请求地址，实时回复用户打开小程序事件:null ");
+                }
+            }
+
+
+            if(StringUtils.equals(msgtype,"text")){
+                String name = reqJSON.getString("Content");
+
+                JSONObject resp = new JSONObject();
+                resp.put("touser",reqJSON.getString("FromUserName"));
+                resp.put("msgtype","text");
+                JSONObject text = new JSONObject();
+                if(name.startsWith("#")){
+                    text.put("content","求片成功，请耐心等待通知");
+                }else{
+                    text.put("content","求片，请输入电影名并以#开头");
+                }
                 resp.put("text",text);
 
                 //响应用户请求
-
                 String url = xiaoTokenService.getAccessToken();
-
                 if(StringUtils.isNotBlank(url)){
                     String result= HttpClient.doPostForJson("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+url,resp.toJSONString());
                     logger.info("实时回复用户请求信息信息: "+result);
                 }
 
-                String name = reqJSON.getString("Content");
+
+                //非求片请求消息，直接返回。
                 if(!name.startsWith("#")){
                     response.getWriter().write("");
+                    return;
                 }
 
                 name = name.replaceAll("#","").trim();
-
-
                 //用户请求入库
                 //判断是否是求片请求
                 //求片信息入库
@@ -150,8 +176,10 @@ public class XIAOController {
                     moiveService.insertRequestMoive(requestMoive);
                 }
 
+
+
                 //小程序求片信息队列维护
-                logger.info("======>小程序求片信息队列维护 ");
+                logger.info("======>小程序求片信息队列维护start<=========== ");
                 //构建对象
                 JSONObject newRequest = new JSONObject();
                 newRequest.put("requestUserId",reqJSON.getString("FromUserName"));
@@ -160,7 +188,7 @@ public class XIAOController {
                 newRequest.put("expire",now.getTimeInMillis());
 
                 //获取原来的对象list
-                String requestUsers = redisService.hget(RedisConts.REQUEST_MOIVE_KEY,name);
+                String requestUsers = redisService.hget(RedisConts.REQUEST_MOIVE_KEY,UnicodeUtil.string2Unicode(name));
                 JSONArray requestUserList=null;
                 if(StringUtils.isNotBlank(requestUsers)){
                      requestUserList = JSONArray.parseArray(requestUsers);
@@ -171,8 +199,10 @@ public class XIAOController {
                     requestUserList.add(newRequest);
                 }
                 logger.info("求片用户信息列表 ："+requestUserList.toJSONString());
-                long result= redisService.hset(RedisConts.REQUEST_MOIVE_KEY,name,requestUserList.toJSONString());
+                long result= redisService.hset(RedisConts.REQUEST_MOIVE_KEY,UnicodeUtil.string2Unicode(name),requestUserList.toJSONString());
                 logger.info("求片信息放入缓存结果： "+result);
+
+                logger.info("======>小程序求片信息队列维护end<=========== ");
             }
         } catch (Exception e) {
             response.getWriter().write("");

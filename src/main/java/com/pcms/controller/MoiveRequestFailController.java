@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import sun.nio.cs.UnicodeEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -228,6 +229,14 @@ public class MoiveRequestFailController {
     }
 
 
+    /**
+     * 后台 求电影列表页展示
+     *
+     * @param model
+     * @param session
+     * @param mav
+     * @return
+     */
     @RequestMapping("/moive/requestListView")
     public ModelAndView requestListView(Model model, HttpSession session, ModelAndView mav) {
         String s = (String) session.getAttribute("user");
@@ -236,6 +245,11 @@ public class MoiveRequestFailController {
         return mav;
     }
 
+    /**
+     * 求电影列表页 展示数据ajax请求
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/moive/requestList")
     public JSONObject searchRequestListByParam(HttpServletRequest request) {
@@ -266,13 +280,17 @@ public class MoiveRequestFailController {
         return JSONObject.parseObject(JSONObject.toJSONString(pageable));
     }
 
+    /**
+     * 用户求电影数据 删除
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/moive/reqdelete")
     public JSONObject delete(HttpServletRequest request) {
 
         String id = request.getParameter("id");
         String ids = request.getParameter("ids");
-
 
         JSONObject result = new JSONObject();
         try {
@@ -297,6 +315,12 @@ public class MoiveRequestFailController {
         return result;
     }
 
+    /**
+     * 标记 用户求电影数据 状态为已处理
+     *
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/moive/reqDone")
     public JSONObject reqDone(HttpServletRequest request) {
@@ -314,9 +338,10 @@ public class MoiveRequestFailController {
             moive.setStatus(PcmsConst.RequestMoive.STATUS_HASHANDLE);
             moiveService.updateByPrimaryKeySelective(moive);
 
-            //TODO 将请求队列上的数据 通知
-            String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,moive.getMoivename());
+
+            String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,UnicodeUtil.string2Unicode(moive.getMoivename()));
             if(StringUtils.isNotBlank(requestList)){
+                logger.info("从redis 中取出的数据为:"+requestList);
                 JSONArray requestArray = JSONArray.parseArray(requestList);
                 for(int i=0;i<requestArray.size();i++){
                     String str =  requestArray.getString(i);
@@ -330,13 +355,11 @@ public class MoiveRequestFailController {
                         resp.put("touser",requestUserId);
                         resp.put("msgtype","text");
                         JSONObject text = new JSONObject();
-                        text.put("content","您请求的资源已更新。再试试看呢！");
+                        text.put("content","资源已更，公众号再次输入");
                         resp.put("text",text);
 
                         //响应用户请求
-
                         String url = xiaoTokenService.getAccessToken();
-
                         if(StringUtils.isNotBlank(url)){
                             String result1= HttpClient.doPostForJson("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+url,resp.toJSONString());
                             logger.info("实时回复用户请求信息信息: "+result1);

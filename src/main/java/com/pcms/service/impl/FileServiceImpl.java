@@ -31,7 +31,7 @@ public class FileServiceImpl implements FileService {
     public void genFile(Map param) {
         Moive moive = (Moive) param.get("moive");
         try {
-            Template template = configuration.getTemplate("/vm/moivetmp.ftl");
+            Template template = configuration.getTemplate("/vm/moivetmp2.ftl");
             //获得保存静态资源路径
             // 创建文件对象
             File htmlFile = new File(PcmsConst.FILEPATH + "/" + moive.getId() + ".html");

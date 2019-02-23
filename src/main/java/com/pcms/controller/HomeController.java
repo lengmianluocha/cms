@@ -54,6 +54,7 @@ public class HomeController {
             session.setAttribute("user", username);
            // mav.addObject("username", username);
             resp.put("addr","/blank");
+            resp.put("result","success");
 
         } else {
             //TODO 设置错误码

@@ -189,7 +189,9 @@
                 data:data,
                 dataType:"json",
                 success:function(data){
-                    window.location.href = data.addr;
+                    if(data.result=="success"){
+                        window.location.href = data.addr;
+                    }
                 }
             })
         });

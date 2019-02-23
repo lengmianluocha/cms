@@ -38,20 +38,29 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
         List<Moive> list = moiveService.searchMoiveForWXByParam(map);
 
         if (list == null || list.size() == 0) {
-            NewsOutputMessage outno = new NewsOutputMessage();
-            outno.setCreateTime(new Date().getTime());
-            outno.setFromUserName(msg.getFromUserName());
-            outno.setToUserName(msg.getToUserName());
-            Articles article = new Articles();
+//            NewsOutputMessage outno = new NewsOutputMessage();
+//            outno.setCreateTime(new Date().getTime());
+//            outno.setFromUserName(msg.getFromUserName());
+//            outno.setToUserName(msg.getToUserName());
+//            Articles article = new Articles();
+//
+//            article.setDescription("暂无简介");
+//            article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
+//            article.setTitle("猛戳这里，留下片名");
+//            article.setUrl("http://www.nitethoughts.club/moive/qmoive");
+//            List<Articles> articles = new ArrayList<>(list.size());
+//            articles.add(article);
+//            outno.setArticles(articles);
+//            return outno;
 
-            article.setDescription("暂无简介");
-            article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
-            article.setTitle("猛戳这里，留下片名");
-            article.setUrl("http://www.nitethoughts.club/moive/qmoive");
-            List<Articles> articles = new ArrayList<>(list.size());
-            articles.add(article);
-            outno.setArticles(articles);
-            return outno;
+            TextOutputMessage out = new TextOutputMessage();
+            out.setCreateTime(new Date().getTime());
+            out.setFromUserName(msg.getToUserName());
+            out.setToUserName(msg.getFromUserName());
+
+            String cont = "没有此资源，请点击菜单【求片】";
+            out.setContent(cont);
+            return out;
         }
 
         NewsOutputMessage out = new NewsOutputMessage();
@@ -115,31 +124,29 @@ public class AtsNormalMessageHandler implements INormalMessageHandler {
 
         if (list == null || list.size() == 0) {
 
-            NewsOutputMessage outno = new NewsOutputMessage();
-            outno.setCreateTime(new Date().getTime());
-            outno.setFromUserName(msg.getFromUserName());
-            outno.setToUserName(msg.getToUserName());
-            Articles article = new Articles();
-
-            article.setDescription("暂无简介");
-            article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
-            article.setTitle("猛戳这里，留下片名");
-            article.setUrl("http://www.nitethoughts.club/moive/qmoive");
-            List<Articles> articles = new ArrayList<>(list.size());
-            articles.add(article);
-            outno.setArticles(articles);
-            return outno;
-
-//            TextOutputMessage out = new TextOutputMessage();
-//            out.setCreateTime(new Date().getTime());
-//            out.setFromUserName(msg.getToUserName());
-//            out.setToUserName(msg.getFromUserName());
+//            NewsOutputMessage outno = new NewsOutputMessage();
+//            outno.setCreateTime(new Date().getTime());
+//            outno.setFromUserName(msg.getFromUserName());
+//            outno.setToUserName(msg.getToUserName());
+//            Articles article = new Articles();
 //
-//            String cont = "很遗憾，没有找到相关内容，请换其它关键词试试。由于微信只能返回一条结果，请输入电影全称；如没有搜到电影，请移步求片页";
-//            out.setContent(cont);
-//            return out;
+//            article.setDescription("暂无简介");
+//            article.setPicUrl("http://www.nitethoughts.club/qzy.jpg");
+//            article.setTitle("猛戳这里，留下片名");
+//            article.setUrl("http://www.nitethoughts.club/moive/qmoive");
+//            List<Articles> articles = new ArrayList<>(list.size());
+//            articles.add(article);
+//            outno.setArticles(articles);
+//            return outno;
 
+            TextOutputMessage out = new TextOutputMessage();
+            out.setCreateTime(new Date().getTime());
+            out.setFromUserName(msg.getToUserName());
+            out.setToUserName(msg.getFromUserName());
 
+            String cont = "没有此资源，请点击菜单【求片】";
+            out.setContent(cont);
+            return out;
         }
 
         NewsOutputMessage out = new NewsOutputMessage();
