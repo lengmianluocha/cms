@@ -80,4 +80,18 @@ public class Moive {
     public void setTags(String tags) {
         this.tags = tags == null ? null : tags.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Moive{" +
+                "id=" + id +
+                ", mname='" + mname + '\'' +
+                ", abstracts='" + abstracts + '\'' +
+                ", panurl='" + panurl + '\'' +
+                ", panpwd='" + panpwd + '\'' +
+                ", murl='" + murl + '\'' +
+                ", updatetime='" + updatetime + '\'' +
+                ", tags='" + tags + '\'' +
+                '}';
+    }
 }

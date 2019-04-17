@@ -54,6 +54,10 @@ public class MoiveController {
     @ResponseBody
     @RequestMapping("/moive/add")
     public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl) {
+
+        logger.info("进入新增电影方法，参数：title:"+title);
+        logger.info("进入新增电影方法，参数：tags:"+tags);
+        logger.info("进入新增电影方法，参数：panurl:"+panurl);
         JSONObject result = new JSONObject();
         try {
             String ran = RandomNumber.randomKey(6);
@@ -68,13 +72,16 @@ public class MoiveController {
             moive.setId(id2);
             moive.setUpdatetime(DateUtil.getCurTimestamp());
             moive.setTags(tags);
-
-
             moiveService.insert(moive);
+
+            logger.info("======> insert db " +moive.toString());
 
             Map param = new HashMap();
             param.put("moive", moive);
             fileService.genFile(param);
+
+
+            logger.info("======> gen File");
 
            String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,UnicodeUtil.string2Unicode(moive.getMname()));
            if(StringUtils.isNotBlank(requestList)){
@@ -106,6 +113,7 @@ public class MoiveController {
                }
            }
 
+            logger.info("======> notice redis list ");
         } catch (Exception e) {
             e.printStackTrace();
             result.put(PcmsConst.RESPCODE, "999999");
