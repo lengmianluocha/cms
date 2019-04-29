@@ -55,9 +55,9 @@ public class MoiveController {
     @RequestMapping("/moive/add")
     public JSONObject addMovie(@RequestParam("title") String title, @RequestParam("tags") String tags, @RequestParam("panurl") String panurl) {
 
-        logger.info("进入新增电影方法，参数：title:"+title);
-        logger.info("进入新增电影方法，参数：tags:"+tags);
-        logger.info("进入新增电影方法，参数：panurl:"+panurl);
+        logger.info("进入新增电影方法，参数：title:" + title);
+        logger.info("进入新增电影方法，参数：tags:" + tags);
+        logger.info("进入新增电影方法，参数：panurl:" + panurl);
         JSONObject result = new JSONObject();
         try {
             String ran = RandomNumber.randomKey(6);
@@ -65,7 +65,9 @@ public class MoiveController {
             Moive moive = new Moive();
             moive.setMname(title);
 
-            String[] pram = panurl.split("提取码：");
+            panurl = panurl.replaceAll("提取码:", "mytag");
+            panurl = panurl.replaceAll("提取码：", "mytag");
+            String[] pram = panurl.split("mytag");
             moive.setPanurl(pram[0].replace("链接：", ""));
             moive.setPanpwd(pram[1].replace("复制这段内容后打开百度网盘手机App，操作更方便哦", ""));
             moive.setMurl(PcmsConst.url + id2 + ".html");
@@ -74,7 +76,7 @@ public class MoiveController {
             moive.setTags(tags);
             moiveService.insert(moive);
 
-            logger.info("======> insert db " +moive.toString());
+            logger.info("======> insert db " + moive.toString());
 
             Map param = new HashMap();
             param.put("moive", moive);
@@ -83,35 +85,35 @@ public class MoiveController {
 
             logger.info("======> gen File");
 
-           String requestList =redisService.hget(RedisConts.REQUEST_MOIVE_KEY,UnicodeUtil.string2Unicode(moive.getMname()));
-           if(StringUtils.isNotBlank(requestList)){
-               JSONArray requestArray = JSONArray.parseArray(requestList);
-               for(int i=0;i<requestArray.size();i++){
-                   String str =  requestArray.getString(i);
-                   JSONObject req = JSONObject.parseObject(str);
-                   String requestUserId=req.getString("requestUserId");
-                   long expire=req.getLong("expire");
-                   long now = new Date().getTime();
-                   if(now<expire){
-                       //发送请求给用户
-                       JSONObject resp = new JSONObject();
-                       resp.put("touser",requestUserId);
-                       resp.put("msgtype","text");
-                       JSONObject text = new JSONObject();
-                       text.put("content","资源已更，公众号再次输入");
-                       resp.put("text",text);
+            String requestList = redisService.hget(RedisConts.REQUEST_MOIVE_KEY, UnicodeUtil.string2Unicode(moive.getMname()));
+            if (StringUtils.isNotBlank(requestList)) {
+                JSONArray requestArray = JSONArray.parseArray(requestList);
+                for (int i = 0; i < requestArray.size(); i++) {
+                    String str = requestArray.getString(i);
+                    JSONObject req = JSONObject.parseObject(str);
+                    String requestUserId = req.getString("requestUserId");
+                    long expire = req.getLong("expire");
+                    long now = new Date().getTime();
+                    if (now < expire) {
+                        //发送请求给用户
+                        JSONObject resp = new JSONObject();
+                        resp.put("touser", requestUserId);
+                        resp.put("msgtype", "text");
+                        JSONObject text = new JSONObject();
+                        text.put("content", "资源已更，公众号再次输入");
+                        resp.put("text", text);
 
-                       //响应用户请求
+                        //响应用户请求
 
-                       String url = xiaoTokenService.getAccessToken();
+                        String url = xiaoTokenService.getAccessToken();
 
-                       if(StringUtils.isNotBlank(url)){
-                           String result1= HttpClient.doPostForJson("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+url,resp.toJSONString());
-                           logger.info("实时回复用户请求信息信息: "+result1);
-                       }
-                   }
-               }
-           }
+                        if (StringUtils.isNotBlank(url)) {
+                            String result1 = HttpClient.doPostForJson("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + url, resp.toJSONString());
+                            logger.info("实时回复用户请求信息信息: " + result1);
+                        }
+                    }
+                }
+            }
 
             logger.info("======> notice redis list ");
         } catch (Exception e) {
